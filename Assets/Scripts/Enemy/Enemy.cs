@@ -26,6 +26,7 @@ public class Enemy : MonoBehaviour
 
     void Start() {
         pathfinding = GetComponent<TargetFollower>();
+        entity = GetComponent<Entity>();
 
         if (pathfinding.slowingDistance == 0f) pathfinding.slowingDistance = ((float) type + 3f);
         if (pathfinding.stoppingDistance == 0f) pathfinding.stoppingDistance = ((float) type - 0.3f);
@@ -50,13 +51,12 @@ public class Enemy : MonoBehaviour
     }
 
     public virtual void MeleeAttack(GameObject entityObj) {
-        Entity entity = entityObj.GetComponent<Entity>();
+        Entity otherEntity = entityObj.GetComponent<Entity>();
         onStartAttack.Invoke();
-        entity.Hurt(damage);
+        otherEntity.Hurt(damage);
     }
 
     public virtual void ShootAt(GameObject entityObj) {
-        Entity entity = entityObj.GetComponent<Entity>();
         onStartAttack.Invoke();
         Instantiate(baseProjectile, transform.position, transform.rotation).GetComponent<BasicProjectile>().Init(targetLayer, damage, entityObj.transform.position);
         isShooting = true;

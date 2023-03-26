@@ -15,16 +15,12 @@ public class LevelGeneration : MonoBehaviour
     public Vector2Int maxRoomSize = new Vector2Int(20, 20);
     public Vector2Int minRoomSize = new Vector2Int(10, 10);
     public Vector2 maxPosition = new Vector2(2, 2);
-    public int highestX;
-    public int lowestX;
-    public int highestY;
-    public int lowestY;
-    
+
     private List<Room> rooms = new List<Room>();
-    private List<Room> roomsUsed = new List<Room>();
-    private List<Room> path = new List<Room>();
-    private TileBase groundTile;
-    private Tilemap DarkDungeon;
+    [SerializeField]
+    public List<Room> roomsUsed = new List<Room>();
+    [SerializeField]
+    public List<Room> path = new List<Room>();
     
 
     int[,] map;
@@ -36,30 +32,8 @@ public class LevelGeneration : MonoBehaviour
         GenerateTopRooms();
         
         path = FindPath(roomsUsed);
+        
 
-        foreach (Room room in rooms)
-        {
-            if (room.centerPos.x - 1 - room.size.x / 2 < lowestX)
-            {
-                lowestX = (int)Mathf.Ceil(room.centerPos.x - 1 - room.size.x / 2);
-            }
-            if (room.centerPos.x + 1 + room.size.x / 2 > highestX)
-            {
-                highestX = (int)Mathf.Ceil(room.centerPos.x + 1 + room.size.x / 2);
-            }
-            if (room.centerPos.y - room.size.y/2 - 1 < lowestY)
-            {
-                lowestY = (int)Mathf.Ceil(room.centerPos.y - 1 - room.size.y / 2);
-            }
-            if (room.centerPos.y+1 + room.size.y / 2 > highestY)
-            {
-                highestY = (int)Mathf.Ceil(room.centerPos.y+1 + room.size.y / 2);
-            }
-        }
-
-        map = GenerateArray(highestX - lowestX, highestY - lowestY, false);
-        Renderer(map, DarkDungeon, groundTile);
-          
 
     }
 
@@ -192,18 +166,29 @@ public class LevelGeneration : MonoBehaviour
         Debug.Log("Nodes Made");
         return nodes;
     }
-    
+
     public List<Room> FindPath(List<Room> mainRooms)
-    {   // Define a function to find a path that goes through each main room once
+    {
+        // Define a function to find a path that goes through each main room once
 
         // Create the graph from the mainRooms list
         List<RoomNode> nodes = CreateGraph(mainRooms);
+
+        // Find the two rooms near the end of the mainRooms list
+        RoomNode endRoom1 = nodes[nodes.Count - 1];
+        RoomNode endRoom2 = nodes[nodes.Count - 2];
+
+            
+
+        // Find the two rooms near the beginning of the mainRooms list
+        RoomNode startRoom1 = nodes[0];
+        RoomNode startRoom2 = nodes[1];
 
         // Perform depth-first search to find a path that goes through each node once
         List<Room> path = new List<Room>();
         HashSet<RoomNode> visited = new HashSet<RoomNode>();
         Stack<RoomNode> stack = new Stack<RoomNode>();
-        stack.Push(nodes[0]);
+        stack.Push(startRoom1);
 
         while (stack.Count > 0)
         {
@@ -219,34 +204,26 @@ public class LevelGeneration : MonoBehaviour
             }
         }
 
+        // Insert connections between the end rooms and the beginning rooms
+   
+            int index1 = path.IndexOf(startRoom1.room);
+            int index2 = path.IndexOf(startRoom2.room);
+            if (index1 > index2)
+            {
+                int temp = index1;
+                index1 = index2;
+                index2 = temp;
+            }
+            path.Insert(index1 + 1, endRoom1.room);
+            path.Insert(index2 + 1, endRoom2.room);
+        
+
+
         Debug.Log("Path Found");
         return path;
     }
 
-    public void Renderer(int[,] map, Tilemap groundTileMap,TileBase groundTileBase)
-    {
-        for (int x = 0; x < highestX - lowestX; x++)
-        {
-            for (int y = 0; y < highestY - lowestY; y++)
-            {
-                if (map[x, y] == 1)
-                    DarkDungeon.SetTile(new Vector3Int(x, y, 0), groundTileBase);
-            }
-        }
-    }
 
-    public int[,] GenerateArray(int width, int height, bool empty)
-    {
-        int[,] map = new int[width, height];
-        for (int x=0; x<width; x++)
-        {
-            for (int y=0; y < height; y++)
-            {
-                map[x, y] = (empty) ? 0 : 1;
-            }
-        }
-        return map;
-    }
 
 
 

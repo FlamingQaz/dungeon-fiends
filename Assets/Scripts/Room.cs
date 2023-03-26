@@ -8,6 +8,7 @@ public class Room : MonoBehaviour
     public Vector2Int size;
     public Vector2 centerPos;
     public Shape shape;
+    public float area;
 
 
     //List of types of rooms
@@ -22,5 +23,46 @@ public class Room : MonoBehaviour
         this.size = size;
         this.centerPos = centerPos;
         this.shape = shape;
+
+
+        //Finding area for cirlce or rectangle
+        if (shape == Shape.Rectangle)
+        {
+            this.area = size.x * size.y;
+        }
+        else if (shape == Shape.Circle)
+        {
+            this.area = size.x * size.y * 3.14f / 4;
+        }
     }
+
+    public int Compare(Room room2)
+    {
+        //null exception
+        if (room2 == null)
+        {
+            Debug.Log("Invalid Room Compare");
+            return 1;
+        }
+            
+
+        else
+        {
+            return this.area.CompareTo(room2.area);
+        }
+            
+    }
+    public bool Equal(Room room2)
+    {
+        if (room2 == null)
+
+        { 
+            Debug.Log("Invalid Room Compare");  
+            return false; 
+        }
+
+        return (this.area.Equals(room2.area));
+    }
+  
+
 }

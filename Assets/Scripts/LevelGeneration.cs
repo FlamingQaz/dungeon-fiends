@@ -27,10 +27,16 @@ namespace LevelGeneration
         public GameObject roomPrefab;
         // Create a list to hold the generated room game objects
         private List<GameObject> roomObjects = new List<GameObject>();
+        bool IsOverlap(Room room1, Room room2)
+        { 
+            Bounds bounds1 = room1.GetComponent<Renderer>().bounds;
+            Bounds bounds2 = room2.GetComponent<Renderer>().bounds;
+
+            return bounds1.Intersects(bounds2);
+        }
 
         void Start()
         {
-
             int numRooms = UnityEngine.Random.Range(minRooms, maxRooms);
             //Creates Rooms with random size, center position, and shape
             for (int i = 0; i < numRooms; i++)
@@ -52,46 +58,11 @@ namespace LevelGeneration
             
             }
 
-
-
             Room r1 = rooms[0];
             Room r2 = rooms[1];
-            bool IsOverlap(r1,r2);
-
-
-
-
-
-
-
-
-
-
-            bool IsOverlap(Room room1, Room room2)
-            {
-                Bounds bounds1 = room1.GetComponent<Renderer>().bounds;
-                Bounds bounds2 = room2.GetComponent<Renderer>().bounds;
-
-                return bounds1.Intersects(bounds2);
-            }
-
-
-
-
-
-
-
-
-
-
-
-
-
+            IsOverlap(r1,r2);
         }
-
     }
-
-
 }
 
 

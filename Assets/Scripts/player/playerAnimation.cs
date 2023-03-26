@@ -26,4 +26,14 @@ public class playerAnimation : MonoBehaviour
         else 
             GetComponent<SpriteRenderer>().flipX = false;
     }
+
+    public void playDeathAnim()
+    {
+        playerAnim.SetTrigger("Death");
+    }
+
+    public void playResurrectionAnim()
+    {
+        playerAnim.SetTrigger("Resurrection");
+    }
 }

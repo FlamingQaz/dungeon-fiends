@@ -1,90 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
-public class playerCombat : MonoBehaviour
+public class PlayerCombat : MonoBehaviour
 {
-    [SerializeField]
-    private float maxHealth = 100;
 
-    [SerializeField]
-    private float currentHealth;
+    public LayerMask enemyLayer;
+    public LayerMask friendlyLayer;
+    [SerializeField] BasicProjectile baseProjectile;
+    [SerializeField] float damage = 2f;
 
-    [SerializeField]
-    private Slider healthBar;
-
-    [SerializeField]
-    private bool testTakeDamage = false;
-    [SerializeField]
-    private float testDamageToTake;
-
-    [SerializeField]
-    private bool isAlive;
-    [SerializeField]
-    private bool triggerResurrect;
-
-
-    void Awake()
-    {
-        currentHealth = maxHealth;
-        healthBar.value = currentHealth / maxHealth;
-        
-        isAlive = true;
-        triggerResurrect = false;
-
-        testTakeDamage = false;
-    }
-
-
-    void FixedUpdate()
-    {
-        if (isAlive)
-        {
-            if (testTakeDamage)
-            {
-                testTakeDamage = false;
-                takeDamage(testDamageToTake);
-            }
-
-            if (currentHealth <= 0)
-            {
-                playerDeath();
-            }
+    void Update() {
+        // Example combat for testing purposes
+        if (Input.GetKeyDown(KeyCode.Mouse0)) {
+            RaycastHit2D hit = Physics2D.CircleCast(transform.position, 5f, Vector2.zero, 0f, enemyLayer);
+            if (hit) baseProjectile.Shoot(transform, hit.transform, enemyLayer, friendlyLayer, damage);
         }
-
-        if (triggerResurrect)
-        {
-            triggerResurrect = false;
-            resurrection();
-        }
-    }
-
-    public void takeDamage(float damage)
-    {
-        currentHealth -= damage;
-        healthBar.value = currentHealth / maxHealth;
-    }
-
-    private void playerDeath()
-    {
-        GetComponent<playerAnimation>().playDeathAnim();
-
-        GetComponent<playerMovement>().enabled = false;
-        GetComponent<playerAnimation>().enabled = false;
-        isAlive = false;
-    }
-
-    private void resurrection()
-    {
-        GetComponent<playerMovement>().enabled = true;
-        GetComponent<playerAnimation>().enabled = true;
-
-        currentHealth = 1;
-        healthBar.value = currentHealth / maxHealth;
-
-        isAlive = true;
-
-        GetComponent<playerAnimation>().playResurrectionAnim();
     }
 }

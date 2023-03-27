@@ -1,18 +1,28 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
-[RequireComponent(typeof(Entity))]
+[RequireComponent(typeof(Entity), typeof(PlayerMovement), typeof(PlayerAnimation))]
+[RequireComponent(typeof(PlayerCombat), typeof(PlayerCamera))]
 public class Player : MonoBehaviour
 {
     [HideInInspector] public Entity entity;
-    public LayerMask enemyLayer;
+    [SerializeField] Slider healthBar;
+    [HideInInspector] public PlayerMovement movement;
+    [HideInInspector] public PlayerAnimation anim;
+    [HideInInspector] public PlayerCombat combat;
 
-    void Update() {
-        // Example combat for testing purposes
-        if (Input.GetKeyDown(KeyCode.Mouse0)) {
-            RaycastHit2D hit = Physics2D.CircleCast(transform.position, 5f, Vector2.zero, 0f, enemyLayer);
-            if (hit) hit.collider.gameObject.GetComponent<Entity>().Hurt(2);
-        }
+    void Awake() {
+        entity = GetComponent<Entity>();
+        movement = GetComponent<PlayerMovement>();
+        anim = GetComponent<PlayerAnimation>();
+        combat = GetComponent<PlayerCombat>();
+
+        entity.destroyOnDeath = false;
+    }
+
+    public void UpdateHealthBar() {
+        healthBar.value = entity.GetHealth() / entity.GetMaxHealth();
     }
 }

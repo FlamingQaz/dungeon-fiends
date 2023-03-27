@@ -19,8 +19,9 @@ public class Enemy : MonoBehaviour
     public float shootingRange = 10f;
     public float shootRate = 2f; // Seconds
     bool isShooting = false;
-    public GameObject baseProjectile;
+    public BasicProjectile baseProjectile;
     public LayerMask targetLayer;
+    public LayerMask friendlyLayer;
 
     public UnityEvent onStartAttack;
 
@@ -53,12 +54,13 @@ public class Enemy : MonoBehaviour
     public virtual void MeleeAttack(GameObject entityObj) {
         Entity otherEntity = entityObj.GetComponent<Entity>();
         onStartAttack.Invoke();
-        otherEntity.Hurt(damage);
+        otherEntity.TakeDamage(damage);
     }
 
     public virtual void ShootAt(GameObject entityObj) {
         onStartAttack.Invoke();
-        Instantiate(baseProjectile, transform.position, transform.rotation).GetComponent<BasicProjectile>().Init(targetLayer, damage, entityObj.transform.position);
+        baseProjectile.Shoot(transform, entityObj.transform, targetLayer, friendlyLayer, damage);
+
         isShooting = true;
         Invoke(nameof(EndShootCooldown), shootRate);
     }

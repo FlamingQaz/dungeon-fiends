@@ -273,6 +273,9 @@ MonoBehaviour:
   targetLayer:
     serializedVersion: 2
     m_Bits: 64
+  friendlyLayer:
+    serializedVersion: 2
+    m_Bits: 256
   onStartAttack:
     m_PersistentCalls:
       m_Calls: []
@@ -296,6 +299,7 @@ MonoBehaviour:
   targetLayer:
     serializedVersion: 2
     m_Bits: 64
+  logDebugMessages: 0
 --- !u!114 &7605570302555313967
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -308,7 +312,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82ecacf9b25dbfd429e6decc8365729a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  onHurt:
+  onDamageTaken:
     m_PersistentCalls:
       m_Calls: []
   onDeath:
@@ -326,8 +330,13 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  onResurrect:
+    m_PersistentCalls:
+      m_Calls: []
   maxHealth: 10
-  health: 20
+  destroyOnDeath: 1
+  isAlive: 1
+  testTriggerResurrect: 0
 --- !u!114 &3315633813477809357
 MonoBehaviour:
   m_ObjectHideFlags: 0

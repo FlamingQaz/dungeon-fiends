@@ -12,6 +12,7 @@ public class SlimeEnemy : MonoBehaviour
     float scale;
     bool mergeable = true;
     bool scaled = false;
+    bool splitting = false;
 
     // Start is called before the first frame update
     void Start()
@@ -40,13 +41,15 @@ public class SlimeEnemy : MonoBehaviour
         float value;
         if (scale <= startScale) value = 1 / (startScale - scale + 1);
         else value = scale / startScale;
-        enemy.entity.maxHealth = 10f * value;
-        enemy.entity.health = enemy.entity.maxHealth;
+        enemy.entity.SetMaxHealth(enemy.entity.GetMaxHealth() * value);
+        enemy.entity.HealPercent(100f);
     }
 
     public void Split() {
         if (scale - 1 < 0f) return;
+        if (enemy.entity.isAlive || splitting) return;
 
+        splitting = true;
         float amount = Mathf.Pow(2, startScale - (scale - 1));
         for (int i = (int) amount; i > 0; i--) {
             Instantiate(gameObject, (Vector2)transform.position + new Vector2(1f/i, 1f/i), transform.rotation).GetComponent<SlimeEnemy>().Init(scale - 1);

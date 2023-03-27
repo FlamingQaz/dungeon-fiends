@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 //using SwordData;
 
-public class playerAnimation : MonoBehaviour
+public class PlayerAnimation : MonoBehaviour
 {
     [SerializeField]
     private Animator playerAnim;
@@ -25,5 +25,15 @@ public class playerAnimation : MonoBehaviour
             GetComponent<SpriteRenderer>().flipX = true;
         else 
             GetComponent<SpriteRenderer>().flipX = false;
+    }
+
+    public void playDeathAnim()
+    {
+        playerAnim.SetTrigger("Death");
+    }
+
+    public void playResurrectionAnim()
+    {
+        playerAnim.SetTrigger("Resurrection");
     }
 }

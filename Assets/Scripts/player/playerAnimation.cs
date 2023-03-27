@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 //using SwordData;
 
-public class playerAnimation : MonoBehaviour
+public class PlayerAnimation : MonoBehaviour
 {
     [SerializeField]
     private Animator playerAnim;

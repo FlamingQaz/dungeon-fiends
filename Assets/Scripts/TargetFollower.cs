@@ -18,12 +18,15 @@ public class TargetFollower : MonoBehaviour
     public float trackingRange = 15f;
     [SerializeField] LayerMask targetLayer;
     SpriteRenderer sprite;
+    [SerializeField] bool logDebugMessages = false;
 
     void Start()
     {
         pathfinder = GetComponent<AIPath>();
         dest = GetComponent<AIDestinationSetter>();
         sprite = GetComponent<SpriteRenderer>();
+
+        AstarPath.active.logPathResults = logDebugMessages ? PathLog.Normal : PathLog.None;
     }
 
     // Update is called once per frame
@@ -61,6 +64,6 @@ public class TargetFollower : MonoBehaviour
     }
 
     public static bool IsTargetLayer(LayerMask targets, int layer) {
-        return (targets & (1 << layer)) != 0;
+        return ((targets.value & (1 << layer)) > 0);
     }
 }

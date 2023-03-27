@@ -445,10 +445,13 @@ MonoBehaviour:
   damage: 1
   shootingRange: 10
   shootRate: 2
-  baseProjectile: {fileID: 4538708223018750053, guid: c471aabddfa6e13448e9afd6c280664f, type: 3}
+  baseProjectile: {fileID: 4538708223018750052, guid: c471aabddfa6e13448e9afd6c280664f, type: 3}
   targetLayer:
     serializedVersion: 2
     m_Bits: 64
+  friendlyLayer:
+    serializedVersion: 2
+    m_Bits: 256
   onStartAttack:
     m_PersistentCalls:
       m_Calls: []
@@ -472,6 +475,7 @@ MonoBehaviour:
   targetLayer:
     serializedVersion: 2
     m_Bits: 64
+  logDebugMessages: 0
 --- !u!114 &8794652278551535660
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -484,23 +488,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82ecacf9b25dbfd429e6decc8365729a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  onHurt:
+  onDamageTaken:
     m_PersistentCalls:
       m_Calls: []
   onDeath:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: SlimeEnemy, Assembly-CSharp
-        m_MethodName: Split
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
+  onResurrect:
+    m_PersistentCalls:
+      m_Calls: []
   maxHealth: 10
-  health: 10
+  destroyOnDeath: 1
+  isAlive: 1
+  testTriggerResurrect: 0

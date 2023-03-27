@@ -9,11 +9,13 @@ public class BasicProjectile : MonoBehaviour
 	public float maxRange;
 	[HideInInspector] public float damage;
     [HideInInspector] public LayerMask targets;
+    [HideInInspector] public LayerMask friendlies;
 
-    public void Init(LayerMask targetLayers, float dmg, Vector2 destination) {
+    public void Init(LayerMask targetLayers, LayerMask friendlyLayers, float dmg, Vector2 destination) {
         direction = (destination - (Vector2)transform.position).normalized;
 
         targets = targetLayers;
+        friendlies = friendlyLayers;
         damage = dmg;
     }
 
@@ -27,12 +29,19 @@ public class BasicProjectile : MonoBehaviour
         if (!Physics2D.CircleCast(transform.position, maxRange, Vector2.zero, 0f, targets)) Destroy(gameObject);
     }
 
-	protected virtual void OnCollisionEnter2D(Collision2D collision) {
-		if (TargetFollower.IsTargetLayer(targets, collision.gameObject.layer)) {
-		    Entity ent = collision.gameObject.GetComponent<Entity>();
-            if (ent) ent.Hurt(damage);
+	protected virtual void OnTriggerEnter2D(Collider2D collider) {
+        if (TargetFollower.IsTargetLayer(friendlies, collider.gameObject.layer)) return;
+
+		if (TargetFollower.IsTargetLayer(targets, collider.gameObject.layer)) {
+            Debug.Log("Is Target");
+		    Entity ent = collider.gameObject.GetComponent<Entity>();
+            if (ent) ent.TakeDamage(damage);
 		}
 
         Destroy(this.gameObject);
 	}
+
+    public virtual void Shoot(Transform start, Transform end, LayerMask targetLayer, LayerMask friendlyLayer, float damage) {
+        Instantiate(gameObject, start.position, start.rotation).GetComponent<BasicProjectile>().Init(targetLayer, friendlyLayer, damage, end.position);
+    }
 }

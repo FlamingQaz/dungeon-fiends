@@ -21,8 +21,6 @@ public class playerCombat : MonoBehaviour
 
     [SerializeField]
     private bool isAlive;
-    [SerializeField]
-    private bool triggerResurrect;
 
 
     void Awake()
@@ -31,7 +29,6 @@ public class playerCombat : MonoBehaviour
         healthBar.value = currentHealth / maxHealth;
         
         isAlive = true;
-        triggerResurrect = false;
 
         testTakeDamage = false;
     }
@@ -52,12 +49,6 @@ public class playerCombat : MonoBehaviour
                 playerDeath();
             }
         }
-
-        if (triggerResurrect)
-        {
-            triggerResurrect = false;
-            resurrection();
-        }
     }
 
     public void takeDamage(float damage)
@@ -73,18 +64,5 @@ public class playerCombat : MonoBehaviour
         GetComponent<playerMovement>().enabled = false;
         GetComponent<playerAnimation>().enabled = false;
         isAlive = false;
-    }
-
-    private void resurrection()
-    {
-        GetComponent<playerMovement>().enabled = true;
-        GetComponent<playerAnimation>().enabled = true;
-
-        currentHealth = 1;
-        healthBar.value = currentHealth / maxHealth;
-
-        isAlive = true;
-
-        GetComponent<playerAnimation>().playResurrectionAnim();
     }
 }

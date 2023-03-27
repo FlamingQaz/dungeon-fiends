@@ -9,8 +9,21 @@ public class Entity : MonoBehaviour
     public UnityEvent onHurt;
     public UnityEvent onDeath;
 
-    public const float maxHealth = 10f;
-    public float health = maxHealth;
+    public float maxHealth = 10f;
+    public bool destroyOnDeath = true;
+    [HideInInspector] public float health;
+    HeadHealthBar healthBar;
+
+    void Start() {
+        healthBar = GetComponentInChildren<HeadHealthBar>();
+        health = maxHealth;
+
+        if (destroyOnDeath) onDeath.AddListener(() => Destroy(gameObject));
+    }
+
+    void FixedUpdate() {
+        healthBar.Set(health, maxHealth);
+    }
 
     public virtual void Hurt(float hp) {
         health -= hp;

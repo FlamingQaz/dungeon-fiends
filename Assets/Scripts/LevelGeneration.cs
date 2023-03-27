@@ -3,6 +3,7 @@ using UnityEngine;
 using static Room;
 using static RoomNode;
 using UnityEngine.Tilemaps;
+using static TilePlacement;
 
 
 
@@ -15,13 +16,17 @@ public class LevelGeneration : MonoBehaviour
     public Vector2Int maxRoomSize = new Vector2Int(20, 20);
     public Vector2Int minRoomSize = new Vector2Int(10, 10);
     public Vector2 maxPosition = new Vector2(2, 2);
+    public TilePlacement tilePlacement;
+    
 
     private List<Room> rooms = new List<Room>();
     [SerializeField]
     public List<Room> roomsUsed = new List<Room>();
     [SerializeField]
     public List<Room> path = new List<Room>();
-    
+
+    public List<Vector3Int> positions;
+
 
     int[,] map;
 
@@ -32,8 +37,14 @@ public class LevelGeneration : MonoBehaviour
         GenerateTopRooms();
         
         path = FindPath(roomsUsed);
-        
 
+        foreach (Room room in roomsUsed)
+        {
+            positions.Add(new Vector3Int((int)room.centerPos.x, (int)room.centerPos.y, 0));
+        }
+
+
+        tilePlacement.PlaceTiles(positions);
 
     }
 

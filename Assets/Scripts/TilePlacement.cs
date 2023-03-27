@@ -17,5 +17,13 @@ public class TilePlacement : MonoBehaviour
             tilemap.SetTile(pos, tileset[tileIndex]);
         }
     }
+    public void PlaceTiles(List<Vector3Int> positions, int tileIndex)
+    {
+        foreach (Vector3Int pos in positions)
+        {
+            
+            tilemap.SetTile(pos, tileset[tileIndex]);
+        }
+    }
 }
 

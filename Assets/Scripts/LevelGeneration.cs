@@ -1,9 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
-using static Room;
-using static RoomNode;
 using UnityEngine.Tilemaps;
-using static TilePlacement;
 
 
 
@@ -15,45 +12,33 @@ public class LevelGeneration : MonoBehaviour
     public int minRooms = 3;
     public Vector2Int maxRoomSize = new Vector2Int(20, 20);
     public Vector2Int minRoomSize = new Vector2Int(10, 10);
-    public Vector2 maxPosition = new Vector2(2, 2);
-    public TilePlacement tilePlacement;
+    private Vector2 maxPosition = new Vector2(2, 2);
 
 
-    public List<Room> rooms = new List<Room>();
+    private List<Room> rooms = new List<Room>();
     [SerializeField]
     public List<Room> roomsUsed = new List<Room>();
     [SerializeField]
     public List<Room> path = new List<Room>();
-
-    public List<Vector3> position;
-    public int i = 0;
+    public TilePlacement tilePlacement;
+    public List<Vector3Int> positions;
 
     int[,] map;
 
     void Start()
     {
         GenerateRooms();
-        foreach (Room room in rooms)
-        {
-            position.Add(new Vector3(room.centerPos.x, room.centerPos.y, 0));
-        }
-        position.Add(new Vector3(1000, 1000, 0));
-        HandleOverlap();
-        foreach (Room room in rooms)
-        {
-            position.Add(new Vector3(room.centerPos.x, room.centerPos.y, 0));
-        }
         GenerateTopRooms();
         
         path = FindPath(roomsUsed);
 
-        //foreach (Room room in rooms)
-        //{
-        //    positions.Add(new Vector3Int((int)room.centerPos.x, (int)room.centerPos.y, 0));
-        //}
+        foreach (Room room in roomsUsed)
+        {
+            positions.Add(new Vector3Int((int)room.centerPos.x, (int)room.centerPos.y, 0));
+        }
 
 
-        //tilePlacement.PlaceTiles(positions);
+        tilePlacement.PlaceTiles(positions);
 
     }
 
@@ -78,58 +63,58 @@ public class LevelGeneration : MonoBehaviour
                 Vector2 centerPos = new Vector2(UnityEngine.Random.Range(-maxPosition.x, maxPosition.x), UnityEngine.Random.Range(-maxPosition.y, maxPosition.y));
 
                 //random shape by making random index for array of Shapes
-                Room.Shape[] values = (Room.Shape[])Shape.GetValues(typeof(Room.Shape));
+                Room.Shape[] values = (Room.Shape[])Room.Shape.GetValues(typeof(Room.Shape));
                 int randomIndex = UnityEngine.Random.Range(0, values.Length);
                 Room.Shape shape = values[randomIndex];
 
                 // create a new room with the generated size, position, and shape, and add it to the list of rooms
                 Room room = new Room(size, centerPos, shape);
 
+                room = HandleOverlap(room);
                 rooms.Add(room);
             }
         Debug.Log("Rooms Generated");
     } 
 
-    void HandleOverlap()
+    Room HandleOverlap(Room room2)
     {
         //Go through all rooms and check for overlap
 
-        Room room1;
-        Room room2;
-        int l;
-        l = rooms.Count;
 
-        for (int i = 0; i < l; i++)
+        foreach (Room room1 in rooms)
         {
-            room1 = rooms[i];
-            for (int j = 0; j<l; j++)
-            {
-                room2 = rooms[j];
+            Debug.Log(room1.size);
 
-                
-                if (room1.centerPos != room2.centerPos && room1.size != room2.size && room1.shape != room2.shape)
-                {
-                    
                     //If overlap exists, then translate the room over by the length of the room
                     if (IsOverlap(room1, room2))
                     {
                         if (room2.centerPos.x > 0)
                         {
-                            room2.centerPos = new Vector2(room1.size.x + room2.centerPos.x, room2.centerPos.y);
+                            //For all of these, this takes
+                            //the min or max ( depends on if in the positive or negative)
+                            //and makes a new vector, moving the center position by a distance of half of each room 
+                            room2.centerPos = new Vector2(room1.size.x/2 + room2.size.x/2 +2 + Mathf.Max(room2.centerPos.x,room1.centerPos.x), Mathf.Max(room2.centerPos.y,room1.centerPos.y));
                         }
+
                         else
-                        { room2.centerPos = new Vector2(room2.centerPos.x -room1.size.x , room2.centerPos.y); }
+                        { 
+                            room2.centerPos = new Vector2(-room1.size.x/2 - room2.size.x / 2-2+ Mathf.Min(room2.centerPos.x, room1.centerPos.x), Mathf.Min(room2.centerPos.y, room1.centerPos.y));
+                        }
+
                         if (room2.centerPos.y > 0)
-                        { room2.centerPos = new Vector2(room2.centerPos.x, room1.size.y + room2.centerPos.y); }
+                        { 
+                            room2.centerPos = new Vector2(Mathf.Max(room2.centerPos.x, room1.centerPos.x), Mathf.Max(room2.centerPos.y, room1.centerPos.y)+ room1.size.y/2+ room2.size.y / 2+2);
+                        }
+
                         else
-                        { room2.centerPos = new Vector2(room2.centerPos.x, room2.centerPos.y - room1.size.y ); }
+                        { 
+                            room2.centerPos = new Vector2(Mathf.Min(room2.centerPos.x, room1.centerPos.x), Mathf.Min(room2.centerPos.y, room1.centerPos.y) - room1.size.y/2 - room2.size.y / 2-2);
+                        }
                     }
-                }
-                i++;
-            }
-            
+               
         }
-        Debug.Log("Overlap Handled");
+
+        return room2;
     }
 
     bool IsOverlap(Room room1, Room room2)
@@ -137,8 +122,8 @@ public class LevelGeneration : MonoBehaviour
         //Checks if the distance between the two centers of rooms
 
 
-        float xDist = (room1.size.x + room2.size.x) / 2;
-        float yDist = (room1.size.y + room2.size.y) / 2;
+        float xDist = Mathf.Abs(room1.size.x + room2.size.x)/2;
+        float yDist = Mathf.Abs(room1.size.y + room2.size.y)/2;
 
         //We check for two since the we need room for tiling 
         if (  Mathf.Abs(room1.centerPos.x - room2.centerPos.x) > xDist + 2)

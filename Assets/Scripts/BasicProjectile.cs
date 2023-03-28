@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class BasicProjectile : MonoBehaviour
 {
@@ -10,13 +11,16 @@ public class BasicProjectile : MonoBehaviour
 	[HideInInspector] public float damage;
     [HideInInspector] public LayerMask targets;
     [HideInInspector] public LayerMask friendlies;
+    public EntityEvent onHit = new EntityEvent();
 
-    public void Init(LayerMask targetLayers, LayerMask friendlyLayers, float dmg, Vector2 destination) {
+    public BasicProjectile Init(LayerMask targetLayers, LayerMask friendlyLayers, float dmg, Vector2 destination) {
         direction = (destination - (Vector2)transform.position).normalized;
 
         targets = targetLayers;
         friendlies = friendlyLayers;
         damage = dmg;
+
+        return this;
     }
 
 	// Update is called once per frame
@@ -33,15 +37,20 @@ public class BasicProjectile : MonoBehaviour
         if (TargetFollower.IsTargetLayer(friendlies, collider.gameObject.layer)) return;
 
 		if (TargetFollower.IsTargetLayer(targets, collider.gameObject.layer)) {
-            Debug.Log("Is Target");
 		    Entity ent = collider.gameObject.GetComponent<Entity>();
-            if (ent) ent.TakeDamage(damage);
+            if (ent) {
+                ent.TakeDamage(damage);
+                onHit.Invoke(ent);
+            }
 		}
 
         Destroy(this.gameObject);
 	}
 
-    public virtual void Shoot(Transform start, Transform end, LayerMask targetLayer, LayerMask friendlyLayer, float damage) {
-        Instantiate(gameObject, start.position, start.rotation).GetComponent<BasicProjectile>().Init(targetLayer, friendlyLayer, damage, end.position);
+    public virtual void Shoot(Transform start, Vector2 end, LayerMask targetLayer, LayerMask friendlyLayer, float damage, Entity shooter) {
+        Instantiate(gameObject, start.position, start.rotation)
+        .GetComponent<BasicProjectile>()
+        .Init(targetLayer, friendlyLayer, damage, end)
+        .onHit.AddListener((Entity target) => shooter.onEndAttack.Invoke(target));;
     }
 }

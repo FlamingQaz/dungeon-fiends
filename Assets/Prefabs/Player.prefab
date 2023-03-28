@@ -19,6 +19,7 @@ GameObject:
   - component: {fileID: 2336437375242769431}
   - component: {fileID: 7563213637299676831}
   - component: {fileID: 2007450369848719897}
+  - component: {fileID: 628602536}
   m_Layer: 6
   m_Name: Player
   m_TagString: Untagged
@@ -302,10 +303,11 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
-  maxHealth: 10
-  destroyOnDeath: 1
+  maxHealth: 100
+  destroyOnDeath: 0
   isAlive: 1
   testTriggerResurrect: 0
+  debugMessages: 0
 --- !u!114 &2336437375242769431
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -341,8 +343,8 @@ MonoBehaviour:
   friendlyLayer:
     serializedVersion: 2
     m_Bits: 64
-  baseProjectile: {fileID: 4538708223018750052, guid: c471aabddfa6e13448e9afd6c280664f, type: 3}
-  damage: 2
+  baseProjectile: {fileID: 1211716114872644739, guid: af61060c100eba541a2f0e42721ab1bd, type: 3}
+  damage: 8
 --- !u!114 &2007450369848719897
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -355,6 +357,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a33b8960afe3ab4d99a8fd2c0c59037, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &628602536
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2336437375242769903}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e995aa196e8945468b309e64267708a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  modifiers:
+  - effect: {fileID: 3784904872878677209, guid: 7c6ea0bb84a086f4c996f05f2fd4d3af, type: 3}
+    trigger: 3
+    target: 1
 --- !u!1 &4555402294472389343
 GameObject:
   m_ObjectHideFlags: 0

@@ -23,8 +23,6 @@ public class Enemy : MonoBehaviour
     public LayerMask targetLayer;
     public LayerMask friendlyLayer;
 
-    public UnityEvent onStartAttack;
-
     void Start() {
         pathfinding = GetComponent<TargetFollower>();
         entity = GetComponent<Entity>();
@@ -34,6 +32,10 @@ public class Enemy : MonoBehaviour
 
         if (type == EnemyType.Ranged && !baseProjectile) Debug.LogError("A ranged enemy does not have a projectile attached.");
         pathfinding.SetTargets(targetLayer);
+
+        entity.onEndAttack.AddListener((Entity target) => {
+            if (!target.isAlive) entity.onKill.Invoke(target);
+        });
     }
 
     void FixedUpdate() {
@@ -53,13 +55,14 @@ public class Enemy : MonoBehaviour
 
     public virtual void MeleeAttack(GameObject entityObj) {
         Entity otherEntity = entityObj.GetComponent<Entity>();
-        onStartAttack.Invoke();
+        entity.onStartAttack.Invoke(otherEntity);
         otherEntity.TakeDamage(damage);
+        entity.onEndAttack.Invoke(otherEntity);
     }
 
     public virtual void ShootAt(GameObject entityObj) {
-        onStartAttack.Invoke();
-        baseProjectile.Shoot(transform, entityObj.transform, targetLayer, friendlyLayer, damage);
+        entity.onStartAttack.Invoke(entityObj.GetComponent<Entity>());
+        baseProjectile.Shoot(transform, entityObj.transform.position, targetLayer, friendlyLayer, damage, entity);
 
         isShooting = true;
         Invoke(nameof(EndShootCooldown), shootRate);

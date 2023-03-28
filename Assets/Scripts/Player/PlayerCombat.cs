@@ -9,12 +9,16 @@ public class PlayerCombat : MonoBehaviour
     public LayerMask friendlyLayer;
     [SerializeField] BasicProjectile baseProjectile;
     [SerializeField] float damage = 2f;
+    Entity entity;
+    
+    void Start() {
+        entity = GetComponent<Entity>();
+    }
 
     void Update() {
         // Example combat for testing purposes
         if (Input.GetKeyDown(KeyCode.Mouse0)) {
-            RaycastHit2D hit = Physics2D.CircleCast(transform.position, 5f, Vector2.zero, 0f, enemyLayer);
-            if (hit) baseProjectile.Shoot(transform, hit.transform, enemyLayer, friendlyLayer, damage);
+            baseProjectile.Shoot(transform, Camera.main.ScreenToWorldPoint(Input.mousePosition), enemyLayer, friendlyLayer, damage, entity);
         }
     }
 }

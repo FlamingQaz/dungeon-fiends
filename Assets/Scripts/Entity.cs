@@ -6,9 +6,12 @@ using UnityEngine.Events;
 public class Entity : MonoBehaviour
 {
 
-    public UnityEvent onDamageTaken;
-    public UnityEvent onDeath;
-    public UnityEvent onResurrect;
+    public UnityEvent onDamageTaken = new UnityEvent();
+    public UnityEvent onDeath = new UnityEvent();
+    public UnityEvent onResurrect = new UnityEvent();
+    public EntityEvent onKill = new EntityEvent();
+    public EntityEvent onStartAttack = new EntityEvent();
+    public EntityEvent onEndAttack = new EntityEvent();
 
     [SerializeField] float maxHealth = 10f;
     public bool destroyOnDeath = true;
@@ -17,6 +20,7 @@ public class Entity : MonoBehaviour
     [HideInInspector] public bool isAlive = true;
     
     [SerializeField] bool testTriggerResurrect = false;
+    [SerializeField] bool debugMessages = false;
 
     void Awake() {
         healthBar = GetComponentInChildren<HeadHealthBar>();
@@ -74,7 +78,7 @@ public class Entity : MonoBehaviour
 
         onDamageTaken.Invoke();
 
-        Debug.LogWarning("Got hurt: " + gameObject.name);
+        if (debugMessages) Debug.LogWarning("Got hurt: " + gameObject.name);
 
         if (currentHealth == 0f) {
             Die();
@@ -87,7 +91,7 @@ public class Entity : MonoBehaviour
 
         onDeath.Invoke();
 
-        Debug.LogWarning("Died: " + gameObject.name);
+        if (debugMessages) Debug.LogWarning("Died: " + gameObject.name);
     }
 
     public virtual void Resurrect() {
@@ -96,7 +100,7 @@ public class Entity : MonoBehaviour
 
         onResurrect.Invoke();
 
-        Debug.LogWarning("Resurrected: " + gameObject.name);
+        if (debugMessages) Debug.LogWarning("Resurrected: " + gameObject.name);
     }
 
 }

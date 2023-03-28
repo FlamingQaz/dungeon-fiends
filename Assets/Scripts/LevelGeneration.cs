@@ -11,40 +11,49 @@ using static TilePlacement;
 public class LevelGeneration : MonoBehaviour
 {
 
-    public int maxRooms = 50;
-    public int minRooms = 30;
+    public int maxRooms = 5;
+    public int minRooms = 3;
     public Vector2Int maxRoomSize = new Vector2Int(20, 20);
     public Vector2Int minRoomSize = new Vector2Int(10, 10);
     public Vector2 maxPosition = new Vector2(2, 2);
     public TilePlacement tilePlacement;
-    
 
-    private List<Room> rooms = new List<Room>();
+
+    public List<Room> rooms = new List<Room>();
     [SerializeField]
     public List<Room> roomsUsed = new List<Room>();
     [SerializeField]
     public List<Room> path = new List<Room>();
 
-    public List<Vector3Int> positions;
-
+    public List<Vector3> position;
+    public int i = 0;
 
     int[,] map;
 
     void Start()
     {
         GenerateRooms();
+        foreach (Room room in rooms)
+        {
+            position.Add(new Vector3(room.centerPos.x, room.centerPos.y, 0));
+        }
+        position.Add(new Vector3(1000, 1000, 0));
         HandleOverlap();
+        foreach (Room room in rooms)
+        {
+            position.Add(new Vector3(room.centerPos.x, room.centerPos.y, 0));
+        }
         GenerateTopRooms();
         
         path = FindPath(roomsUsed);
 
-        foreach (Room room in roomsUsed)
-        {
-            positions.Add(new Vector3Int((int)room.centerPos.x, (int)room.centerPos.y, 0));
-        }
+        //foreach (Room room in rooms)
+        //{
+        //    positions.Add(new Vector3Int((int)room.centerPos.x, (int)room.centerPos.y, 0));
+        //}
 
 
-        tilePlacement.PlaceTiles(positions);
+        //tilePlacement.PlaceTiles(positions);
 
     }
 
@@ -58,6 +67,7 @@ public class LevelGeneration : MonoBehaviour
     void GenerateRooms()
     {
         int numRooms = UnityEngine.Random.Range(minRooms, maxRooms);
+
             //Creates Rooms with random size, center position, and shape
             for (int i = 0; i<numRooms; i++)
             {
@@ -83,27 +93,41 @@ public class LevelGeneration : MonoBehaviour
     void HandleOverlap()
     {
         //Go through all rooms and check for overlap
-        foreach (Room room1 in rooms)
-        {
-            foreach (Room room2 in rooms)
-            {
-                if (room1 != room2)
-                {
 
+        Room room1;
+        Room room2;
+        int l;
+        l = rooms.Count;
+
+        for (int i = 0; i < l; i++)
+        {
+            room1 = rooms[i];
+            for (int j = 0; j<l; j++)
+            {
+                room2 = rooms[j];
+
+                
+                if (room1.centerPos != room2.centerPos && room1.size != room2.size && room1.shape != room2.shape)
+                {
+                    
                     //If overlap exists, then translate the room over by the length of the room
-                    if (!IsOverlap(room1, room2))
+                    if (IsOverlap(room1, room2))
                     {
                         if (room2.centerPos.x > 0)
-                        { room2.centerPos.x += room1.size.x; }
+                        {
+                            room2.centerPos = new Vector2(room1.size.x + room2.centerPos.x, room2.centerPos.y);
+                        }
                         else
-                        { room2.centerPos.x -= room1.size.x; }
+                        { room2.centerPos = new Vector2(room2.centerPos.x -room1.size.x , room2.centerPos.y); }
                         if (room2.centerPos.y > 0)
-                        { room2.centerPos.y += room1.size.y; }
+                        { room2.centerPos = new Vector2(room2.centerPos.x, room1.size.y + room2.centerPos.y); }
                         else
-                        { room2.centerPos.y -= room1.size.y; }
+                        { room2.centerPos = new Vector2(room2.centerPos.x, room2.centerPos.y - room1.size.y ); }
                     }
                 }
+                i++;
             }
+            
         }
         Debug.Log("Overlap Handled");
     }
@@ -115,7 +139,7 @@ public class LevelGeneration : MonoBehaviour
 
         float xDist = (room1.size.x + room2.size.x) / 2;
         float yDist = (room1.size.y + room2.size.y) / 2;
-        
+
         //We check for two since the we need room for tiling 
         if (  Mathf.Abs(room1.centerPos.x - room2.centerPos.x) > xDist + 2)
         {          
@@ -130,6 +154,7 @@ public class LevelGeneration : MonoBehaviour
         else { 
             return true; 
         }
+        
              
     }
 

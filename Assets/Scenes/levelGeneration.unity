@@ -162,7 +162,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 486661155}
-  - component: {fileID: 486661157}
   - component: {fileID: 486661156}
   - component: {fileID: 486661158}
   m_Layer: 0
@@ -201,26 +200,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a1c6248d8624e3d48bfea4e71332922e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxRooms: 50
-  minRooms: 30
+  maxRooms: 5
+  minRooms: 3
   maxRoomSize: {x: 20, y: 20}
   minRoomSize: {x: 10, y: 10}
   maxPosition: {x: 2, y: 2}
+  tilePlacement: {fileID: 0}
   roomsUsed: []
   path: []
---- !u!114 &486661157
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 486661154}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 708c315b5b6eaa9449761f8487443636, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  tilePlacement: {fileID: 486661158}
+  positions: []
 --- !u!114 &486661158
 MonoBehaviour:
   m_ObjectHideFlags: 0

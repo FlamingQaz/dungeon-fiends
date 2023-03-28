@@ -79,36 +79,42 @@ public class LevelGeneration : MonoBehaviour
     Room HandleOverlap(Room room2)
     {
         //Go through all rooms and check for overlap
-
+        int randPos;
 
         foreach (Room room1 in rooms)
         {
-            Debug.Log(room1.size);
 
                     //If overlap exists, then translate the room over by the length of the room
                     if (IsOverlap(room1, room2))
                     {
-                        if (room2.centerPos.x > 0)
+                randPos = UnityEngine.Random.Range(0, 2);
+                        if (room2.centerPos.x > 0 && randPos < 1)
                         {
                             //For all of these, this takes
                             //the min or max ( depends on if in the positive or negative)
                             //and makes a new vector, moving the center position by a distance of half of each room 
-                            room2.centerPos = new Vector2(room1.size.x/2 + room2.size.x/2 +2 + Mathf.Max(room2.centerPos.x,room1.centerPos.x), Mathf.Max(room2.centerPos.y,room1.centerPos.y));
+                            room2.centerPos = new Vector2(room1.size.x/2 + room2.size.x/2 +2 +
+                                Mathf.Max(room2.centerPos.x,room1.centerPos.x), 
+                                Mathf.Max(room2.centerPos.y,room1.centerPos.y));
+                        }
+
+                        else if (randPos < 1)
+                        { 
+                            room2.centerPos = new Vector2(-room1.size.x/2 - room2.size.x / 2-2+ 
+                                Mathf.Min(room2.centerPos.x, room1.centerPos.x), 
+                                Mathf.Min(room2.centerPos.y, room1.centerPos.y));
+                        }
+
+                        else if (room2.centerPos.y > 0)
+                        { 
+                            room2.centerPos = new Vector2(Mathf.Max(room2.centerPos.x, room1.centerPos.x), 
+                                Mathf.Max(room2.centerPos.y, room1.centerPos.y)+ room1.size.y/2+ room2.size.y / 2+2);
                         }
 
                         else
                         { 
-                            room2.centerPos = new Vector2(-room1.size.x/2 - room2.size.x / 2-2+ Mathf.Min(room2.centerPos.x, room1.centerPos.x), Mathf.Min(room2.centerPos.y, room1.centerPos.y));
-                        }
-
-                        if (room2.centerPos.y > 0)
-                        { 
-                            room2.centerPos = new Vector2(Mathf.Max(room2.centerPos.x, room1.centerPos.x), Mathf.Max(room2.centerPos.y, room1.centerPos.y)+ room1.size.y/2+ room2.size.y / 2+2);
-                        }
-
-                        else
-                        { 
-                            room2.centerPos = new Vector2(Mathf.Min(room2.centerPos.x, room1.centerPos.x), Mathf.Min(room2.centerPos.y, room1.centerPos.y) - room1.size.y/2 - room2.size.y / 2-2);
+                            room2.centerPos = new Vector2(Mathf.Min(room2.centerPos.x, room1.centerPos.x), 
+                                Mathf.Min(room2.centerPos.y, room1.centerPos.y) - room1.size.y/2 - room2.size.y / 2-2);
                         }
                     }
                
@@ -184,7 +190,6 @@ public class LevelGeneration : MonoBehaviour
             }
         }
 
-        Debug.Log("Nodes Made");
         return nodes;
     }
 

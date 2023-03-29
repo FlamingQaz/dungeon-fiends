@@ -12,6 +12,7 @@ public class BasicProjectile : MonoBehaviour
     [HideInInspector] public LayerMask targets;
     [HideInInspector] public LayerMask friendlies;
     public EntityEvent onHit = new EntityEvent();
+    [HideInInspector] public Entity shooter;
 
     public BasicProjectile Init(LayerMask targetLayers, LayerMask friendlyLayers, float dmg, Vector2 destination) {
         direction = (destination - (Vector2)transform.position).normalized;
@@ -52,8 +53,10 @@ public class BasicProjectile : MonoBehaviour
 
         projectile.name = gameObject.name + " (" + shooter.gameObject.name + ")";
         projectile.transform.parent = shooter.transform;
-        projectile.GetComponent<BasicProjectile>()
-        .Init(targetLayer, friendlyLayer, damage, end)
-        .onHit.AddListener((Entity target) => shooter.onEndAttack.Invoke(target));;
+        BasicProjectile bp = projectile.GetComponent<BasicProjectile>()
+        .Init(targetLayer, friendlyLayer, damage, end);
+
+        bp.shooter = shooter;
+        bp.onHit.AddListener((Entity target) => shooter.onEndAttack.Invoke(target));;
     }
 }

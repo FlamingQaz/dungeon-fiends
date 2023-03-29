@@ -196,7 +196,6 @@ GameObject:
   - component: {fileID: 3635783419446137414}
   - component: {fileID: 3635783419446137415}
   - component: {fileID: 6627200942224100219}
-  - component: {fileID: 7715164649494096277}
   m_Layer: 8
   m_Name: FireballEnemy
   m_TagString: Untagged
@@ -499,24 +498,11 @@ MonoBehaviour:
   onResurrect:
     m_PersistentCalls:
       m_Calls: []
+  onHealthChange:
+    m_PersistentCalls:
+      m_Calls: []
   maxHealth: 200
   destroyOnDeath: 1
   isAlive: 1
   testTriggerResurrect: 0
   debugMessages: 0
---- !u!114 &7715164649494096277
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7715164649494096266}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3e995aa196e8945468b309e64267708a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  modifiers:
-  - effect: {fileID: 3784904872878677209, guid: 7c6ea0bb84a086f4c996f05f2fd4d3af, type: 3}
-    trigger: 3
-    target: 1

@@ -34,7 +34,6 @@ public class EntityModifier : MonoBehaviour
         entity = GetComponent<Entity>();
 
         foreach (Modifier modifier in modifiers) {
-            // get effect; get when to enable effect
             Effect effect = modifier.effect;
             EffectTrigger trigger = modifier.trigger;
             EffectTarget targetType = modifier.target;

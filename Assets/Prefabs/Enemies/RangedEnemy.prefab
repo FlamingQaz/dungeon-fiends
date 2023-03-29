@@ -452,9 +452,6 @@ MonoBehaviour:
   friendlyLayer:
     serializedVersion: 2
     m_Bits: 256
-  onStartAttack:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!114 &1405272900890900752
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -475,7 +472,11 @@ MonoBehaviour:
   targetLayer:
     serializedVersion: 2
     m_Bits: 64
+  obstacleLayer:
+    serializedVersion: 2
+    m_Bits: 8
   logDebugMessages: 0
+  targetInSight: 0
 --- !u!114 &8794652278551535660
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -501,3 +502,4 @@ MonoBehaviour:
   destroyOnDeath: 1
   isAlive: 1
   testTriggerResurrect: 0
+  debugMessages: 0

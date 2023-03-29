@@ -17,14 +17,18 @@ public class TargetFollower : MonoBehaviour
     public float stoppingDistance = 0f;
     public float trackingRange = 15f;
     [SerializeField] LayerMask targetLayer;
+    public LayerMask obstacleLayer;
     SpriteRenderer sprite;
     [SerializeField] bool logDebugMessages = false;
+    [HideInInspector] public bool targetInSight = false;
 
     void Start()
     {
         pathfinder = GetComponent<AIPath>();
         dest = GetComponent<AIDestinationSetter>();
         sprite = GetComponent<SpriteRenderer>();
+
+        pathfinder.endReachedDistance = 0f;
 
         AstarPath.active.logPathResults = logDebugMessages ? PathLog.Normal : PathLog.None;
     }
@@ -36,7 +40,6 @@ public class TargetFollower : MonoBehaviour
         if (canMove != pathfinder.canMove) pathfinder.canMove = canMove;
         if (speed != pathfinder.maxSpeed) pathfinder.maxSpeed = speed;
         if (slowingDistance != pathfinder.slowdownDistance) pathfinder.slowdownDistance = slowingDistance;
-        if (stoppingDistance != pathfinder.endReachedDistance) pathfinder.endReachedDistance = stoppingDistance;
     }
 
     void FixedUpdate() {
@@ -49,12 +52,25 @@ public class TargetFollower : MonoBehaviour
 
     void DetectTargets() {
         RaycastHit2D hit = Physics2D.CircleCast(transform.position, trackingRange, Vector2.zero, 0f, targetLayer);
+        targetInSight = false;
+
         if (hit) {
             if (dest.target != hit.transform) dest.target = hit.transform;
             if (hit.transform.position.x - transform.position.x < 0f) sprite.flipX = true;
             else sprite.flipX = false;
 
-            canMove = true;
+            Vector2 direction = (hit.transform.position - transform.position).normalized;
+            float distance = Vector2.Distance(transform.position, hit.transform.position);
+            RaycastHit2D sightRayA = Physics2D.Raycast((Vector2)transform.position + Vector2.Perpendicular(direction) * 0.3f, direction, distance, obstacleLayer);
+            RaycastHit2D sightRayB = Physics2D.Raycast((Vector2)transform.position - Vector2.Perpendicular(direction) * 0.3f, direction, distance, obstacleLayer);
+
+            if (!sightRayA && !sightRayB) targetInSight = true;
+
+            if (targetInSight) {
+                if (Vector2.Distance(transform.position, hit.transform.position) > stoppingDistance) canMove = true;
+                else canMove = false; // Manual stop if within stopping distance
+            }
+            else canMove = true; // Keep moving if current target in range but not in sight
         }
         else canMove = false;
     }

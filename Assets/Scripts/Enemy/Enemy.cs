@@ -23,12 +23,15 @@ public class Enemy : MonoBehaviour
     public LayerMask targetLayer;
     public LayerMask friendlyLayer;
 
+    protected const float STOPPING_OFFSET = -0.3f;
+    protected const float SLOWING_OFFSET = 3f;
+
     void Start() {
         pathfinding = GetComponent<TargetFollower>();
         entity = GetComponent<Entity>();
 
-        if (pathfinding.slowingDistance == 0f) pathfinding.slowingDistance = ((float) type + 3f);
-        if (pathfinding.stoppingDistance == 0f) pathfinding.stoppingDistance = ((float) type - 0.3f);
+        if (pathfinding.slowingDistance == 0f) pathfinding.slowingDistance = ((float) type + SLOWING_OFFSET);
+        if (pathfinding.stoppingDistance == 0f) pathfinding.stoppingDistance = ((float) type + STOPPING_OFFSET);
 
         if (type == EnemyType.Ranged && !baseProjectile) Debug.LogError("A ranged enemy does not have a projectile attached.");
         pathfinding.SetTargets(targetLayer);
@@ -42,7 +45,7 @@ public class Enemy : MonoBehaviour
         // Handle ranged attacks
         if (type == EnemyType.Ranged) {
             RaycastHit2D hit = Physics2D.CircleCast(transform.position, shootingRange, Vector2.zero, 0f, targetLayer);
-            if (hit && !isShooting) ShootAt(hit.collider.gameObject);
+            if (hit && !isShooting && pathfinding.targetInSight) ShootAt(hit.collider.gameObject);
         }
     }
 

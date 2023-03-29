@@ -473,7 +473,11 @@ MonoBehaviour:
   targetLayer:
     serializedVersion: 2
     m_Bits: 64
+  obstacleLayer:
+    serializedVersion: 2
+    m_Bits: 8
   logDebugMessages: 0
+  targetInSight: 0
 --- !u!114 &6627200942224100219
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -178,6 +178,10 @@ PrefabInstance:
       propertyPath: healthBar
       value: 
       objectReference: {fileID: 1860617212}
+    - target: {fileID: 2336437375242769432, guid: 42da30174b63c1d44acb7249c9d2723e, type: 3}
+      propertyPath: maxHealth
+      value: 1000
+      objectReference: {fileID: 0}
     - target: {fileID: 2336437375242769903, guid: 42da30174b63c1d44acb7249c9d2723e, type: 3}
       propertyPath: m_Name
       value: Player 1
@@ -3966,7 +3970,7 @@ CompositeCollider2D:
   m_GameObject: {fileID: 1855351265}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: ce8e8b3efffa2bf4fb6711d9d2e118a0, type: 2}
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0

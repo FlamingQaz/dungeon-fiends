@@ -10,6 +10,7 @@ public class EntityModifier : MonoBehaviour
         OnDeath,
         OnResurrect,
         OnAttack,
+        OnKill,
         Infused
     }
 
@@ -62,8 +63,14 @@ public class EntityModifier : MonoBehaviour
                 break;
                 case EffectTrigger.OnAttack:
                     entity.onEndAttack.AddListener((Entity target) => {
-                        if (targetType == EffectTarget.TargetedOpponent) effect.ApplyTo(target.gameObject);
-                        else if (targetType == EffectTarget.Self) effect.ApplyTo(gameObject);
+                        if (targetType == EffectTarget.TargetedOpponent) effect.ApplyTo(target.gameObject, gameObject);
+                        else if (targetType == EffectTarget.Self) effect.ApplyTo(gameObject, target.gameObject);
+                    });
+                break;
+                case EffectTrigger.OnKill:
+                    entity.onKill.AddListener((Entity target) => {
+                        if (targetType == EffectTarget.TargetedOpponent) effect.ApplyTo(target.gameObject, gameObject);
+                        else if (targetType == EffectTarget.Self) effect.ApplyTo(gameObject, target.gameObject);
                     });
                 break;
                 case EffectTrigger.Infused:

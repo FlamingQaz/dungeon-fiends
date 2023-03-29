@@ -374,8 +374,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   modifiers:
-  - effect: {fileID: 5470163623171081328, guid: 4125d331962a61a4386f1d6dc8c6d329, type: 3}
+  - effect: {fileID: 3784904872878677209, guid: 7c6ea0bb84a086f4c996f05f2fd4d3af, type: 3}
     trigger: 3
+    target: 1
+  - effect: {fileID: 5470163623171081328, guid: 4125d331962a61a4386f1d6dc8c6d329, type: 3}
+    trigger: 4
     target: 0
 --- !u!1 &4555402294472389343
 GameObject:

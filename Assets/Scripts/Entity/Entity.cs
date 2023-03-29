@@ -19,6 +19,7 @@ public class Entity : MonoBehaviour
     float currentHealth;
     HeadHealthBar healthBar;
     [HideInInspector] public bool isAlive = true;
+    [HideInInspector] public bool onKillTriggered = false;
     
     [SerializeField] bool testTriggerResurrect = false;
     [SerializeField] bool debugMessages = false;
@@ -28,7 +29,13 @@ public class Entity : MonoBehaviour
         currentHealth = maxHealth;
 
         onDeath.AddListener(() => {
-            if (destroyOnDeath) Destroy(gameObject);
+            foreach (Effect effect in CurrentEffects()) {
+                effect.EndEffect();
+            }
+
+            if (destroyOnDeath) {
+                Destroy(gameObject);
+            }
         });
 
         healthBar.Set(currentHealth, maxHealth);
@@ -101,10 +108,15 @@ public class Entity : MonoBehaviour
     public virtual void Resurrect() {
         currentHealth = 1f;
         isAlive = true;
+        onKillTriggered = false;
 
         onResurrect.Invoke();
 
         if (debugMessages) Debug.LogWarning("Resurrected: " + gameObject.name);
+    }
+
+    public virtual Effect[] CurrentEffects() {
+        return GetComponentsInChildren<Effect>();
     }
 
 }

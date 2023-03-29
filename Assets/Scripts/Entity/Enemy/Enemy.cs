@@ -37,7 +37,10 @@ public class Enemy : MonoBehaviour
         pathfinding.SetTargets(targetLayer);
 
         entity.onEndAttack.AddListener((Entity target) => {
-            if (!target.isAlive) entity.onKill.Invoke(target);
+            if (!target.isAlive && !target.onKillTriggered) {
+                entity.onKill.Invoke(target);
+                target.onKillTriggered = true;
+            }
         });
     }
 

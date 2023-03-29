@@ -15,6 +15,9 @@ public class PlayerCombat : MonoBehaviour
     
     void Start() {
         entity = GetComponent<Entity>();
+        entity.onEndAttack.AddListener((Entity target) => {
+            if (!target.isAlive) entity.onKill.Invoke(target);
+        });
     }
 
     void FixedUpdate() {

@@ -18,7 +18,13 @@ public class Effect : MonoBehaviour
     UnityEvent onEndEvent = new UnityEvent();
     bool onCooldown;
     protected bool enable;
+
+    /// <summary>This is the Entity receiving the effect.</summary>
     protected Entity target;
+
+    /// <summary>If this effect was triggered by an event involving two entities (e.g. on kill), this is the other entity that is not receiving the effect. Not guaranteed to be defined.</summary>
+    protected Entity secondaryTarget;
+
     protected float secondsPassed;
     protected int procs = 0;
 
@@ -73,11 +79,18 @@ public class Effect : MonoBehaviour
     }
 
     public void EndEffect() {
+        if (secondaryTarget && !target.isAlive && !target.onKillTriggered) {
+            secondaryTarget.onKill.Invoke(target);
+            target.onKillTriggered = true;
+        }
+
         secondsPassed = 0f;
         enable = false;
         target = null;
+        secondaryTarget = null;
         onCooldown = false;
         onEndEvent.Invoke();
+
         Destroy(createdDisplay);
         Destroy(gameObject);
     }
@@ -88,14 +101,14 @@ public class Effect : MonoBehaviour
         secondsPassed += 1f/procsPerSec;
     }
 
-    public void ApplyTo(GameObject targetObj) {
+    public Effect ApplyTo(GameObject targetObj) {
         Effect[] effectObjs = targetObj.GetComponentsInChildren<Effect>();
 
         // Extend existing Effects:
         foreach(Effect effect in effectObjs) {
             if (effect.gameObject.name == gameObject.name) {
                 effect.secondsPassed = 0f;
-                return;
+                return effect;
             }
         }
 
@@ -104,5 +117,11 @@ public class Effect : MonoBehaviour
         effectObj.name = gameObject.name;
         effectObj.transform.parent = targetObj.transform;
         effectObj.GetComponent<Effect>().target = targetObj.GetComponent<Entity>();
+
+        return effectObj.GetComponent<Effect>();
+    }
+
+    public void ApplyTo(GameObject targetObj, GameObject secondaryObj) {
+        ApplyTo(targetObj).secondaryTarget = secondaryObj.GetComponent<Entity>();
     }
 }

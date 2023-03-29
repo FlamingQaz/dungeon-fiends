@@ -52,7 +52,7 @@ public class BasicProjectile : MonoBehaviour
         GameObject projectile = Instantiate(gameObject, start.position, start.rotation);
 
         projectile.name = gameObject.name + " (" + shooter.gameObject.name + ")";
-        projectile.transform.parent = shooter.transform;
+        projectile.transform.parent = GameObject.FindGameObjectWithTag("Projectiles")?.transform;
         BasicProjectile bp = projectile.GetComponent<BasicProjectile>()
         .Init(targetLayer, friendlyLayer, damage, end);
 

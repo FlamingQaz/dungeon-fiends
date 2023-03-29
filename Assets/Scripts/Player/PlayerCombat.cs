@@ -9,16 +9,25 @@ public class PlayerCombat : MonoBehaviour
     public LayerMask friendlyLayer;
     [SerializeField] BasicProjectile baseProjectile;
     [SerializeField] float damage = 2f;
+    [SerializeField] float fireRate = 10f;
     Entity entity;
+    bool onCooldown = false;
     
     void Start() {
         entity = GetComponent<Entity>();
     }
 
-    void Update() {
+    void FixedUpdate() {
         // Example combat for testing purposes
-        if (Input.GetKeyDown(KeyCode.Mouse0)) {
+        if (Input.GetKey(KeyCode.Mouse0) && !onCooldown) {
             baseProjectile.Shoot(transform, Camera.main.ScreenToWorldPoint(Input.mousePosition), enemyLayer, friendlyLayer, damage, entity);
+            onCooldown = true;
+            Invoke(nameof(EndCooldown), 1f/fireRate);
         }
+    }
+
+    // For example combat only
+    void EndCooldown() {
+        onCooldown = false;
     }
 }

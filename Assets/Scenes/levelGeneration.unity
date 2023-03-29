@@ -207,7 +207,6 @@ MonoBehaviour:
   roomsUsed: []
   path: []
   tilePlacement: {fileID: 486661158}
-  positions: []
 --- !u!114 &486661158
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -226,6 +225,40 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 04bc63bf3bfcbbd4f8e15b091f94f39c, type: 2}
   - {fileID: 11400000, guid: 13b040f667034784aae32185fb89a3dc, type: 2}
   - {fileID: 11400000, guid: 37f5949d877f91743b5b71521b1f35d2, type: 2}
+  floors:
+  - {fileID: 11400000, guid: 4fe4c7e33012c9c4fb2850785d85b66a, type: 2}
+  - {fileID: 11400000, guid: 89f3463bb4ea1884a815de01ce8522ca, type: 2}
+  - {fileID: 11400000, guid: bb69b0ccf04475b4da861eb3e34ca6ab, type: 2}
+  - {fileID: 11400000, guid: 78e8b08f67d1bf24698f14c91023b7d9, type: 2}
+  - {fileID: 11400000, guid: 0def2a2a2f342064c87d19c169315546, type: 2}
+  - {fileID: 11400000, guid: 42b27551b8707cf4bad9f8401fcfae1a, type: 2}
+  - {fileID: 11400000, guid: 71e19f98ab2dbfd449ac3922056daf46, type: 2}
+  - {fileID: 11400000, guid: f8768224581cd3942aef598453e0711c, type: 2}
+  - {fileID: 11400000, guid: cf9a0e805bee5014381537ba4056a370, type: 2}
+  - {fileID: 11400000, guid: c84b5957e5cc2f44eb5cb2fd60fb2d0a, type: 2}
+  - {fileID: 11400000, guid: 6b8d5900696080a41a67bf0591424ce3, type: 2}
+  - {fileID: 11400000, guid: 30e09d81609a8d8429eb620cae64e296, type: 2}
+  - {fileID: 11400000, guid: fb6116fe51692274f8eb70f7a0071fed, type: 2}
+  - {fileID: 11400000, guid: 9b252f31f3e7c5b48b3eb46c42724c1e, type: 2}
+  - {fileID: 11400000, guid: 2cb2c9247f5ac894892d5c4057d778c6, type: 2}
+  - {fileID: 11400000, guid: c4ce3d73f2033764a98a0d00c115b239, type: 2}
+  - {fileID: 11400000, guid: ab062c3eca3da7b4f81cfeae74d5f88d, type: 2}
+  - {fileID: 11400000, guid: 45d7e79d61b6f3140909a5221ea50e92, type: 2}
+  - {fileID: 11400000, guid: 1134561f328440140a7f448c17b80e9d, type: 2}
+  - {fileID: 11400000, guid: 2cd0cdc8cd5ec4d4f9c8a482b0c58043, type: 2}
+  sides:
+  - {fileID: 11400000, guid: f86bc8ce6eaed55478cd6b5909dfa857, type: 2}
+  bottoms:
+  - {fileID: 11400000, guid: f86bc8ce6eaed55478cd6b5909dfa857, type: 2}
+  tops:
+  - {fileID: 11400000, guid: 04bc63bf3bfcbbd4f8e15b091f94f39c, type: 2}
+  - {fileID: 11400000, guid: 13b040f667034784aae32185fb89a3dc, type: 2}
+  - {fileID: 11400000, guid: 37f5949d877f91743b5b71521b1f35d2, type: 2}
+  - {fileID: 11400000, guid: 27f12aa48ec2f274dbb15b89c6b1cc50, type: 2}
+  - {fileID: 11400000, guid: 6b27fd9778137424c819dcb353de5fb8, type: 2}
+  - {fileID: 11400000, guid: 1fe7f565bd19380438752168038cc898, type: 2}
+  - {fileID: 11400000, guid: 3a007c172c3b86544bd157d455ba3483, type: 2}
+  - {fileID: 11400000, guid: 18640de3e1ab26a4188bdbf43b8b6758, type: 2}
 --- !u!1 &588809399
 GameObject:
   m_ObjectHideFlags: 0

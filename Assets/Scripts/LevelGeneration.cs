@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using System.Linq;
 
 
 
@@ -12,7 +13,7 @@ public class LevelGeneration : MonoBehaviour
     public int minRooms = 3;
     public Vector2Int maxRoomSize = new Vector2Int(20, 20);
     public Vector2Int minRoomSize = new Vector2Int(10, 10);
-    private Vector2 maxPosition = new Vector2(2, 2);
+    private Vector2 maxPosition = new Vector2(20, 20);
 
 
     private List<Room> rooms = new List<Room>();
@@ -21,7 +22,6 @@ public class LevelGeneration : MonoBehaviour
     [SerializeField]
     public List<Room> path = new List<Room>();
     public TilePlacement tilePlacement;
-    public List<Vector3Int> positions;
 
     int[,] map;
 
@@ -30,16 +30,9 @@ public class LevelGeneration : MonoBehaviour
         GenerateRooms();
         GenerateTopRooms();
         
-        path = FindPath(roomsUsed);
-
-        foreach (Room room in roomsUsed)
-        {
-            positions.Add(new Vector3Int((int)room.centerPos.x, (int)room.centerPos.y, 0));
-        }
-
-
-        tilePlacement.PlaceTiles(positions);
-
+        PlaceRooms();
+        path = ConnectRooms(roomsUsed);
+        
     }
 
 
@@ -165,94 +158,177 @@ public class LevelGeneration : MonoBehaviour
         Debug.Log("Top Rooms Found");
     }
 
-    public List<RoomNode> CreateGraph(List<Room> mainRooms)
+    public List<Room> ConnectRooms(List<Room> rooms)
     {
-        // Create a RoomNode for each main room
-        List<RoomNode> nodes = new List<RoomNode>();
-        foreach (Room room in mainRooms)
-        {
-            RoomNode node = new RoomNode(room);
-            nodes.Add(node);
-        }
-
-        // Connect neighboring rooms with edges in the graph
-        for (int i = 0; i < nodes.Count; i++)
-        {
-            RoomNode nodeA = nodes[i];
-            for (int j = i + 1; j < nodes.Count; j++)
-            {
-                RoomNode nodeB = nodes[j];
-                if (IsOverlap(nodeA.room, nodeB.room))
-                {
-                    nodeA.neighbors.Add(nodeB);
-                    nodeB.neighbors.Add(nodeA);
-                }
-            }
-        }
-
-        return nodes;
-    }
-
-    public List<Room> FindPath(List<Room> mainRooms)
-    {
-        // Define a function to find a path that goes through each main room once
-
-        // Create the graph from the mainRooms list
-        List<RoomNode> nodes = CreateGraph(mainRooms);
-
-        // Find the two rooms near the end of the mainRooms list
-        RoomNode endRoom1 = nodes[nodes.Count - 1];
-        RoomNode endRoom2 = nodes[nodes.Count - 2];
-
-            
-
-        // Find the two rooms near the beginning of the mainRooms list
-        RoomNode startRoom1 = nodes[0];
-        RoomNode startRoom2 = nodes[1];
-
-        // Perform depth-first search to find a path that goes through each node once
-        List<Room> path = new List<Room>();
-        HashSet<RoomNode> visited = new HashSet<RoomNode>();
-        Stack<RoomNode> stack = new Stack<RoomNode>();
-        stack.Push(startRoom1);
-
-        while (stack.Count > 0)
-        {
-            RoomNode current = stack.Pop();
-            if (!visited.Contains(current))
-            {
-                visited.Add(current);
-                path.Add(current.room);
-                foreach (RoomNode neighbor in current.neighbors)
-                {
-                    stack.Push(neighbor);
-                }
-            }
-        }
-
-        // Insert connections between the end rooms and the beginning rooms
-   
-            int index1 = path.IndexOf(startRoom1.room);
-            int index2 = path.IndexOf(startRoom2.room);
-            if (index1 > index2)
-            {
-                int temp = index1;
-                index1 = index2;
-                index2 = temp;
-            }
-            path.Insert(index1 + 1, endRoom1.room);
-            path.Insert(index2 + 1, endRoom2.room);
+        // Shuffle the list of rooms to ensure randomness
         
 
+        // Connect each room to the next one in the list
+        for (int i = 0; i < rooms.Count - 1; i++)
+        {
+            PlaceHall(rooms[i], rooms[i + 1]);
+        }
 
-        Debug.Log("Path Found");
-        return path;
+        // Connect the last room to the first room
+        PlaceHall(rooms[rooms.Count - 1], rooms[0]);
+
+        return rooms;
     }
 
+    void PlaceRooms()
+    {
+        int roomx;
+        int roomy;
+        //Places Room tiles
+        foreach (Room room in roomsUsed)
+        {
+            //Finds room lower left corner
+            roomx = (int)(room.centerPos.x - room.size.x / 2);
+            roomy = (int)(room.centerPos.y - room.size.y / 2);
+
+            if (room.shape == Room.Shape.Rectangle)
+            {
+
+
+                //Sets the Floor
+                //For all X in room
+                for (int i = roomx; i < roomx + (int)room.size.x; i++)
+                {
+                    //for all Y in room
+                    for (int j = roomy; j < roomy + (int)room.size.y; j++)
+                    {
+
+                        //Place tiles
+                        tilePlacement.PlaceFloor(new Vector3Int((int)i, (int)j, 0), 1);
+                        if (i == roomx || i == roomx + (int)room.size.x-1)
+                        {
+                            tilePlacement.PlaceSide(new Vector3Int((int)i, (int)j, 0));
+                        }
+                        if (j == roomy || j == roomy + (int)room.size.y -1)
+                        {
+                            tilePlacement.PlaceSide(new Vector3Int((int)i, (int)j, 0));
+                        }
+                    }
+
+                }
+            } 
+
+            else if (room.shape == Room.Shape.Circle)
+            {
+
+
+
+                //Sets the Floor
+                //For all X in room
+                for (int i = roomx; i < roomx + (int)room.size.x; i++)
+                {
+
+                    //for all Y in room
+                    for (int j = roomy; j < roomy + (int)room.size.y; j++)
+                    {
+
+                        if (IsWithinOval(i, j,
+                            (int)(room.centerPos.x), (int)(room.centerPos.y),
+
+                            (int)(room.size.x / 2 - 1), (int)(room.size.y / 2))
+                           )
+                            //Place tiles
+                            tilePlacement.PlaceFloor(new Vector3Int((int)i, (int)j, 0), 1);
+
+                        if (IsOval(i, j,
+                            (int)(room.centerPos.x), (int)(room.centerPos.y),
+
+                            (int)(room.size.x / 2 - 1), (int)(room.size.y / 2))
+                           )
+                        {
+
+                            tilePlacement.PlaceCeiling(new Vector3Int((int)i, (int)j, 0), 1);
+
+
+
+                        }
+
+                    }
+
+
+
+                }
+            }Debug.Log("Rooms Placed");
+
+    }
+
+}
+    
+    private static bool IsWithinOval(int x, int y, int cx, int cy, int rx, int ry)
+    {
+
+        float dx = (float)(x - cx) / rx;
+        float dy = (float)(y - cy) / ry;
+        return dx * dx + dy * dy <= 1;
+    }
+    private static bool IsOval(int x, int y, int cx, int cy, int rx, int ry)
+    {
+
+        float dx = (float)(x - cx) / rx;
+        float dy = (float)(y - cy) / ry;
+        return (0.7 < dx * dx + dy * dy) && (dx * dx + dy * dy <= 1);
+    }
+        void PlaceHall(Room roomBefore, Room room)
+    {
+
+        
+        int xmin;
+        int ymin;
+        int xmax;
+        int ymax;
+
+        
+                       if (roomBefore.centerPos.x < room.centerPos.x)
+            {
+                xmin = (int)roomBefore.centerPos.x;
+                xmax = (int)room.centerPos.x;
+            }
+            else
+            {
+                xmax = (int)roomBefore.centerPos.x;
+                xmin = (int)room.centerPos.x;
+            }
+            if (roomBefore.centerPos.y < room.centerPos.y)
+            {
+                ymin = (int)roomBefore.centerPos.y;
+                    ymax = (int)room.centerPos.y;
+            }
+            else
+            {
+                ymax = (int)roomBefore.centerPos.y;
+                ymin = (int)room.centerPos.y;
+            }
+
+        
+        for (int i = xmin; i < xmax; i++)
+            {
+            tilePlacement.PlaceFloor(new Vector3Int((int)i, (int)ymin, 0));
+            tilePlacement.PlaceFloor(new Vector3Int((int)i, (int)ymin+1, 0));
+
+        }
+        for (int j = ymin; j < ymax; j++)
+        {
+
+            tilePlacement.PlaceFloor(new Vector3Int((int)xmax, (int)j, 0));
+            tilePlacement.PlaceFloor(new Vector3Int((int)xmax-1, (int)j, 0));
+        }
 
 
 
 
+
+
+
+    }
+
+   
+
+        
 
 
 
@@ -261,7 +337,7 @@ public class LevelGeneration : MonoBehaviour
 
 
 
-
+   
 
 
 

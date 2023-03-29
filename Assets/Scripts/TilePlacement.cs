@@ -7,6 +7,11 @@ public class TilePlacement : MonoBehaviour
 {
     public Tilemap tilemap;
     public TileBase[] tileset;
+    public TileBase[] floors;
+    public TileBase[] sides;
+    public TileBase[] bottoms;
+    public TileBase[] tops;
+
 
 
     public void PlaceTiles(List<Vector3Int> positions)
@@ -25,6 +30,48 @@ public class TilePlacement : MonoBehaviour
             tilemap.SetTile(pos, tileset[tileIndex]);
         }
     }
+    public void PlaceFloor(Vector3Int position, int tileIndex)
+    {
+
+            tilemap.SetTile(position, floors[tileIndex]);
+       
+    }
+    public void PlaceFloor(Vector3Int position)
+    {
+        int tileIndex = Random.Range(0, floors.Length - 1);
+        tilemap.SetTile(position, floors[tileIndex]);
+
+    }
+    public void PlaceCeiling(Vector3Int position, int tileIndex)
+    {
+
+        tilemap.SetTile(position, tops[tileIndex]);
+
+    }
+    public void PlaceCeiling(Vector3Int position)
+    {
+        int tileIndex = Random.Range(0, tops.Length - 1);
+        tilemap.SetTile(position, tops[tileIndex]);
+
+    }
+    public void PlaceBottom(Vector3Int position, int tileIndex)
+    {
+
+        tilemap.SetTile(position, bottoms[tileIndex]);
+
+    }
+    public void PlaceSide(Vector3Int position)
+    {
+        int tileIndex = Random.Range(0, sides.Length - 1);
+        tilemap.SetTile(position, sides[tileIndex]);
+
+    }
+    public void PlaceSide(Vector3Int position, int tileIndex)
+    {
+        tilemap.SetTile(position, sides[tileIndex]);
+
+    }
+
 
 
 }

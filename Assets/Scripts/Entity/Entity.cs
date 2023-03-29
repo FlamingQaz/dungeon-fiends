@@ -13,6 +13,7 @@ public class Entity : MonoBehaviour
     public EntityEvent onStartAttack = new EntityEvent();
     public EntityEvent onEndAttack = new EntityEvent();
     public UnityEvent onHealthChange = new UnityEvent();
+    public UnityEvent onHeal = new UnityEvent();
 
     [SerializeField] float maxHealth = 10f;
     public bool destroyOnDeath = true;
@@ -74,11 +75,13 @@ public class Entity : MonoBehaviour
 
     public virtual void HealPercent(float percent) {
         float hp = maxHealth * percent / 100f;
-        SetHealth(hp);
+        SetHealth(currentHealth + hp);
+        onHeal.Invoke();
     }
 
     public virtual void HealFlat(float amount) {
         SetHealth(currentHealth + amount);
+        onHeal.Invoke();
     }
 
     public virtual void TakeDamage(float hp) {

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class EntityModifier : MonoBehaviour
 {
@@ -11,6 +12,7 @@ public class EntityModifier : MonoBehaviour
         OnResurrect,
         OnAttack,
         OnKill,
+        OnHeal,
         Infused
     }
 
@@ -35,52 +37,53 @@ public class EntityModifier : MonoBehaviour
         entity = GetComponent<Entity>();
 
         foreach (Modifier modifier in modifiers) {
-            Effect effect = modifier.effect;
-            EffectTrigger trigger = modifier.trigger;
-            EffectTarget targetType = modifier.target;
-
-            switch (trigger) {
+            switch (modifier.trigger) {
                 case EffectTrigger.OnDamageTaken:
-                    if (targetType != EffectTarget.Self) {
-                        Debug.LogError("Invalid target for OnDamageTaken Entity Modifier.");
-                        return;
-                    }
-                    entity.onDamageTaken.AddListener(() => effect.ApplyTo(gameObject));
+                    ApplyToSelfOnly(entity.onDamageTaken, modifier);
                 break;
                 case EffectTrigger.OnDeath:
-                    if (targetType != EffectTarget.Self) {
-                        Debug.LogError("Invalid target for OnDeath Entity Modifier.");
-                        return;
-                    }
-                    entity.onDeath.AddListener(() => effect.ApplyTo(gameObject));
+                    ApplyToSelfOnly(entity.onDeath, modifier);
                 break;
                 case EffectTrigger.OnResurrect:
-                    if (targetType != EffectTarget.Self) {
-                        Debug.LogError("Invalid target for OnResurrect Entity Modifier.");
-                        return;
-                    }
-                    entity.onResurrect.AddListener(() => effect.ApplyTo(gameObject));
+                    ApplyToSelfOnly(entity.onResurrect, modifier);
                 break;
                 case EffectTrigger.OnAttack:
-                    entity.onEndAttack.AddListener((Entity target) => {
-                        if (targetType == EffectTarget.TargetedOpponent) effect.ApplyTo(target.gameObject, gameObject);
-                        else if (targetType == EffectTarget.Self) effect.ApplyTo(gameObject, target.gameObject);
-                    });
+                    ApplyToAnyEntity(entity.onEndAttack, modifier);
                 break;
                 case EffectTrigger.OnKill:
-                    entity.onKill.AddListener((Entity target) => {
-                        if (targetType == EffectTarget.TargetedOpponent) effect.ApplyTo(target.gameObject, gameObject);
-                        else if (targetType == EffectTarget.Self) effect.ApplyTo(gameObject, target.gameObject);
-                    });
+                    ApplyToAnyEntity(entity.onKill, modifier);
+                break;
+                case EffectTrigger.OnHeal:
+                    ApplyToSelfOnly(entity.onHeal, modifier);
                 break;
                 case EffectTrigger.Infused:
-                    if (targetType != EffectTarget.Self) {
-                        Debug.LogError("Invalid target for OnResurrect Entity Modifier.");
-                        return;
-                    }
-                    effect.ApplyTo(gameObject);
+                    ApplyToSelfOnly(null, modifier);
                 break;
             }
         }
+    }
+
+    void ApplyToSelfOnly(UnityEvent e, Modifier modifier) {
+        Effect effect = modifier.effect;
+        EffectTrigger trigger = modifier.trigger;
+        EffectTarget targetType = modifier.target;
+
+        if (targetType != EffectTarget.Self) {
+            Debug.LogError($"Invalid target for {trigger.ToString()} Entity Modifier.");
+            return;
+        }
+        
+        if (e != null) e.AddListener(() => effect.ApplyTo(gameObject));
+        else effect.ApplyTo(gameObject);
+    }
+
+    void ApplyToAnyEntity(EntityEvent e, Modifier modifier) {
+        Effect effect = modifier.effect;
+        EffectTarget targetType = modifier.target;
+
+        e.AddListener((Entity target) => {
+            if (targetType == EffectTarget.TargetedOpponent) effect.ApplyTo(target.gameObject, gameObject);
+            else if (targetType == EffectTarget.Self) effect.ApplyTo(gameObject, target.gameObject);
+        });
     }
 }

@@ -48,7 +48,7 @@ public class Enemy : MonoBehaviour
         // Handle ranged attacks
         if (type == EnemyType.Ranged) {
             RaycastHit2D hit = Physics2D.CircleCast(transform.position, shootingRange, Vector2.zero, 0f, targetLayer);
-            if (hit && !isShooting && pathfinding.targetInSight) ShootAt(hit.collider.gameObject);
+            if (hit && !isShooting && pathfinding.targetInSight && hit.collider.GetComponent<Entity>().isAlive) ShootAt(hit.collider.gameObject);
         }
     }
 

@@ -79,7 +79,7 @@ public class Effect : MonoBehaviour
     }
 
     public void EndEffect() {
-        if (secondaryTarget && !target.isAlive && !target.onKillTriggered) {
+        if (secondaryTarget && target && !target.isAlive && !target.onKillTriggered) {
             secondaryTarget.onKill.Invoke(target);
             target.onKillTriggered = true;
         }

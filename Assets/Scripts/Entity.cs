@@ -12,6 +12,7 @@ public class Entity : MonoBehaviour
     public EntityEvent onKill = new EntityEvent();
     public EntityEvent onStartAttack = new EntityEvent();
     public EntityEvent onEndAttack = new EntityEvent();
+    public UnityEvent onHealthChange = new UnityEvent();
 
     [SerializeField] float maxHealth = 10f;
     public bool destroyOnDeath = true;
@@ -50,6 +51,7 @@ public class Entity : MonoBehaviour
         else currentHealth = hp;
 
         healthBar.Set(currentHealth, maxHealth);
+        onHealthChange.Invoke();
     }
 
     public virtual float GetMaxHealth() {
@@ -60,6 +62,7 @@ public class Entity : MonoBehaviour
         maxHealth = hp;
 
         healthBar.Set(currentHealth, maxHealth);
+        onHealthChange.Invoke();
     }
 
     public virtual void HealPercent(float percent) {
@@ -77,6 +80,7 @@ public class Entity : MonoBehaviour
         healthBar.Set(currentHealth, maxHealth);
 
         onDamageTaken.Invoke();
+        onHealthChange.Invoke();
 
         if (debugMessages) Debug.LogWarning("Got hurt: " + gameObject.name);
 

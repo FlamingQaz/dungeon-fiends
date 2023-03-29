@@ -48,8 +48,11 @@ public class BasicProjectile : MonoBehaviour
 	}
 
     public virtual void Shoot(Transform start, Vector2 end, LayerMask targetLayer, LayerMask friendlyLayer, float damage, Entity shooter) {
-        Instantiate(gameObject, start.position, start.rotation)
-        .GetComponent<BasicProjectile>()
+        GameObject projectile = Instantiate(gameObject, start.position, start.rotation);
+
+        projectile.name = gameObject.name + " (" + shooter.gameObject.name + ")";
+        projectile.transform.parent = shooter.transform;
+        projectile.GetComponent<BasicProjectile>()
         .Init(targetLayer, friendlyLayer, damage, end)
         .onHit.AddListener((Entity target) => shooter.onEndAttack.Invoke(target));;
     }

@@ -12,6 +12,7 @@ public class Effect : MonoBehaviour
     Animator anim;
     public GameObject display;
     public float displayOffsetY = 0.2f;
+    GameObject createdDisplay;
     UnityEvent onProcEvent = new UnityEvent();
     UnityEvent onStartEvent = new UnityEvent();
     UnityEvent onEndEvent = new UnityEvent();
@@ -23,9 +24,10 @@ public class Effect : MonoBehaviour
 
     protected virtual void Start() {
         if (display) {
-            GameObject effectDisplay = Instantiate(display, new Vector2(target.transform.position.x, target.transform.position.y + displayOffsetY), target.transform.rotation);
-            effectDisplay.transform.parent = target.transform;
-            anim = effectDisplay.GetComponent<Animator>();
+            createdDisplay = Instantiate(display, new Vector2(target.transform.position.x, target.transform.position.y + displayOffsetY), target.transform.rotation);
+            createdDisplay.name = display.name;
+            createdDisplay.transform.parent = target.transform;
+            anim = createdDisplay.GetComponent<Animator>();
         }
 
         OnStart(() => {
@@ -76,6 +78,7 @@ public class Effect : MonoBehaviour
         target = null;
         onCooldown = false;
         onEndEvent.Invoke();
+        Destroy(createdDisplay);
         Destroy(gameObject);
     }
 
@@ -86,14 +89,19 @@ public class Effect : MonoBehaviour
     }
 
     public void ApplyTo(GameObject targetObj) {
-        GameObject effectObj = targetObj.GetComponentInChildren<Effect>()?.gameObject;
-        if (effectObj) {
-            Effect effect = effectObj.GetComponent<Effect>();
-            effect.secondsPassed = 0f;
-            return;
+        Effect[] effectObjs = targetObj.GetComponentsInChildren<Effect>();
+
+        // Extend existing Effects:
+        foreach(Effect effect in effectObjs) {
+            if (effect.gameObject.name == gameObject.name) {
+                effect.secondsPassed = 0f;
+                return;
+            }
         }
 
-        effectObj = Instantiate(gameObject);
+        // Or create a new one:
+        GameObject effectObj = Instantiate(gameObject);
+        effectObj.name = gameObject.name;
         effectObj.transform.parent = targetObj.transform;
         effectObj.GetComponent<Effect>().target = targetObj.GetComponent<Entity>();
     }

@@ -14,11 +14,11 @@ public class LevelGeneration : MonoBehaviour
     public Vector2Int maxRoomSize = new Vector2Int(20, 20);
     public Vector2Int minRoomSize = new Vector2Int(10, 10);
     private Vector2 maxPosition = new Vector2(20, 20);
-
+    public float roomSquish = 1f;
 
     private List<Room> rooms = new List<Room>();
-    [SerializeField]
-    public List<Room> roomsUsed = new List<Room>();
+
+
     [SerializeField]
     public List<Room> path = new List<Room>();
     public TilePlacement tilePlacement;
@@ -28,10 +28,9 @@ public class LevelGeneration : MonoBehaviour
     void Start()
     {
         GenerateRooms();
-        GenerateTopRooms();
         
         PlaceRooms();
-        path = ConnectRooms(roomsUsed);
+        path = ConnectRooms(rooms);
         
     }
 
@@ -125,12 +124,12 @@ public class LevelGeneration : MonoBehaviour
         float yDist = Mathf.Abs(room1.size.y + room2.size.y)/2;
 
         //We check for two since the we need room for tiling 
-        if (  Mathf.Abs(room1.centerPos.x - room2.centerPos.x) > xDist + 2)
+        if (  Mathf.Abs(room1.centerPos.x - room2.centerPos.x) > xDist + 4)
         {          
             return false;     
         }
             
-        else if (Mathf.Abs(room1.centerPos.y - room2.centerPos.y) > yDist + 2)
+        else if (Mathf.Abs(room1.centerPos.y - room2.centerPos.y) > yDist + 4)
         {       
             return false;    
         }
@@ -140,22 +139,6 @@ public class LevelGeneration : MonoBehaviour
         }
         
              
-    }
-
-    void GenerateTopRooms()
-    {
-        //Sort Rooms based on size
-        rooms.Sort((a, b) => a.area.CompareTo(b.area));
-
-        //Find number of rooms to use
-        int numMainRooms = Mathf.FloorToInt(rooms.Count * 0.3f) + 1;
-        
-        //add top rooms to rooms to use
-        for (int i = 0; i < numMainRooms; i++)
-        {
-            roomsUsed.Add(rooms[i]);
-        }
-        Debug.Log("Top Rooms Found");
     }
 
     public List<Room> ConnectRooms(List<Room> rooms)
@@ -180,85 +163,87 @@ public class LevelGeneration : MonoBehaviour
         int roomx;
         int roomy;
         //Places Room tiles
-        foreach (Room room in roomsUsed)
+        foreach (Room room in rooms)
         {
-            //Finds room lower left corner
-            roomx = (int)(room.centerPos.x - room.size.x / 2);
-            roomy = (int)(room.centerPos.y - room.size.y / 2);
+            
 
             if (room.shape == Room.Shape.Rectangle)
-            {
-
-
-                //Sets the Floor
-                //For all X in room
-                for (int i = roomx; i < roomx + (int)room.size.x; i++)
-                {
-                    //for all Y in room
-                    for (int j = roomy; j < roomy + (int)room.size.y; j++)
-                    {
-
-                        //Place tiles
-                        tilePlacement.PlaceFloor(new Vector3Int((int)i, (int)j, 0), 1);
-                        if (i == roomx || i == roomx + (int)room.size.x-1)
-                        {
-                            tilePlacement.PlaceSide(new Vector3Int((int)i, (int)j, 0));
-                        }
-                        if (j == roomy || j == roomy + (int)room.size.y -1)
-                        {
-                            tilePlacement.PlaceSide(new Vector3Int((int)i, (int)j, 0));
-                        }
-                    }
-
-                }
-            } 
+            { PlaceRectangle(room);            } 
 
             else if (room.shape == Room.Shape.Circle)
-            {
-
-
-
-                //Sets the Floor
-                //For all X in room
-                for (int i = roomx; i < roomx + (int)room.size.x; i++)
-                {
-
-                    //for all Y in room
-                    for (int j = roomy; j < roomy + (int)room.size.y; j++)
-                    {
-
-                        if (IsWithinOval(i, j,
-                            (int)(room.centerPos.x), (int)(room.centerPos.y),
-
-                            (int)(room.size.x / 2 - 1), (int)(room.size.y / 2))
-                           )
-                            //Place tiles
-                            tilePlacement.PlaceFloor(new Vector3Int((int)i, (int)j, 0), 1);
-
-                        if (IsOval(i, j,
-                            (int)(room.centerPos.x), (int)(room.centerPos.y),
-
-                            (int)(room.size.x / 2 - 1), (int)(room.size.y / 2))
-                           )
-                        {
-
-                            tilePlacement.PlaceCeiling(new Vector3Int((int)i, (int)j, 0), 1);
-
-
-
-                        }
-
-                    }
-
-
-
-                }
+            { PlaceOval(room);                }
             }Debug.Log("Rooms Placed");
 
     }
 
-}
-    
+    void PlaceRectangle(Room room){
+        int roomx;
+        int roomy;
+        //Finds room lower left corner
+        roomx = (int)(room.centerPos.x - room.size.x / 2);
+        roomy = (int)(room.centerPos.y - room.size.y / 2);
+        //Sets the Floor
+        //For all X in room
+        for (int i = roomx; i < roomx + (int)room.size.x; i++)
+        {
+            //for all Y in room
+            for (int j = roomy; j < roomy + (int)room.size.y; j++)
+            {
+
+                //Place tiles
+                tilePlacement.PlaceFloor(new Vector3Int((int)i, (int)j, 0), 1);
+                if (i == roomx || i == roomx + (int)room.size.x - 1)
+                {
+                    tilePlacement.PlaceSide(new Vector3Int((int)i, (int)j, 0));
+                }
+                if (j == roomy || j == roomy + (int)room.size.y - 1)
+                {
+                    tilePlacement.PlaceSide(new Vector3Int((int)i, (int)j, 0));
+                }
+            }
+
+        }
+    }
+
+    void PlaceOval(Room room)
+    {
+        int roomx;
+        int roomy;
+        //Finds room lower left corner
+        roomx = (int)(room.centerPos.x - room.size.x / 2);
+        roomy = (int)(room.centerPos.y - room.size.y / 2);
+        //Sets the Floor
+        //For all X in room
+        for (int i = roomx; i < roomx + (int)room.size.x; i++)
+        {
+
+            //for all Y in room
+            for (int j = roomy; j < roomy + (int)room.size.y; j++)
+            {
+
+                if (IsWithinOval(i, j,
+                    (int)(room.centerPos.x), (int)(room.centerPos.y),
+
+                    (int)(room.size.x / 2 - 1), (int)(room.size.y / 2))
+                   )
+                    //Place tiles
+                    tilePlacement.PlaceFloor(new Vector3Int((int)i, (int)j, 0), 1);
+
+                if (IsOval(i, j,
+                    (int)(room.centerPos.x), (int)(room.centerPos.y),
+
+                    (int)(room.size.x / 2 - 1), (int)(room.size.y / 2))
+                   )
+                {
+
+                    tilePlacement.PlaceCeiling(new Vector3Int((int)i, (int)j, 0), 1);
+
+
+
+                }
+
+            } } } 
+        
     private static bool IsWithinOval(int x, int y, int cx, int cy, int rx, int ry)
     {
 
@@ -266,6 +251,7 @@ public class LevelGeneration : MonoBehaviour
         float dy = (float)(y - cy) / ry;
         return dx * dx + dy * dy <= 1;
     }
+   
     private static bool IsOval(int x, int y, int cx, int cy, int rx, int ry)
     {
 
@@ -273,7 +259,8 @@ public class LevelGeneration : MonoBehaviour
         float dy = (float)(y - cy) / ry;
         return (0.7 < dx * dx + dy * dy) && (dx * dx + dy * dy <= 1);
     }
-        void PlaceHall(Room roomBefore, Room room)
+   
+    void PlaceHall(Room roomBefore, Room room)
     {
 
         

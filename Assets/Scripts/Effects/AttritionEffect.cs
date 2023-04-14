@@ -12,7 +12,7 @@ public class AttritionEffect : Effect
         base.Start();
         
         OnProc(() => {
-            target.TakeDamage(damagePerProc);
+            target.TakeDamage(damagePerProc, Entity.DamageType.Effect);
         });
 
         BeginEffect();

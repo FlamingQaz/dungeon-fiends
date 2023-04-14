@@ -442,7 +442,7 @@ MonoBehaviour:
   pathfinding: {fileID: 0}
   entity: {fileID: 0}
   type: 5
-  damage: 1
+  damage: 5
   shootingRange: 10
   shootRate: 2
   baseProjectile: {fileID: 5002850338858836381, guid: fa3547249cf993c40b06315e71909b75, type: 3}
@@ -501,8 +501,17 @@ MonoBehaviour:
   onHealthChange:
     m_PersistentCalls:
       m_Calls: []
+  onHeal:
+    m_PersistentCalls:
+      m_Calls: []
   maxHealth: 200
   destroyOnDeath: 1
   isAlive: 1
+  onKillTriggered: 0
+  targetable: 1
   testTriggerResurrect: 0
   debugMessages: 0
+  resistance:
+    Combat: 0
+    Environment: 0
+    Effect: 0

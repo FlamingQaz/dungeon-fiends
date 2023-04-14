@@ -191,6 +191,14 @@ PrefabInstance:
       value: 1000
       objectReference: {fileID: 0}
     - target: {fileID: 2336437375242769432, guid: 42da30174b63c1d44acb7249c9d2723e, type: 3}
+      propertyPath: resistance.Combat
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2336437375242769432, guid: 42da30174b63c1d44acb7249c9d2723e, type: 3}
+      propertyPath: resistance.Effect
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 2336437375242769432, guid: 42da30174b63c1d44acb7249c9d2723e, type: 3}
       propertyPath: onResurrect.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
       value: 6
       objectReference: {fileID: 0}

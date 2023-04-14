@@ -25,6 +25,40 @@ public class Entity : MonoBehaviour
     [SerializeField] bool testTriggerResurrect = false;
     [SerializeField] bool debugMessages = false;
 
+    public enum DamageType {
+        /// <summary>(Default) Basic damage from weapons, attacks, and miscellaneous damage sources.</summary>
+        Combat,
+        /// <summary>Damage from the environment, such as spikes and traps.</summary>
+        Environment,
+        /// <summary>Damage from effects, such as fire or poison.</summary>
+        Effect
+    }
+
+    [System.Serializable]
+    public struct Resistances {
+        [Tooltip("(Default) Basic damage from weapons, attacks, and miscellaneous damage sources.")]
+        public float Combat;
+        [Tooltip("Damage from the environment, such as spikes and traps.")]
+        public float Environment;
+        [Tooltip("Damage from effects, such as fire or poison.")]
+        public float Effect;
+
+        public float Get(DamageType type) {
+            switch (type) {
+                case DamageType.Combat:
+                    return Combat;
+                case DamageType.Environment:
+                    return Environment;
+                case DamageType.Effect:
+                    return Effect;
+                default:
+                    return 0f;
+            }
+        }
+    }
+
+    public Resistances resistance;
+
     void Awake() {
         healthBar = GetComponentInChildren<HeadHealthBar>();
         currentHealth = maxHealth;
@@ -84,7 +118,12 @@ public class Entity : MonoBehaviour
         onHeal.Invoke();
     }
 
-    public virtual void TakeDamage(float hp) {
+    public virtual void TakeDamage(float hp, DamageType type = DamageType.Combat) {
+        // Handle resistances
+        hp -= resistance.Get(type);
+        if (hp <= 0f) return;
+
+        // Handle health reduction
         currentHealth -= hp;
         if (currentHealth < 0f) currentHealth = 0f;
         healthBar.Set(currentHealth, maxHealth);

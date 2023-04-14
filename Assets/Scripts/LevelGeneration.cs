@@ -30,8 +30,10 @@ public class LevelGeneration : MonoBehaviour
         GenerateRooms();
         
         PlaceRooms();
+
         path = ConnectRooms(rooms);
-        
+
+
     }
 
 
@@ -52,7 +54,7 @@ public class LevelGeneration : MonoBehaviour
                 Vector2Int size = new Vector2Int(UnityEngine.Random.Range(minRoomSize.x, maxRoomSize.x), UnityEngine.Random.Range(minRoomSize.y, maxRoomSize.y));
 
                 //random center position
-                Vector2 centerPos = new Vector2(UnityEngine.Random.Range(-maxPosition.x, maxPosition.x), UnityEngine.Random.Range(-maxPosition.y, maxPosition.y));
+                Vector2 centerPos = new Vector2((int)UnityEngine.Random.Range(-maxPosition.x, maxPosition.x), (int)UnityEngine.Random.Range(-maxPosition.y, maxPosition.y));
 
                 //random shape by making random index for array of Shapes
                 Room.Shape[] values = (Room.Shape[])Room.Shape.GetValues(typeof(Room.Shape));
@@ -144,16 +146,20 @@ public class LevelGeneration : MonoBehaviour
     public List<Room> ConnectRooms(List<Room> rooms)
     {
         // Shuffle the list of rooms to ensure randomness
-        
+
 
         // Connect each room to the next one in the list
         for (int i = 0; i < rooms.Count - 1; i++)
         {
-            PlaceHall(rooms[i], rooms[i + 1]);
+            PlaceHallWalls(rooms[i], rooms[i + 1]);
+        }
+        for (int i = 0; i < rooms.Count - 1; i++)
+        {
+            PlaceHallFloors(rooms[i], rooms[i + 1]);
         }
 
         // Connect the last room to the first room
-        PlaceHall(rooms[rooms.Count - 1], rooms[0]);
+        //PlaceHall(rooms[rooms.Count - 1], rooms[0]);
 
         return rooms;
     }
@@ -259,39 +265,51 @@ public class LevelGeneration : MonoBehaviour
         float dy = (float)(y - cy) / ry;
         return (0.7 < dx * dx + dy * dy) && (dx * dx + dy * dy <= 1);
     }
-   
-    void PlaceHall(Room roomBefore, Room room)
+
+    void PlaceHallWalls(Room roomBefore, Room room)
+    {   
+
+        int xmin = (int)Mathf.Min(roomBefore.centerPos.x, room.centerPos.x);
+        int xmax = (int)Mathf.Max(roomBefore.centerPos.x, room.centerPos.x);
+        int ymin = (int)Mathf.Min(roomBefore.centerPos.y, room.centerPos.y);
+        int ymax = (int)Mathf.Max(roomBefore.centerPos.y, room.centerPos.y);
+
+        //Add room sizes 
+        for (int i = xmin; i < xmax; i++)
+        {
+            
+            tilePlacement.PlaceSide(new Vector3Int((int)i, (int)ymin-1, 0));
+            tilePlacement.PlaceSide(new Vector3Int((int)i, (int)ymin + 2, 0));
+
+        }
+
+        
+
+        for (int j = ymin; j < ymax; j++)
+        {
+
+            tilePlacement.PlaceSide(new Vector3Int((int)xmax-2, (int)j, 0));
+            tilePlacement.PlaceSide(new Vector3Int((int)xmax + 1, (int)j, 0));
+        }
+
+
+
+
+
+
+
+    }
+
+    void PlaceHallFloors(Room roomBefore, Room room)
     {
 
-        
-        int xmin;
-        int ymin;
-        int xmax;
-        int ymax;
 
-        
-                       if (roomBefore.centerPos.x < room.centerPos.x)
-            {
-                xmin = (int)roomBefore.centerPos.x;
-                xmax = (int)room.centerPos.x;
-            }
-            else
-            {
-                xmax = (int)roomBefore.centerPos.x;
-                xmin = (int)room.centerPos.x;
-            }
-            if (roomBefore.centerPos.y < room.centerPos.y)
-            {
-                ymin = (int)roomBefore.centerPos.y;
-                    ymax = (int)room.centerPos.y;
-            }
-            else
-            {
-                ymax = (int)roomBefore.centerPos.y;
-                ymin = (int)room.centerPos.y;
-            }
+        int xmin = (int)Mathf.Min(roomBefore.centerPos.x, room.centerPos.x);
+        int xmax = (int)Mathf.Max(roomBefore.centerPos.x, room.centerPos.x);
+        int ymin = (int)Mathf.Min(roomBefore.centerPos.y, room.centerPos.y);
+        int ymax = (int)Mathf.Max(roomBefore.centerPos.y, room.centerPos.y);
 
-        
+
         for (int i = xmin; i < xmax; i++)
             {
             tilePlacement.PlaceFloor(new Vector3Int((int)i, (int)ymin, 0));

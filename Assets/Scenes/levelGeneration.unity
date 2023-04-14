@@ -200,11 +200,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a1c6248d8624e3d48bfea4e71332922e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxRooms: 10
-  minRooms: 5
+  maxRooms: 25
+  minRooms: 2
   maxRoomSize: {x: 40, y: 40}
   minRoomSize: {x: 20, y: 20}
-  roomSquish: 0.9
+  roomSquish: 1
   path: []
   tilePlacement: {fileID: 486661158}
 --- !u!114 &486661158

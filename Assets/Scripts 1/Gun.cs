@@ -8,7 +8,7 @@ public class Gun : MonoBehaviour
     public float attackSpeed;
     public float damage;
     public int maxAmmo;
-    public float bulletSize;
+    public float bulletMultiplier;
     private int ammo;
 
     public Transform bulletPrefab;
@@ -21,7 +21,7 @@ public class Gun : MonoBehaviour
     {
         if (Input.GetButtonDown("Fire1") && !_isReloading && Time.time >= _timeUntilNextAttack)
         {
-            Shoot();
+            //Shoot();
             _timeUntilNextAttack = Time.time + 1f / attackSpeed;
         }
 
@@ -31,10 +31,11 @@ public class Gun : MonoBehaviour
         }
     }
 
-    private void Shoot()
+    public void Shoot()
     {
+       
         Transform bulletInstance = Instantiate(bulletPrefab, bulletSpawnPoint.position, bulletSpawnPoint.rotation);
-        bulletInstance.localScale = new Vector3(bulletSize, bulletSize, bulletSize);
+        bulletInstance.localScale = new Vector3(bulletMultiplier, bulletMultiplier, 1f);
         Bullet bulletScript = bulletInstance.GetComponent<Bullet>();
         bulletScript.SetDamage(damage);
         ammo--;
@@ -57,7 +58,7 @@ public class Gun : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            other.GetComponent<PlayerCombat>().PickUpGun(this);
+            other.GetComponent<PlayerInventory>().PickUpGun(this);
             gameObject.SetActive(false);
         }
     }

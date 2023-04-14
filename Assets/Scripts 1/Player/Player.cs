@@ -12,6 +12,7 @@ public class Player : MonoBehaviour
     [HideInInspector] public PlayerMovement movement;
     [HideInInspector] public PlayerAnimation anim;
     [HideInInspector] public PlayerCombat combat;
+    [HideInInspector] public PlayerInventory inventory;
 
     void Awake() {
         entity = GetComponent<Entity>();

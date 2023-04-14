@@ -12,7 +12,7 @@ public class RegenEffect : Effect
         base.Start();
         
         OnProc(() => {
-            target.HealFlat(healthPerProc);
+            target?.HealFlat(healthPerProc);
         });
 
         BeginEffect();

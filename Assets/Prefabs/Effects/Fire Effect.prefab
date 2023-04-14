@@ -47,4 +47,5 @@ MonoBehaviour:
   procsPerSec: 1
   display: {fileID: 8174211259187815990, guid: fbd5fadec017b934d8bf2d3219f98873, type: 3}
   displayOffsetY: 0.2
+  stackable: 1
   damagePerProc: 10

@@ -13,7 +13,7 @@ public class LeechEffect : Effect
         base.Start();
         
         OnProc(() => {
-            target.HealPercent(healthPercentPerProc / 100f * secondaryTarget.GetMaxHealth());
+            if (secondaryTarget) target?.HealPercent(healthPercentPerProc / 100f * secondaryTarget.GetMaxHealth());
         });
 
         BeginEffect();

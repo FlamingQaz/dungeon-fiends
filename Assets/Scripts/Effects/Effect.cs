@@ -12,6 +12,7 @@ public class Effect : MonoBehaviour
     Animator anim;
     public GameObject display;
     public float displayOffsetY = 0.2f;
+    public bool stackable = false;
     GameObject createdDisplay;
     UnityEvent onProcEvent = new UnityEvent();
     UnityEvent onStartEvent = new UnityEvent();
@@ -27,6 +28,7 @@ public class Effect : MonoBehaviour
 
     protected float secondsPassed;
     protected int procs = 0;
+    protected int stacks = 0;
 
     protected virtual void Start() {
         if (display) {
@@ -52,7 +54,7 @@ public class Effect : MonoBehaviour
         if (enable && !onCooldown && target) {
             if (secondsPassed == 0f) onStartEvent.Invoke();
 
-            onProcEvent.Invoke();
+            for (int i = 0; i < stacks; i++) onProcEvent.Invoke();
             procs++;
             onCooldown = true;
             Invoke(nameof(EndCooldown), 1f/procsPerSec);
@@ -104,10 +106,12 @@ public class Effect : MonoBehaviour
     public Effect ApplyTo(GameObject targetObj) {
         Effect[] effectObjs = targetObj.GetComponent<Entity>().CurrentEffects();
 
-        // Extend existing Effects:
+        // Handle existing Effects:
         foreach(Effect effect in effectObjs) {
             if (effect.gameObject.name == gameObject.name) {
                 effect.secondsPassed = 0f;
+                if (effect.stackable) effect.stacks++;
+
                 return effect;
             }
         }
@@ -116,7 +120,9 @@ public class Effect : MonoBehaviour
         GameObject effectObj = Instantiate(gameObject);
         effectObj.name = gameObject.name;
         effectObj.transform.parent = targetObj.transform;
-        effectObj.GetComponent<Effect>().target = targetObj.GetComponent<Entity>();
+        Effect eff = effectObj.GetComponent<Effect>();
+        eff.target = targetObj.GetComponent<Entity>();
+        eff.stacks = 1;
 
         return effectObj.GetComponent<Effect>();
     }

@@ -102,7 +102,7 @@ public class Effect : MonoBehaviour
     }
 
     public Effect ApplyTo(GameObject targetObj) {
-        Effect[] effectObjs = targetObj.GetComponentsInChildren<Effect>();
+        Effect[] effectObjs = targetObj.GetComponent<Entity>().CurrentEffects();
 
         // Extend existing Effects:
         foreach(Effect effect in effectObjs) {
@@ -119,6 +119,10 @@ public class Effect : MonoBehaviour
         effectObj.GetComponent<Effect>().target = targetObj.GetComponent<Entity>();
 
         return effectObj.GetComponent<Effect>();
+    }
+
+    public Effect ApplyTo(Entity ent) {
+        return ApplyTo(ent.gameObject);
     }
 
     public void ApplyTo(GameObject targetObj, GameObject secondaryObj) {

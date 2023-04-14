@@ -313,6 +313,7 @@ MonoBehaviour:
   destroyOnDeath: 0
   isAlive: 1
   onKillTriggered: 0
+  targetable: 1
   testTriggerResurrect: 0
   debugMessages: 0
 --- !u!114 &2336437375242769431
@@ -377,16 +378,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e995aa196e8945468b309e64267708a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  modifiers:
-  - effect: {fileID: 3784904872878677209, guid: 7c6ea0bb84a086f4c996f05f2fd4d3af, type: 3}
-    trigger: 3
-    target: 1
-  - effect: {fileID: 7009128168847775600, guid: e8f4abe01422aa643b96e1b5da23c9a8, type: 3}
-    trigger: 4
-    target: 0
-  - effect: {fileID: 5470163623171081328, guid: 4125d331962a61a4386f1d6dc8c6d329, type: 3}
-    trigger: 2
-    target: 0
+  modifiers: []
 --- !u!1 &4555402294472389343
 GameObject:
   m_ObjectHideFlags: 0

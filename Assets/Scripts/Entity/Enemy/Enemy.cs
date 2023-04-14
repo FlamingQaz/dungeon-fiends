@@ -61,13 +61,18 @@ public class Enemy : MonoBehaviour
 
     public virtual void MeleeAttack(GameObject entityObj) {
         Entity otherEntity = entityObj.GetComponent<Entity>();
+        if (!otherEntity || !otherEntity.targetable) return;
+
         entity.onStartAttack.Invoke(otherEntity);
         otherEntity.TakeDamage(damage);
         entity.onEndAttack.Invoke(otherEntity);
     }
 
     public virtual void ShootAt(GameObject entityObj) {
-        entity.onStartAttack.Invoke(entityObj.GetComponent<Entity>());
+        Entity otherEntity = entityObj.GetComponent<Entity>();
+        if (!otherEntity || !otherEntity.targetable) return;
+
+        entity.onStartAttack.Invoke(otherEntity);
         baseProjectile.Shoot(transform, entityObj.transform.position, targetLayer, friendlyLayer, damage, entity);
 
         isShooting = true;

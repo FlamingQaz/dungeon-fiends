@@ -21,7 +21,7 @@ public class Entity : MonoBehaviour
     HeadHealthBar healthBar;
     [HideInInspector] public bool isAlive = true;
     [HideInInspector] public bool onKillTriggered = false;
-    
+    public bool targetable = true;
     [SerializeField] bool testTriggerResurrect = false;
     [SerializeField] bool debugMessages = false;
 

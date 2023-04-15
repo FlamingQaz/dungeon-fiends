@@ -201,10 +201,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxRooms: 25
-  minRooms: 2
+  minRooms: 6
   maxRoomSize: {x: 40, y: 40}
   minRoomSize: {x: 20, y: 20}
-  roomSquish: 1
+  roomSquish: 0.4
   path: []
   tilePlacement: {fileID: 486661158}
 --- !u!114 &486661158

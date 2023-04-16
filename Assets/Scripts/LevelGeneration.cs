@@ -15,9 +15,20 @@ public class LevelGeneration : MonoBehaviour
     public Vector2Int minRoomSize = new Vector2Int(10, 10);
     private Vector2 maxPosition = new Vector2(20, 20);
 
+
     //How close room's center positions are together
     //- .5 is the furthest away, 0 is the closest
     public float roomSquish = .49f;
+
+    //How likely a room will be opposite to the last generated room
+    // 0-100 - 0 is completely random, 100 is all in one direction
+    public int straigntnessFactor = 20;
+
+    //The size of the optional branch lengths
+    public int minBranchLength = 1;
+    public int maxBranchLength = 4;
+    public int minBranches = 2;
+    public int maxBranches = 4;
 
     private List<Room> rooms = new List<Room>();
 
@@ -30,68 +41,72 @@ public class LevelGeneration : MonoBehaviour
 
     void Start()
     {
-        GenerateRooms();
+        GenerateLevel();
 
-
-        int leng = rooms.Count;
-
-        for (int i = 0; i < leng; i++) { 
-            for (int j = i+1; j < leng; j++)
-        {
-            PlaceHall(rooms[i], rooms[j]);
-        }
-        }
 
     }
 
 
 
+    void GenerateLevel()
+    {
+        GenerateRooms();
 
+        
 
+        PlaceBranches();
 
-
+        PlaceHalls();
+    }
 
     void GenerateRooms()
     {
 
         int numRooms = UnityEngine.Random.Range(minRooms, maxRooms);
-        
+        int rand = 0;
         Room roomPrior = new Room(new Vector2Int(0, 0), new Vector2(0, 0), Room.Shape.Rectangle);
-        
-        //Creates Rooms with random size, center position, and shape
-        for (int i = 0; i < numRooms-1; i++)
+
+        //Creates Rooms
+        for (int i = 0; i < numRooms - 1; i++)
         {
+            //
+            if (UnityEngine.Random.Range(0, 100) > straigntnessFactor)
+            {
+                Debug.Log("Random");
+                rand = (int)UnityEngine.Random.Range(0, 4);
+            }
 
-            //random size
-            int sizex = 2 * (int)(UnityEngine.Random.Range(minRoomSize.x, maxRoomSize.x) / 2);
-            int sizey = 2 * (int)(UnityEngine.Random.Range(minRoomSize.y, maxRoomSize.y) / 2);
-            Vector2Int size = new Vector2Int(sizex, sizey);
-
-
-            Vector2 centerPos = MakeNewRoomPosition(roomPrior, size);
-
-
-            //random shape by making random index for array of Shapes
-            Room.Shape[] values = (Room.Shape[])Room.Shape.GetValues(typeof(Room.Shape));
-            int randomIndex = UnityEngine.Random.Range(0, values.Length);
-            Room.Shape shape = values[randomIndex];
-            
-            // create a new room with the generated size, position, and shape, and add it to the list of rooms
-            Room room = new Room(size, centerPos, shape);
-
-                
-                room = HandleOverlap(room);
-                
-                rooms.Add(room);
+            Room room = GenerateRoom(roomPrior, rand);
+            room = HandleOverlap(room);
+            PlaceRoom(room);
 
 
-                PlaceRoom(room);
+            rooms.Add(room);
+            roomPrior = room;
 
 
-               roomPrior = room;
-            
         }
         Debug.Log("Rooms Generated");
+    }
+
+    Room GenerateRoom(Room roomPrior, int rand)
+    {
+        //random size
+        int sizex = 2 * (int)(UnityEngine.Random.Range(minRoomSize.x, maxRoomSize.x) / 2);
+        int sizey = 2 * (int)(UnityEngine.Random.Range(minRoomSize.y, maxRoomSize.y) / 2);
+        Vector2Int size = new Vector2Int(sizex, sizey);
+        Vector2 centerPos = MakeNewRoomPosition(roomPrior, size, rand);
+
+
+        //random shape by making random index for array of Shapes
+        Room.Shape[] values = (Room.Shape[])Room.Shape.GetValues(typeof(Room.Shape));
+        int randomIndex = UnityEngine.Random.Range(0, values.Length);
+        Room.Shape shape = values[randomIndex];
+
+        // create a new room with the generated size, position, and shape, and add it to the list of rooms
+        Room room = new Room(size, centerPos, shape);
+
+        return room;
     }
 
     Room HandleOverlap(Room room2)
@@ -99,9 +114,10 @@ public class LevelGeneration : MonoBehaviour
         //Go through all rooms and check for overlap
 
         int leng = rooms.Count;
+        int rand = (int)UnityEngine.Random.Range(0, 4);
         int i = 0;
         int j = 0;
-         //this is here to stop infinite loops,
+        //this is here to stop infinite loops,
         //although they theoretically shouldn't happen
         while (i < leng && j < 20)
         {
@@ -111,8 +127,8 @@ public class LevelGeneration : MonoBehaviour
             if (IsOverlap(room1, room2))
             {
 
-                room2.centerPos = MakeNewRoomPosition(room1, room2.size);
-                
+                room2.centerPos = MakeNewRoomPosition(room1, room2.size, rand);
+
                 i = 0;
                 j++;
                 Debug.Log("Overlap Fixed");
@@ -120,17 +136,17 @@ public class LevelGeneration : MonoBehaviour
 
 
         }
-        
 
-        
+
+
 
         return room2;
     }
 
-    Vector2 MakeNewRoomPosition(Room roomPrior, Vector2 size)
+    Vector2 MakeNewRoomPosition(Room roomPrior, Vector2 size, int rand)
     {
         //random center position
-        int rand = (int)UnityEngine.Random.Range(0, 4); 
+
 
         //Make a center position default at 0,0
         Vector2 centerPos = new Vector2((int)0, (int)0);
@@ -241,6 +257,10 @@ public class LevelGeneration : MonoBehaviour
 
         else if (room.shape == Room.Shape.Circle)
         { PlaceOval(room); }
+
+        else{
+            Debug.Log("Room does not exist");
+        }
     }
 
     void PlaceOval(Room room)
@@ -265,6 +285,10 @@ public class LevelGeneration : MonoBehaviour
                    )
                     //Place tiles
                     tilePlacement.PlaceFloor(new Vector3Int((int)i, (int)j, 0), 1);
+                else
+                {
+                    tilePlacement.PlaceSide(new Vector3Int((int)i, (int)j, 0), 0);
+                }
 
                 if (IsOval(i, j,
                     (int)(room.centerPos.x), (int)(room.centerPos.y),
@@ -317,15 +341,15 @@ public class LevelGeneration : MonoBehaviour
                 k < roomMaxY;
                 k++)
             {
-                tilePlacement.PlaceFloor(new Vector3Int( (int)(roomMinX + sizeMinX / 4), (int)k, 0), 1);
+                tilePlacement.PlaceFloor(new Vector3Int((int)(roomMinX + sizeMinX / 4), (int)k, 0), 1);
                 if (room2.centerPos.x - 2 > (room1.centerPos.x
                 - room2.size.x / 2 - room1.size.x / 2))
                 {
-                    tilePlacement.PlaceFloor(new Vector3Int((int)(roomMinX + sizeMinX / 4)+1, (int)k, 0), 1);
+                    tilePlacement.PlaceFloor(new Vector3Int((int)(roomMinX + sizeMinX / 4) + 1, (int)k, 0), 1);
                 }
                 else
                 {
-                    tilePlacement.PlaceFloor(new Vector3Int((int)(roomMinX + sizeMinX / 4)-1, (int)k, 0), 1);
+                    tilePlacement.PlaceFloor(new Vector3Int((int)(roomMinX + sizeMinX / 4) - 1, (int)k, 0), 1);
                 }
 
             }
@@ -347,7 +371,7 @@ public class LevelGeneration : MonoBehaviour
                 k < roomMaxX;
                 k++)
             {
-                tilePlacement.PlaceFloor(new Vector3Int((int)k, (int)(roomMinY + sizeMinY/4),  0), 1);
+                tilePlacement.PlaceFloor(new Vector3Int((int)k, (int)(roomMinY + sizeMinY / 4), 0), 1);
                 if (room2.centerPos.y - 2 > (room1.centerPos.y
                 - room2.size.y / 2 - room1.size.y / 2))
                 {
@@ -361,15 +385,28 @@ public class LevelGeneration : MonoBehaviour
             }
 
         }
-       
 
+
+    }
+
+    void PlaceHalls()
+    {
+        int leng = rooms.Count;
+
+        for (int i = 0; i < leng; i++)
+        {
+            for (int j = i + 1; j < leng; j++)
+            {
+                PlaceHall(rooms[i], rooms[j]);
+            }
+        }
     }
 
     bool AreRoomsTouchingInYDirection(Room room1, Room room2)
     {
-        if (( Mathf.Abs(room1.centerPos.x - room2.centerPos.x ) <= room1.size.x/2+room2.size.x/2 +1
-            && 
-            (Mathf.Abs(room1.centerPos.y - room2.centerPos.y) <= Mathf.Max(room1.size.y/2+1,room2.size.y/2+1)  ))) 
+        if ((Mathf.Abs(room1.centerPos.x - room2.centerPos.x) <= room1.size.x / 2 + room2.size.x / 2 + 1
+            &&
+            (Mathf.Abs(room1.centerPos.y - room2.centerPos.y) <= Mathf.Max(room1.size.y / 2 + 1, room2.size.y / 2 + 1))))
         {
             // rooms are not touching in the x direction
             return true;
@@ -395,6 +432,40 @@ public class LevelGeneration : MonoBehaviour
             // rooms are touching in the x direction
             return false;
         }
+    }
+
+    void PlaceBranches()
+    {
+        int branches = UnityEngine.Random.Range(minBranches, maxBranches);
+        int rand = (int)UnityEngine.Random.Range(0, 4);
+        Room roomPrior = rooms[(int)UnityEngine.Random.Range(1, rooms.Count - 1)];
+        Room room;
+
+
+        for (int i = 0; i < branches; i++)
+        {
+            room = GenerateRoom(roomPrior, rand);
+            room = HandleOverlap(room);
+
+            PlaceRoom(room);
+            PlaceHall(room, roomPrior);
+
+            rooms.Add(room);
+            roomPrior = room;
+        }
+
+
+        rand = (int)UnityEngine.Random.Range(0, 4);
+        for (int i = 0; i<5; i++)
+        {
+            
+            room = GenerateRoom(roomPrior, rand);
+            room = HandleOverlap(room);
+            PlaceRoom(room);
+            rooms.Add(room);
+
+        }
+
     }
 
 

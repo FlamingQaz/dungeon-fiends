@@ -177,7 +177,11 @@ public class Entity : MonoBehaviour
         if (entityStats.attackSpeed > -1f) stats.attackSpeed = entityStats.attackSpeed;
         if (entityStats.movementSpeed > -1f) stats.movementSpeed = entityStats.movementSpeed;
         if (entityStats.damage > -1f) stats.damage = entityStats.damage;
-        if (entityStats.maxHealth > -1f) stats.maxHealth = entityStats.maxHealth;
+        if (entityStats.maxHealth > -1f) {
+            stats.maxHealth = entityStats.maxHealth;
+            healthBar.Set(stats.currentHealth, stats.maxHealth);
+            onHealthChange.Invoke();
+        }
         if (entityStats.resistance.Combat > -1f) stats.resistance.Combat = entityStats.resistance.Combat;
         if (entityStats.resistance.Effect > -1f) stats.resistance.Effect = entityStats.resistance.Effect;
         if (entityStats.resistance.Environment > -1f) stats.resistance.Environment = entityStats.resistance.Environment;
@@ -191,6 +195,11 @@ public class Entity : MonoBehaviour
         stats.resistance.Combat += entityStats.resistance.Combat;
         stats.resistance.Effect += entityStats.resistance.Effect;
         stats.resistance.Environment += entityStats.resistance.Environment;
+
+        if (entityStats.maxHealth != 0f) {
+            healthBar.Set(stats.currentHealth, stats.maxHealth);
+            onHealthChange.Invoke();
+        }
     }
 
     public virtual void RemoveRawStats(Stats entityStats) {
@@ -201,6 +210,11 @@ public class Entity : MonoBehaviour
         stats.resistance.Combat -= entityStats.resistance.Combat;
         stats.resistance.Effect -= entityStats.resistance.Effect;
         stats.resistance.Environment -= entityStats.resistance.Environment;
+
+        if (entityStats.maxHealth != 0f) {
+            healthBar.Set(stats.currentHealth, stats.maxHealth);
+            onHealthChange.Invoke();
+        }
     }
 
     public virtual void TakeDamage(float hp, DamageType type = DamageType.Combat) {

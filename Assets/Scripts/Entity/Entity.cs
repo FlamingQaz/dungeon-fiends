@@ -86,13 +86,14 @@ public class Entity : MonoBehaviour
     HeadHealthBar healthBar;
     [HideInInspector] public bool isAlive = true;
     [HideInInspector] public bool onKillTriggered = false;
+    List<ExecutableEffect> effects = new List<ExecutableEffect>();
 
     void Awake() {
         healthBar = GetComponentInChildren<HeadHealthBar>();
         stats.currentHealth = stats.maxHealth;
 
         onDeath.AddListener(() => {
-            foreach (Effect effect in CurrentEffects()) {
+            foreach (ExecutableEffect effect in CurrentEffects()) {
                 effect.EndEffect();
             }
 
@@ -271,8 +272,16 @@ public class Entity : MonoBehaviour
         if (debugMessages) Debug.LogWarning("Resurrected: " + gameObject.name);
     }
 
-    public virtual Effect[] CurrentEffects() {
-        return GetComponentsInChildren<Effect>();
+    public virtual List<ExecutableEffect> CurrentEffects() {
+        return effects;
+    }
+
+    public virtual void AddEffect(ExecutableEffect e) {
+        effects.Add(e);
+    }
+
+    public virtual void RemoveEffect(ExecutableEffect e) {
+        effects.Remove(e);
     }
 
 }

@@ -8,14 +8,18 @@ public class LeechEffect : Effect
     [Range(1f, 100f)]
     public float healthPercentPerProc = 2f;
 
-    protected override void Start()
+    protected override void OnEnd(ExecutableEffect e)
     {
-        base.Start();
         
-        OnProc(() => {
-            if (secondaryTarget) target?.HealPercent(healthPercentPerProc / 100f * secondaryTarget.GetMaxHealth());
-        });
+    }
 
-        BeginEffect();
+    protected override void OnProc(ExecutableEffect e)
+    {
+        if (e.secondaryTarget) e.target?.HealPercent(healthPercentPerProc / 100f * e.secondaryTarget.GetMaxHealth());
+    }
+
+    protected override void OnStart(ExecutableEffect e)
+    {
+        
     }
 }

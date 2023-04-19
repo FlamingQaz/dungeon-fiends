@@ -37,21 +37,7 @@ public class StatEffect : Effect
     [Tooltip("Changes to stats. Positives increase the stat, negatives decrease the stat, and 0 does not change the stat.")]
     public Entity.Stats statChanges = Entity.Stats.WithDefaultAs(0f);
 
-    bool hasModified = false;
-
-    protected override void Start()
-    {
-        base.Start();
-        
-        OnProc(ModifyStats);
-        OnEnd(() => {
-            if (hasModified) target.RemoveRawStats(statChanges);
-        });
-
-        BeginEffect();
-    }
-
-    void ModifyStats() {
+    void ModifyStats(Entity target, bool hasModified) {
         bool shouldModify = true;
 
         foreach (Condition condition in conditions) {
@@ -105,5 +91,21 @@ public class StatEffect : Effect
             target.RemoveRawStats(statChanges);
             hasModified = false;
         }
+    }
+
+    protected override void OnProc(ExecutableEffect e)
+    {
+        object hasModified = e.props["hasModified"];
+        ModifyStats(e.target, (bool) hasModified);
+    }
+
+    protected override void OnStart(ExecutableEffect e)
+    {
+        e.props["hasModified"] = false;
+    }
+
+    protected override void OnEnd(ExecutableEffect e)
+    {
+        if ((bool) e.props["hasModified"]) e.target.RemoveRawStats(statChanges);
     }
 }

@@ -7,14 +7,19 @@ public class AttritionEffect : Effect
     [Header("Attrition - Flat Damage Over Time")]
     public float damagePerProc = 5f;
 
-    protected override void Start()
+    protected override void OnProc(ExecutableEffect e)
     {
-        base.Start();
-        
-        OnProc(() => {
-            target?.TakeDamage(damagePerProc, Entity.DamageType.Effect);
-        });
-
-        BeginEffect();
+        e.target?.TakeDamage(damagePerProc, Entity.DamageType.Effect);
     }
+
+    protected override void OnStart(ExecutableEffect e)
+    {
+        
+    }
+
+    protected override void OnEnd(ExecutableEffect e)
+    {
+        
+    }
+
 }

@@ -10,33 +10,43 @@ public class GhostEffect : Effect
     public float healthChangeFactor = 1.5f;
     public bool invisibility = false;
 
-    protected override void Start()
+    protected override void OnEnd(ExecutableEffect e)
     {
-        base.Start();
-        stackable = false; // Ghost does not support stacking
+        SpriteRenderer sprite = (SpriteRenderer) e.props["sprite"];
+        Color defaultColor = (Color) e.props["defaultColor"];
+        float defaultHealth = (float) e.props["defaultHealth"];
 
-        SpriteRenderer sprite = target.GetComponent<SpriteRenderer>();
-        Color defaultColor = sprite.color;
-        float defaultHealth = target.GetMaxHealth();
+        if (e.target) {
+            sprite.color = new Color(defaultColor.r, defaultColor.g, defaultColor.b, defaultColor.a);
+            e.target.SetMaxHealth(defaultHealth);
+            e.target.HealPercent(100f);
+            if (invisibility) e.target.targetable = true;
+        }
+    }
+
+    protected override void OnProc(ExecutableEffect e)
+    {
         
-        OnStart(() => {
-            if (target) {
-                sprite.color = new Color(0, defaultColor.g * (1 - blueShift), 255, defaultColor.a * opacity);
-                target.SetMaxHealth(defaultHealth * healthChangeFactor);
-                target.HealPercent(100f);
-                if (invisibility) target.targetable = false;
-            }
-        });
+    }
 
-        OnEnd(() => {
-            if (target) {
-                sprite.color = new Color(defaultColor.r, defaultColor.g, defaultColor.b, defaultColor.a);
-                target.SetMaxHealth(defaultHealth);
-                target.HealPercent(100f);
-                if (invisibility) target.targetable = true;
-            }
-        });
+    protected override void OnStart(ExecutableEffect e)
+    {
+        // Does not support stacking
+        e.stackable = false;
 
-        BeginEffect();
+        SpriteRenderer sprite = e.target.GetComponent<SpriteRenderer>();
+        Color defaultColor = sprite.color;
+        float defaultHealth = e.target.GetMaxHealth();
+
+        e.props.Add("sprite", sprite);
+        e.props.Add("defaultColor", defaultColor);
+        e.props.Add("defaultHealth", defaultHealth);
+
+        if (e.target) {
+            sprite.color = new Color(0, defaultColor.g * (1 - blueShift), 255, defaultColor.a * opacity);
+            e.target.SetMaxHealth(defaultHealth * healthChangeFactor);
+            e.target.HealPercent(100f);
+            if (invisibility) e.target.targetable = false;
+        }
     }
 }

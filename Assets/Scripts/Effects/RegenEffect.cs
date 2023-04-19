@@ -7,14 +7,18 @@ public class RegenEffect : Effect
     [Header("Regen - Flat Healing Over Time")]
     public float healthPerProc = 5f;
 
-    protected override void Start()
+    protected override void OnEnd(ExecutableEffect e)
     {
-        base.Start();
         
-        OnProc(() => {
-            target?.HealFlat(healthPerProc);
-        });
+    }
 
-        BeginEffect();
+    protected override void OnProc(ExecutableEffect e)
+    {
+        e.target?.HealFlat(healthPerProc);
+    }
+
+    protected override void OnStart(ExecutableEffect e)
+    {
+       
     }
 }

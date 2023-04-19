@@ -55,8 +55,9 @@ MonoBehaviour:
   statChanges:
     maxHealth: 0
     currentHealth: 0
+    currentShield: 0
     damage: 0
-    movementSpeed: 3
+    movementSpeed: 1
     attackSpeed: 0
     resistance:
       Combat: 0

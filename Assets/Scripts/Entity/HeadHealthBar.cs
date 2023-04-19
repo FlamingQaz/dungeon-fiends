@@ -5,12 +5,15 @@ using UnityEngine;
 // Health bar that shows above entity heads
 public class HeadHealthBar : MonoBehaviour
 {
-    SpriteRenderer sprite;
+    SpriteRenderer healthSprite;
+    SpriteRenderer shieldSprite;
 
-    public void Set(float health, float maxHealth) {
+    public void Set(float health, float maxHealth, float shield) {
         if (maxHealth == 0f) maxHealth = 0.1f;
 
-        if (!sprite) sprite = GetComponent<SpriteRenderer>();
-        sprite.size = new Vector2(health/maxHealth, sprite.size.y);
+        if (!healthSprite) healthSprite = GetComponent<SpriteRenderer>();
+        if (!shieldSprite) shieldSprite = transform.parent.GetComponentInChildren<SpriteRenderer>();
+        healthSprite.size = new Vector2(health/maxHealth, healthSprite.size.y);
+        shieldSprite.size = new Vector2(shield/maxHealth, shieldSprite.size.y);
     }
 }

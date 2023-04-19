@@ -16,6 +16,7 @@ public class StatEffect : Effect
         HealthMax,
         HealthCurrent,
         Damage,
+        ShieldCurrent,
         SpeedMovement,
         SpeedAttack,
         ResistanceCombat,
@@ -65,6 +66,9 @@ public class StatEffect : Effect
                 break;
                 case ConditionStat.HealthCurrent:
                     actual = stats.currentHealth;
+                break;
+                case ConditionStat.ShieldCurrent:
+                    actual = stats.currentShield;
                 break;
                 case ConditionStat.Damage:
                     actual = stats.damage;

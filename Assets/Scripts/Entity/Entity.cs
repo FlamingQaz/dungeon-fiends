@@ -42,6 +42,7 @@ public class Entity : MonoBehaviour
     public class Stats {
         public float maxHealth = 10f;
         [ReadOnly] public float currentHealth = 10f;
+        public float currentShield = 0f;
         public float damage = 2f;
         public float movementSpeed = 3f;
         public float attackSpeed = 0.5f;
@@ -100,7 +101,7 @@ public class Entity : MonoBehaviour
             }
         });
 
-        healthBar.Set(stats.currentHealth, stats.maxHealth);
+        healthBar.Set(stats.currentHealth, stats.maxHealth, stats.currentShield);
     }
 
     void FixedUpdate() {
@@ -119,7 +120,7 @@ public class Entity : MonoBehaviour
         if (hp > stats.maxHealth) stats.currentHealth = stats.maxHealth;
         else stats.currentHealth = hp;
 
-        healthBar.Set(stats.currentHealth, stats.maxHealth);
+        healthBar.Set(stats.currentHealth, stats.maxHealth, stats.currentShield);
         onHealthChange.Invoke();
     }
 
@@ -130,8 +131,17 @@ public class Entity : MonoBehaviour
     public virtual void SetMaxHealth(float hp) {
         stats.maxHealth = hp;
 
-        healthBar.Set(stats.currentHealth, stats.maxHealth);
+        healthBar.Set(stats.currentHealth, stats.maxHealth, stats.currentShield);
         onHealthChange.Invoke();
+    }
+
+    public virtual float GetShield() {
+        return stats.currentShield;
+    }
+
+    public virtual void SetShield(float hp) {
+        stats.currentShield = hp;
+        healthBar.Set(stats.currentHealth, stats.maxHealth, stats.currentShield);
     }
 
     public virtual void HealPercent(float percent) {
@@ -179,7 +189,7 @@ public class Entity : MonoBehaviour
         if (entityStats.damage > -1f) stats.damage = entityStats.damage;
         if (entityStats.maxHealth > -1f) {
             stats.maxHealth = entityStats.maxHealth;
-            healthBar.Set(stats.currentHealth, stats.maxHealth);
+            healthBar.Set(stats.currentHealth, stats.maxHealth, stats.currentShield);
             onHealthChange.Invoke();
         }
         if (entityStats.resistance.Combat > -1f) stats.resistance.Combat = entityStats.resistance.Combat;
@@ -197,7 +207,7 @@ public class Entity : MonoBehaviour
         stats.resistance.Environment += entityStats.resistance.Environment;
 
         if (entityStats.maxHealth != 0f) {
-            healthBar.Set(stats.currentHealth, stats.maxHealth);
+            healthBar.Set(stats.currentHealth, stats.maxHealth, stats.currentShield);
             onHealthChange.Invoke();
         }
     }
@@ -212,7 +222,7 @@ public class Entity : MonoBehaviour
         stats.resistance.Environment -= entityStats.resistance.Environment;
 
         if (entityStats.maxHealth != 0f) {
-            healthBar.Set(stats.currentHealth, stats.maxHealth);
+            healthBar.Set(stats.currentHealth, stats.maxHealth, stats.currentShield);
             onHealthChange.Invoke();
         }
     }
@@ -222,13 +232,18 @@ public class Entity : MonoBehaviour
         hp -= stats.resistance.Get(type);
         if (hp <= 0f) return;
 
+        // Handle shield
+        stats.currentShield -= hp;
+        onDamageTaken.Invoke();
+        if (stats.currentShield >= 0f) hp = 0f;
+        else if (stats.currentShield < 0f) stats.currentShield = 0f;
+
         // Handle health reduction
         stats.currentHealth -= hp;
         if (stats.currentHealth < 0f) stats.currentHealth = 0f;
-        healthBar.Set(stats.currentHealth, stats.maxHealth);
 
-        onDamageTaken.Invoke();
-        onHealthChange.Invoke();
+        healthBar.Set(stats.currentHealth, stats.maxHealth, stats.currentShield);
+        if (hp > 0f) onHealthChange.Invoke();
 
         if (debugMessages) Debug.LogWarning("Got hurt: " + gameObject.name);
 

@@ -46,6 +46,20 @@ public class Entity : MonoBehaviour
         public float movementSpeed = 3f;
         public float attackSpeed = 0.5f;
         public Resistances resistance;
+
+        public static Stats WithDefaultAs(float def) {
+            Stats s = new Stats();
+            s.maxHealth = def;
+            s.currentHealth = def;
+            s.damage = def;
+            s.movementSpeed = def;
+            s.attackSpeed = def;
+            s.resistance.Combat = def;
+            s.resistance.Effect = def;
+            s.resistance.Environment = def;
+
+            return s;
+        }
     }
 
     [Header("Options")]
@@ -153,6 +167,40 @@ public class Entity : MonoBehaviour
 
     public virtual void SetAttackSpeed(float amount) {
         stats.attackSpeed = amount;
+    }
+
+    public virtual Stats GetRawStats() {
+        return stats;
+    }
+
+    public virtual void SetRawStats(Stats entityStats) {
+        if (entityStats.attackSpeed > -1f) stats.attackSpeed = entityStats.attackSpeed;
+        if (entityStats.movementSpeed > -1f) stats.movementSpeed = entityStats.movementSpeed;
+        if (entityStats.damage > -1f) stats.damage = entityStats.damage;
+        if (entityStats.maxHealth > -1f) stats.maxHealth = entityStats.maxHealth;
+        if (entityStats.resistance.Combat > -1f) stats.resistance.Combat = entityStats.resistance.Combat;
+        if (entityStats.resistance.Effect > -1f) stats.resistance.Effect = entityStats.resistance.Effect;
+        if (entityStats.resistance.Environment > -1f) stats.resistance.Environment = entityStats.resistance.Environment;
+    }
+
+    public virtual void AddRawStats(Stats entityStats) {
+        stats.attackSpeed += entityStats.attackSpeed;
+        stats.movementSpeed += entityStats.movementSpeed;
+        stats.damage += entityStats.damage;
+        stats.maxHealth += entityStats.maxHealth;
+        stats.resistance.Combat += entityStats.resistance.Combat;
+        stats.resistance.Effect += entityStats.resistance.Effect;
+        stats.resistance.Environment += entityStats.resistance.Environment;
+    }
+
+    public virtual void RemoveRawStats(Stats entityStats) {
+        stats.attackSpeed -= entityStats.attackSpeed;
+        stats.movementSpeed -= entityStats.movementSpeed;
+        stats.damage -= entityStats.damage;
+        stats.maxHealth -= entityStats.maxHealth;
+        stats.resistance.Combat -= entityStats.resistance.Combat;
+        stats.resistance.Effect -= entityStats.resistance.Effect;
+        stats.resistance.Environment -= entityStats.resistance.Environment;
     }
 
     public virtual void TakeDamage(float hp, DamageType type = DamageType.Combat) {

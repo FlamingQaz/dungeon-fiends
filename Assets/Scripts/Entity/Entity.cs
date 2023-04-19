@@ -3,28 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
+[RequireComponent(typeof(EntityModifier))]
 public class Entity : MonoBehaviour
 {
-
-    public UnityEvent onDamageTaken = new UnityEvent();
-    public UnityEvent onDeath = new UnityEvent();
-    public UnityEvent onResurrect = new UnityEvent();
-    public EntityEvent onKill = new EntityEvent();
-    public EntityEvent onStartAttack = new EntityEvent();
-    public EntityEvent onEndAttack = new EntityEvent();
-    public UnityEvent onHealthChange = new UnityEvent();
-    public UnityEvent onHeal = new UnityEvent();
-
-    [SerializeField] float maxHealth = 10f;
-    public bool destroyOnDeath = true;
-    float currentHealth;
-    HeadHealthBar healthBar;
-    [HideInInspector] public bool isAlive = true;
-    [HideInInspector] public bool onKillTriggered = false;
-    public bool targetable = true;
-    [SerializeField] bool testTriggerResurrect = false;
-    [SerializeField] bool debugMessages = false;
-
     public enum DamageType {
         /// <summary>(Default) Basic damage from weapons, attacks, and miscellaneous damage sources.</summary>
         Combat,
@@ -57,11 +38,43 @@ public class Entity : MonoBehaviour
         }
     }
 
-    public Resistances resistance;
+    [System.Serializable]
+    public class Stats {
+        public float maxHealth = 10f;
+        [ReadOnly] public float currentHealth = 10f;
+        public float damage = 2f;
+        public float movementSpeed = 3f;
+        public float attackSpeed = 0.5f;
+        public Resistances resistance;
+    }
+
+    [Header("Options")]
+    [SerializeField] Stats stats;
+    public bool destroyOnDeath = true;
+    public bool targetable = true;
+
+    [Header("Debugging")]
+    [SerializeField] bool testTriggerResurrect = false;
+    [SerializeField] bool debugMessages = false;
+
+    [Header("Events")]
+    public UnityEvent onDamageTaken = new UnityEvent();
+    public UnityEvent onDeath = new UnityEvent();
+    public UnityEvent onResurrect = new UnityEvent();
+    public EntityEvent onKill = new EntityEvent();
+    public EntityEvent onStartAttack = new EntityEvent();
+    public EntityEvent onEndAttack = new EntityEvent();
+    public UnityEvent onHealthChange = new UnityEvent();
+    public UnityEvent onHeal = new UnityEvent();
+
+    // Hidden
+    HeadHealthBar healthBar;
+    [HideInInspector] public bool isAlive = true;
+    [HideInInspector] public bool onKillTriggered = false;
 
     void Awake() {
         healthBar = GetComponentInChildren<HeadHealthBar>();
-        currentHealth = maxHealth;
+        stats.currentHealth = stats.maxHealth;
 
         onDeath.AddListener(() => {
             foreach (Effect effect in CurrentEffects()) {
@@ -73,7 +86,7 @@ public class Entity : MonoBehaviour
             }
         });
 
-        healthBar.Set(currentHealth, maxHealth);
+        healthBar.Set(stats.currentHealth, stats.maxHealth);
     }
 
     void FixedUpdate() {
@@ -85,61 +98,85 @@ public class Entity : MonoBehaviour
     }
 
     public virtual float GetHealth() {
-        return currentHealth;
+        return stats.currentHealth;
     }
 
     public virtual void SetHealth(float hp) {
-        if (hp > maxHealth) currentHealth = maxHealth;
-        else currentHealth = hp;
+        if (hp > stats.maxHealth) stats.currentHealth = stats.maxHealth;
+        else stats.currentHealth = hp;
 
-        healthBar.Set(currentHealth, maxHealth);
+        healthBar.Set(stats.currentHealth, stats.maxHealth);
         onHealthChange.Invoke();
     }
 
     public virtual float GetMaxHealth() {
-        return maxHealth;
+        return stats.maxHealth;
     }
 
     public virtual void SetMaxHealth(float hp) {
-        maxHealth = hp;
+        stats.maxHealth = hp;
 
-        healthBar.Set(currentHealth, maxHealth);
+        healthBar.Set(stats.currentHealth, stats.maxHealth);
         onHealthChange.Invoke();
     }
 
     public virtual void HealPercent(float percent) {
-        float hp = maxHealth * percent / 100f;
-        SetHealth(currentHealth + hp);
+        float hp = stats.maxHealth * percent / 100f;
+        SetHealth(stats.currentHealth + hp);
         onHeal.Invoke();
     }
 
     public virtual void HealFlat(float amount) {
-        SetHealth(currentHealth + amount);
+        SetHealth(stats.currentHealth + amount);
         onHeal.Invoke();
+    }
+
+    public virtual float GetAttackDamage() {
+        return stats.damage;
+    }
+
+    public virtual void SetAttackDamage(float amount) {
+        stats.damage = amount;
+    }
+
+    public virtual float GetMoveSpeed() {
+        return stats.movementSpeed;
+    }
+
+    public virtual void SetMoveSpeed(float amount) {
+        stats.movementSpeed = amount;
+    }
+
+    public virtual float GetAttackSpeed() {
+        return stats.attackSpeed;
+    }
+
+    public virtual void SetAttackSpeed(float amount) {
+        stats.attackSpeed = amount;
     }
 
     public virtual void TakeDamage(float hp, DamageType type = DamageType.Combat) {
         // Handle resistances
-        hp -= resistance.Get(type);
+        hp -= stats.resistance.Get(type);
         if (hp <= 0f) return;
 
         // Handle health reduction
-        currentHealth -= hp;
-        if (currentHealth < 0f) currentHealth = 0f;
-        healthBar.Set(currentHealth, maxHealth);
+        stats.currentHealth -= hp;
+        if (stats.currentHealth < 0f) stats.currentHealth = 0f;
+        healthBar.Set(stats.currentHealth, stats.maxHealth);
 
         onDamageTaken.Invoke();
         onHealthChange.Invoke();
 
         if (debugMessages) Debug.LogWarning("Got hurt: " + gameObject.name);
 
-        if (currentHealth == 0f) {
+        if (stats.currentHealth == 0f) {
             Die();
         }
     }
 
     public virtual void Die() {
-        currentHealth = 0f;
+        stats.currentHealth = 0f;
         isAlive = false;
 
         onDeath.Invoke();
@@ -148,7 +185,7 @@ public class Entity : MonoBehaviour
     }
 
     public virtual void Resurrect() {
-        currentHealth = 1f;
+        stats.currentHealth = 1f;
         isAlive = true;
         onKillTriggered = false;
 

@@ -8,8 +8,6 @@ public class PlayerCombat : MonoBehaviour
     public LayerMask enemyLayer;
     public LayerMask friendlyLayer;
     [SerializeField] BasicProjectile baseProjectile;
-    [SerializeField] float damage = 2f;
-    [SerializeField] float fireRate = 10f;
     Entity entity;
     bool onCooldown = false;
     
@@ -23,8 +21,9 @@ public class PlayerCombat : MonoBehaviour
     void FixedUpdate() {
         // Example combat for testing purposes
         if (Input.GetKey(KeyCode.Mouse0) && !onCooldown) {
-            baseProjectile.Shoot(transform, Camera.main.ScreenToWorldPoint(Input.mousePosition), enemyLayer, friendlyLayer, damage, entity);
+            baseProjectile.Shoot(transform, Camera.main.ScreenToWorldPoint(Input.mousePosition), enemyLayer, friendlyLayer, entity.GetAttackDamage(), entity);
             onCooldown = true;
+            float fireRate = entity.GetAttackSpeed();
             Invoke(nameof(EndCooldown), 1f/fireRate);
         }
     }

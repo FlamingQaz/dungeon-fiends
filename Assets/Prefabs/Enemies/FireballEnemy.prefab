@@ -504,14 +504,22 @@ MonoBehaviour:
   onHeal:
     m_PersistentCalls:
       m_Calls: []
-  maxHealth: 200
-  destroyOnDeath: 1
-  isAlive: 1
-  onKillTriggered: 0
-  targetable: 1
-  testTriggerResurrect: 0
-  debugMessages: 0
+  stats:
+    maxHealth: 200
+    currentHealth: 10
+    damage: 5
+    resistance:
+      Combat: 0
+      Environment: 0
+      Effect: 0
   resistance:
     Combat: 0
     Environment: 0
     Effect: 0
+  destroyOnDeath: 1
+  targetable: 1
+  testTriggerResurrect: 0
+  debugMessages: 0
+  maxHealth: 200
+  isAlive: 1
+  onKillTriggered: 0

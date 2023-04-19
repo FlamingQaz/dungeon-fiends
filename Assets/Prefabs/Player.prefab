@@ -125,7 +125,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70af235eaa9be6c45a7e00876e09385d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 0.1
 --- !u!114 &2336437375242769424
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -198,6 +197,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82ecacf9b25dbfd429e6decc8365729a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  stats:
+    maxHealth: 100
+    currentHealth: 10
+    damage: 8
+    movementSpeed: 3
+    attackSpeed: 10
+    resistance:
+      Combat: 0
+      Environment: 0
+      Effect: 0
+  destroyOnDeath: 0
+  targetable: 1
+  testTriggerResurrect: 0
+  debugMessages: 0
   onDamageTaken:
     m_PersistentCalls:
       m_Calls: []
@@ -309,13 +322,8 @@ MonoBehaviour:
   onHeal:
     m_PersistentCalls:
       m_Calls: []
-  maxHealth: 100
-  destroyOnDeath: 0
   isAlive: 1
   onKillTriggered: 0
-  targetable: 1
-  testTriggerResurrect: 0
-  debugMessages: 0
 --- !u!114 &2336437375242769431
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -352,7 +360,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   baseProjectile: {fileID: 1211716114872644739, guid: af61060c100eba541a2f0e42721ab1bd, type: 3}
-  damage: 8
   fireRate: 10
 --- !u!114 &2007450369848719897
 MonoBehaviour:

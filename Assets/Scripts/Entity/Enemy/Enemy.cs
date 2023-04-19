@@ -15,9 +15,7 @@ public class Enemy : MonoBehaviour
         LongMelee = 3
     }
     public EnemyType type;
-    public float damage = 2f;
     public float shootingRange = 10f;
-    public float shootRate = 2f; // Seconds
     bool isShooting = false;
     public BasicProjectile baseProjectile;
     public LayerMask targetLayer;
@@ -45,6 +43,9 @@ public class Enemy : MonoBehaviour
     }
 
     void FixedUpdate() {
+        // Handle movement speed
+        if (pathfinding.speed != entity.GetMoveSpeed()) pathfinding.speed = entity.GetMoveSpeed();
+
         // Handle ranged attacks
         if (type == EnemyType.Ranged) {
             RaycastHit2D hit = Physics2D.CircleCast(transform.position, shootingRange, Vector2.zero, 0f, targetLayer);
@@ -64,7 +65,7 @@ public class Enemy : MonoBehaviour
         if (!otherEntity || !otherEntity.targetable) return;
 
         entity.onStartAttack.Invoke(otherEntity);
-        otherEntity.TakeDamage(damage, Entity.DamageType.Combat);
+        otherEntity.TakeDamage(entity.GetAttackDamage(), Entity.DamageType.Combat);
         entity.onEndAttack.Invoke(otherEntity);
     }
 
@@ -73,10 +74,11 @@ public class Enemy : MonoBehaviour
         if (!otherEntity || !otherEntity.targetable) return;
 
         entity.onStartAttack.Invoke(otherEntity);
-        baseProjectile.Shoot(transform, entityObj.transform.position, targetLayer, friendlyLayer, damage, entity);
+        baseProjectile.Shoot(transform, entityObj.transform.position, targetLayer, friendlyLayer, entity.GetAttackDamage(), entity);
 
         isShooting = true;
-        Invoke(nameof(EndShootCooldown), shootRate);
+        float shootRate = entity.GetAttackSpeed();
+        Invoke(nameof(EndShootCooldown), 1/shootRate);
     }
 
     protected void EndShootCooldown() {

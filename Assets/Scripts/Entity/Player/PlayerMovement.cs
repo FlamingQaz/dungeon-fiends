@@ -6,18 +6,20 @@ public class PlayerMovement : MonoBehaviour
 {
     private PlayerAnimation playerAnimation;
     
-    [SerializeField]
-    private float moveSpeed;
+    Entity entity;
+    float adjustedMoveSpeed;
 
 
     void Awake()
     {
         playerAnimation = GetComponent<PlayerAnimation>();
+        entity = GetComponent<Entity>();
     }
 
     void FixedUpdate()
     {
         playerAnimation.movementAnim();
-        transform.Translate(new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")) * moveSpeed);
+        adjustedMoveSpeed = (entity.GetMoveSpeed() / 3f) * 0.1f;
+        transform.Translate(new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")) * adjustedMoveSpeed);
     }
 }

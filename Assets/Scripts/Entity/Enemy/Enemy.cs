@@ -11,12 +11,12 @@ public class Enemy : MonoBehaviour
 
     public enum EnemyType {
         Melee = 1,
-        Ranged = 5,
-        LongMelee = 3
+        Ranged = 5
     }
     public EnemyType type;
     public float shootingRange = 10f;
-    bool isShooting = false;
+    bool isAttacking = false;
+    Entity meleeTarget;
     public BasicProjectile baseProjectile;
     public LayerMask targetLayer;
     public LayerMask friendlyLayer;
@@ -49,15 +49,27 @@ public class Enemy : MonoBehaviour
         // Handle ranged attacks
         if (type == EnemyType.Ranged) {
             RaycastHit2D hit = Physics2D.CircleCast(transform.position, shootingRange, Vector2.zero, 0f, targetLayer);
-            if (hit && !isShooting && pathfinding.targetInSight && hit.collider.GetComponent<Entity>().isAlive) ShootAt(hit.collider.gameObject);
+            if (hit && !isAttacking && pathfinding.targetInSight && hit.collider.GetComponent<Entity>().isAlive) ShootAt(hit.collider.gameObject);
+        }
+        // Handle melee attacks
+        else if (type == EnemyType.Melee) {
+            if (!isAttacking && pathfinding.targetInSight && meleeTarget != null && meleeTarget.isAlive) MeleeAttack(meleeTarget.gameObject);
         }
     }
 
     private void OnTriggerEnter2D(Collider2D other) {
         // Handle melee attacks
-        if (type != EnemyType.Melee && type != EnemyType.LongMelee) return;
+        if (type != EnemyType.Melee) return;
         if (!TargetFollower.IsTargetLayer(targetLayer, other.gameObject.layer)) return;
-        MeleeAttack(other.gameObject);
+        pathfinding.enable = false;
+        meleeTarget = other.gameObject.GetComponent<Entity>();
+    }
+
+    private void OnTriggerExit2D(Collider2D other) {
+        if (type != EnemyType.Melee) return;
+        if (!TargetFollower.IsTargetLayer(targetLayer, other.gameObject.layer)) return;
+        pathfinding.enable = true;
+        meleeTarget = null;
     }
 
     public virtual void MeleeAttack(GameObject entityObj) {
@@ -67,6 +79,9 @@ public class Enemy : MonoBehaviour
         entity.onStartAttack.Invoke(otherEntity);
         otherEntity.TakeDamage(entity.GetAttackDamage(), Entity.DamageType.Combat);
         entity.onEndAttack.Invoke(otherEntity);
+
+        isAttacking = true;
+        Invoke(nameof(EndAttackCooldown), 1/entity.GetAttackSpeed());
     }
 
     public virtual void ShootAt(GameObject entityObj) {
@@ -76,13 +91,12 @@ public class Enemy : MonoBehaviour
         entity.onStartAttack.Invoke(otherEntity);
         baseProjectile.Shoot(transform, entityObj.transform.position, targetLayer, friendlyLayer, entity.GetAttackDamage(), entity);
 
-        isShooting = true;
-        float shootRate = entity.GetAttackSpeed();
-        Invoke(nameof(EndShootCooldown), 1/shootRate);
+        isAttacking = true;
+        Invoke(nameof(EndAttackCooldown), 1/entity.GetAttackSpeed());
     }
 
-    protected void EndShootCooldown() {
-        isShooting = false;
+    protected void EndAttackCooldown() {
+        isAttacking = false;
     }
 
 }

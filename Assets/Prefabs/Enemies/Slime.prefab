@@ -128,7 +128,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.005257398, y: 0.0046043396}
+  m_Offset: {x: 0.005257398, y: 0.006840229}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.2}
@@ -139,7 +139,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.5688965, y: 0.70077515}
+  m_Size: {x: 0.5688965, y: 0.6577654}
   m_EdgeRadius: 0
 --- !u!61 &4967029743675156932
 BoxCollider2D:
@@ -154,7 +154,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.003172785, y: 0.008574486}
+  m_Offset: {x: 0.0061855316, y: 0.0100803375}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.2}
@@ -165,7 +165,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.68908185, y: 0.84960556}
+  m_Size: {x: 0.7372818, y: 0.88876724}
   m_EdgeRadius: 0
 --- !u!114 &1512082958
 MonoBehaviour:
@@ -314,9 +314,10 @@ MonoBehaviour:
   stats:
     maxHealth: 10
     currentHealth: 10
+    currentShield: 0
     damage: 2
     movementSpeed: 3
-    attackSpeed: 0.5
+    attackSpeed: 2
     resistance:
       Combat: 0
       Environment: 0

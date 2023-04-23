@@ -13,10 +13,12 @@ public class SlimeEnemy : MonoBehaviour
     bool mergeable = true;
     bool scaled = false;
     bool splitting = false;
+    BoxCollider2D bc;
 
     // Start is called before the first frame update
     void Start()
     {
+        bc = GetComponent<BoxCollider2D>();
         enemy = GetComponent<Enemy>();
         if (!scaled) {
             scale = startScale;
@@ -52,7 +54,7 @@ public class SlimeEnemy : MonoBehaviour
         splitting = true;
         float amount = Mathf.Pow(2, startScale - (scale - 1));
         for (int i = (int) amount; i > 0; i--) {
-            Instantiate(gameObject, (Vector2)transform.position + new Vector2(1f/i, 1f/i), transform.rotation).GetComponent<SlimeEnemy>().Init(scale - 1);
+            Instantiate(gameObject, GetRandomPosition(), transform.rotation).GetComponent<SlimeEnemy>().Init(scale - 1);
         }
     }
 
@@ -61,5 +63,15 @@ public class SlimeEnemy : MonoBehaviour
 
         Destroy(other);
         Instantiate(gameObject, transform.position, transform.rotation).GetComponent<SlimeEnemy>().Init(scale + 1);
+    }
+
+    Vector2 GetRandomPosition() {
+        Vector2 rectSize = new Vector2();
+        rectSize.x = transform.localScale.x * bc.size.x;
+        rectSize.y = transform.localScale.y * bc.size.y;
+
+        Vector2 newPos = new Vector2(Random.Range(-rectSize.x / 2, rectSize.x / 2), Random.Range(-rectSize.y / 2, rectSize.y / 2));
+ 
+         return (Vector2)transform.position + newPos;
     }
 }

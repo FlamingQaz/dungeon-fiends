@@ -42,7 +42,7 @@ public class BasicProjectile : MonoBehaviour
 		if (TargetFollower.IsTargetLayer(targets, collider.gameObject.layer)) {
 		    Entity ent = collider.gameObject.GetComponent<Entity>();
             if (ent) {
-                ent.TakeDamage(damage, Entity.DamageType.Combat);
+                shooter.Attack(ent);
                 onHit.Invoke(ent);
             }
 		}

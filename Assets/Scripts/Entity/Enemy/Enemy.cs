@@ -77,7 +77,7 @@ public class Enemy : MonoBehaviour
         if (!otherEntity || !otherEntity.targetable) return;
 
         entity.onStartAttack.Invoke(otherEntity);
-        otherEntity.TakeDamage(entity.GetAttackDamage(), Entity.DamageType.Combat);
+        entity.Attack(otherEntity);
         entity.onEndAttack.Invoke(otherEntity);
 
         isAttacking = true;

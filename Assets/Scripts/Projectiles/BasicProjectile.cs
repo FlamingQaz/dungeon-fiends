@@ -8,6 +8,7 @@ public class BasicProjectile : MonoBehaviour
     public float speed;
 	[HideInInspector] public Vector2 direction;
 	public float maxRange;
+    public bool destroyOnNoNearEnemies = false;
 	[HideInInspector] public float damage;
     [HideInInspector] public LayerMask targets;
     [HideInInspector] public LayerMask friendlies;
@@ -31,6 +32,7 @@ public class BasicProjectile : MonoBehaviour
 	}
 
     void FixedUpdate() {
+        if (!destroyOnNoNearEnemies) return;
         if (!Physics2D.CircleCast(transform.position, maxRange, Vector2.zero, 0f, targets)) Destroy(gameObject);
     }
 

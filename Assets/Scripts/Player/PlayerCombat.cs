@@ -22,7 +22,7 @@ public class PlayerCombat : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetButtonDown("Fire1"))
+        if (Input.GetButton("Fire1"))
         {
             if (playerInventory.currentWeapons[playerInventory.currentWeaponHeld] != null)
                 playerInventory.currentWeapons[playerInventory.currentWeaponHeld].GetComponent<Weapon>().Attack();

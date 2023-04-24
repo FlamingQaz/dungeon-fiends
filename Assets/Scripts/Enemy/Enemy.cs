@@ -59,7 +59,7 @@ public class Enemy : MonoBehaviour
 
     public virtual void ShootAt(GameObject entityObj) {
         onStartAttack.Invoke();
-        baseProjectile.Shoot(transform, entityObj.transform, targetLayer, friendlyLayer, damage);
+        baseProjectile.Shoot(transform, entityObj.transform.position, targetLayer, friendlyLayer, damage);
 
         isShooting = true;
         Invoke(nameof(EndShootCooldown), shootRate);

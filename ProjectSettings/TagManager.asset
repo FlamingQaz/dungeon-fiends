@@ -3,7 +3,10 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - CollectableWeapon
+  - InteractionField
+  - InteractableItem
   layers:
   - Default
   - TransparentFX
@@ -14,7 +17,7 @@ TagManager:
   - Player
   - Projectile
   - Enemy
-  - 
+  - Item
   - 
   - 
   - 

@@ -30,18 +30,20 @@ public class BasicProjectile : MonoBehaviour
     }
 
 	protected virtual void OnTriggerEnter2D(Collider2D collider) {
-        if (TargetFollower.IsTargetLayer(friendlies, collider.gameObject.layer)) return;
+
+        if (TargetFollower.IsTargetLayer(friendlies, collider.gameObject.layer) || 
+            TargetFollower.IsTargetLayer(LayerMask.GetMask("Item"), collider.gameObject.layer)) 
+                    return;
 
 		if (TargetFollower.IsTargetLayer(targets, collider.gameObject.layer)) {
             Debug.Log("Is Target");
 		    Entity ent = collider.gameObject.GetComponent<Entity>();
             if (ent) ent.TakeDamage(damage);
 		}
-
         Destroy(this.gameObject);
 	}
 
-    public virtual void Shoot(Transform start, Transform end, LayerMask targetLayer, LayerMask friendlyLayer, float damage) {
-        Instantiate(gameObject, start.position, start.rotation).GetComponent<BasicProjectile>().Init(targetLayer, friendlyLayer, damage, end.position);
+    public virtual void Shoot(Transform start, Vector2 end, LayerMask targetLayer, LayerMask friendlyLayer, float damage) {
+        Instantiate(gameObject, start.position, start.rotation).GetComponent<BasicProjectile>().Init(targetLayer, friendlyLayer, damage, end);
     }
 }

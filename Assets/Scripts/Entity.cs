@@ -11,8 +11,8 @@ public class Entity : MonoBehaviour
     public UnityEvent onResurrect;
 
     [SerializeField] float maxHealth = 10f;
+    [SerializeField] float currentHealth;
     public bool destroyOnDeath = true;
-    float currentHealth;
     HeadHealthBar healthBar;
     [HideInInspector] public bool isAlive = true;
     

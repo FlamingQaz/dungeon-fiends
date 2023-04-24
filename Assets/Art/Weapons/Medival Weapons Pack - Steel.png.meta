@@ -1,0 +1,1236 @@
+fileFormatVersion: 2
+guid: 5fcf9f32479d6994391a094f6a395753
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -8970711455872015396
+    second: Medival Weapons Pack - Steel_0
+  - first:
+      213: 8043087853868993834
+    second: Medival Weapons Pack - Steel_1
+  - first:
+      213: 8226537956588663110
+    second: Medival Weapons Pack - Steel_2
+  - first:
+      213: -5679478408412697985
+    second: Medival Weapons Pack - Steel_3
+  - first:
+      213: 5410195307130895494
+    second: Medival Weapons Pack - Steel_4
+  - first:
+      213: 1065146751563580682
+    second: Medival Weapons Pack - Steel_5
+  - first:
+      213: 7512822715535974056
+    second: Medival Weapons Pack - Steel_6
+  - first:
+      213: 2303893230380696579
+    second: Medival Weapons Pack - Steel_7
+  - first:
+      213: 7144672805744119052
+    second: Medival Weapons Pack - Steel_8
+  - first:
+      213: -1095461692422536711
+    second: Medival Weapons Pack - Steel_9
+  - first:
+      213: 161908440314011420
+    second: Medival Weapons Pack - Steel_10
+  - first:
+      213: -2645125088568650274
+    second: Medival Weapons Pack - Steel_11
+  - first:
+      213: -3850204175965012588
+    second: Medival Weapons Pack - Steel_12
+  - first:
+      213: -8502341016697660625
+    second: Medival Weapons Pack - Steel_13
+  - first:
+      213: 3473534499104566612
+    second: Medival Weapons Pack - Steel_14
+  - first:
+      213: -6703939944444877235
+    second: Medival Weapons Pack - Steel_15
+  - first:
+      213: 7058267145880570597
+    second: Medival Weapons Pack - Steel_16
+  - first:
+      213: -7433511975137079868
+    second: Medival Weapons Pack - Steel_17
+  - first:
+      213: 5302528372788050250
+    second: Medival Weapons Pack - Steel_18
+  - first:
+      213: -4330690498579095570
+    second: Medival Weapons Pack - Steel_19
+  - first:
+      213: 5146177112737805671
+    second: Medival Weapons Pack - Steel_20
+  - first:
+      213: 637139883967749136
+    second: Medival Weapons Pack - Steel_21
+  - first:
+      213: 3743336454408843573
+    second: Medival Weapons Pack - Steel_22
+  - first:
+      213: -638148446868719323
+    second: Medival Weapons Pack - Steel_23
+  - first:
+      213: 5852310959590235382
+    second: Medival Weapons Pack - Steel_24
+  - first:
+      213: -8566582154807717859
+    second: Medival Weapons Pack - Steel_25
+  - first:
+      213: -4046749983327454099
+    second: Medival Weapons Pack - Steel_26
+  - first:
+      213: -8112827948853884622
+    second: Medival Weapons Pack - Steel_27
+  - first:
+      213: 5151373680751437058
+    second: Medival Weapons Pack - Steel_28
+  - first:
+      213: 229031312492959853
+    second: Medival Weapons Pack - Steel_29
+  - first:
+      213: 8550508972554333601
+    second: Medival Weapons Pack - Steel_30
+  - first:
+      213: 6100478711072367366
+    second: Medival Weapons Pack - Steel_31
+  - first:
+      213: 7492766143641517832
+    second: Medival Weapons Pack - Steel_32
+  - first:
+      213: 2598690188250028631
+    second: Medival Weapons Pack - Steel_33
+  - first:
+      213: 2381289042572347002
+    second: Medival Weapons Pack - Steel_34
+  - first:
+      213: -5518440523421692543
+    second: Medival Weapons Pack - Steel_35
+  - first:
+      213: 8281475847015440558
+    second: Medival Weapons Pack - Steel_36
+  - first:
+      213: -6946881807151232114
+    second: Medival Weapons Pack - Steel_37
+  - first:
+      213: 6362686705048916846
+    second: Medival Weapons Pack - Steel_38
+  - first:
+      213: -5092249363741193116
+    second: Medival Weapons Pack - Steel_39
+  - first:
+      213: -1915712740381222673
+    second: Medival Weapons Pack - Steel_40
+  - first:
+      213: -490453279766830229
+    second: Medival Weapons Pack - Steel_41
+  - first:
+      213: 7644102380971418307
+    second: Medival Weapons Pack - Steel_42
+  - first:
+      213: 3362690150079200207
+    second: Medival Weapons Pack - Steel_43
+  - first:
+      213: -750607899526912182
+    second: Medival Weapons Pack - Steel_44
+  - first:
+      213: -1932746599546405567
+    second: Medival Weapons Pack - Steel_45
+  - first:
+      213: -3510281757931528841
+    second: Medival Weapons Pack - Steel_46
+  externalObjects: {}
+  serializedVersion: 11
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 32
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: 4
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: 4
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Medival Weapons Pack - Steel_0
+      rect:
+        serializedVersion: 2
+        x: 4
+        y: 87
+        width: 7
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cd3a832b571a18380800000000000000
+      internalID: -8970711455872015396
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Medival Weapons Pack - Steel_1
+      rect:
+        serializedVersion: 2
+        x: 17
+        y: 87
+        width: 7
+        height: 17
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a2dce1bf9c9ce9f60800000000000000
+      internalID: 8043087853868993834
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Medival Weapons Pack - Steel_2
+      rect:
+        serializedVersion: 2
+        x: 29
+        y: 87
+        width: 7
+        height: 17
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6413cb97fa88a2270800000000000000
+      internalID: 8226537956588663110
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Medival Weapons Pack - Steel_3
+      rect:
+        serializedVersion: 2
+        x: 39
+        y: 87
+        width: 7
+        height: 14
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f7a6f0d8a707e21b0800000000000000
+      internalID: -5679478408412697985
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Medival Weapons Pack - Steel_4
+      rect:
+        serializedVersion: 2
+        x: 49
+        y: 87
+        width: 4
+        height: 19
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 68cb507a7ffd41b40800000000000000
+      internalID: 5410195307130895494
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Medival Weapons Pack - Steel_5
+      rect:
+        serializedVersion: 2
+        x: 56
+        y: 86
+        width: 8
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a05cb90c35928ce00800000000000000
+      internalID: 1065146751563580682
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Medival Weapons Pack - Steel_6
+      rect:
+        serializedVersion: 2
+        x: 69
+        y: 87
+        width: 7
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8aed1048478e24860800000000000000
+      internalID: 7512822715535974056
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Medival Weapons Pack - Steel_7
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 86
+        width: 7
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 304c44dbfa219ff10800000000000000
+      internalID: 2303893230380696579
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Medival Weapons Pack - Steel_8
+      rect:
+        serializedVersion: 2
+        x: 92
+        y: 87
+        width: 6
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c0d85ce001af62360800000000000000
+      internalID: 7144672805744119052
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Medival Weapons Pack - Steel_9
+      rect:
+        serializedVersion: 2
+        x: 103
+        y: 88
+        width: 7
+        height: 12
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9f14b1e05632cc0f0800000000000000
+      internalID: -1095461692422536711
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Medival Weapons Pack - Steel_10
+      rect:
+        serializedVersion: 2
+        x: 116
+        y: 89
+        width: 4
+        height: 11
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c1fdd0f5ed63f3200800000000000000
+      internalID: 161908440314011420
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Medival Weapons Pack - Steel_11
+      rect:
+        serializedVersion: 2
+        x: 125
+        y: 88
+        width: 5
+        height: 11
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ed554651fb0aa4bd0800000000000000
+      internalID: -2645125088568650274
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Medival Weapons Pack - Steel_12
+      rect:
+        serializedVersion: 2
+        x: 133
+        y: 87
+        width: 7
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 49d31e283b3519ac0800000000000000
+      internalID: -3850204175965012588
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Medival Weapons Pack - Steel_13
+      rect:
+        serializedVersion: 2
+        x: 142
+        y: 86
+        width: 13
+        height: 19
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f2b908484ed910a80800000000000000
+      internalID: -8502341016697660625
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Medival Weapons Pack - Steel_14
+      rect:
+        serializedVersion: 2
+        x: 5
+        y: 64
+        width: 7
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 45d213e2939743030800000000000000
+      internalID: 3473534499104566612
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Medival Weapons Pack - Steel_15
+      rect:
+        serializedVersion: 2
+        x: 18
+        y: 62
+        width: 7
+        height: 20
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d46afc7b322d6f2a0800000000000000
+      internalID: -6703939944444877235
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Medival Weapons Pack - Steel_16
+      rect:
+        serializedVersion: 2
+        x: 30
+        y: 61
+        width: 8
+        height: 22
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5ea8508a29004f160800000000000000
+      internalID: 7058267145880570597
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Medival Weapons Pack - Steel_17
+      rect:
+        serializedVersion: 2
+        x: 40
+        y: 62
+        width: 7
+        height: 19
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4cd87583e3cd6d890800000000000000
+      internalID: -7433511975137079868
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Medival Weapons Pack - Steel_18
+      rect:
+        serializedVersion: 2
+        x: 50
+        y: 62
+        width: 7
+        height: 19
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a493677067d569940800000000000000
+      internalID: 5302528372788050250
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Medival Weapons Pack - Steel_19
+      rect:
+        serializedVersion: 2
+        x: 58
+        y: 60
+        width: 10
+        height: 21
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: eef9800cfeb46e3c0800000000000000
+      internalID: -4330690498579095570
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Medival Weapons Pack - Steel_20
+      rect:
+        serializedVersion: 2
+        x: 72
+        y: 60
+        width: 7
+        height: 23
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7657bf381d4ea6740800000000000000
+      internalID: 5146177112737805671
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Medival Weapons Pack - Steel_21
+      rect:
+        serializedVersion: 2
+        x: 85
+        y: 62
+        width: 8
+        height: 23
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 01c9128495397d800800000000000000
+      internalID: 637139883967749136
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Medival Weapons Pack - Steel_22
+      rect:
+        serializedVersion: 2
+        x: 99
+        y: 63
+        width: 10
+        height: 21
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5313fc71ca003f330800000000000000
+      internalID: 3743336454408843573
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Medival Weapons Pack - Steel_23
+      rect:
+        serializedVersion: 2
+        x: 117
+        y: 64
+        width: 11
+        height: 20
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5293c6e5e57d427f0800000000000000
+      internalID: -638148446868719323
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Medival Weapons Pack - Steel_24
+      rect:
+        serializedVersion: 2
+        x: 134
+        y: 65
+        width: 8
+        height: 19
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6fc50859fc5973150800000000000000
+      internalID: 5852310959590235382
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Medival Weapons Pack - Steel_25
+      rect:
+        serializedVersion: 2
+        x: 6
+        y: 34
+        width: 5
+        height: 24
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d105c7bfae26d1980800000000000000
+      internalID: -8566582154807717859
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Medival Weapons Pack - Steel_26
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 28
+        width: 7
+        height: 30
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d6cf2fca45e07d7c0800000000000000
+      internalID: -4046749983327454099
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Medival Weapons Pack - Steel_27
+      rect:
+        serializedVersion: 2
+        x: 30
+        y: 34
+        width: 5
+        height: 24
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 23904b0d6f1796f80800000000000000
+      internalID: -8112827948853884622
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Medival Weapons Pack - Steel_28
+      rect:
+        serializedVersion: 2
+        x: 40
+        y: 34
+        width: 7
+        height: 24
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2056c7ac11b5d7740800000000000000
+      internalID: 5151373680751437058
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Medival Weapons Pack - Steel_29
+      rect:
+        serializedVersion: 2
+        x: 54
+        y: 37
+        width: 7
+        height: 17
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d689597e3cead2300800000000000000
+      internalID: 229031312492959853
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Medival Weapons Pack - Steel_30
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 37
+        width: 9
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1ad24e5ab9289a670800000000000000
+      internalID: 8550508972554333601
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Medival Weapons Pack - Steel_31
+      rect:
+        serializedVersion: 2
+        x: 79
+        y: 36
+        width: 11
+        height: 20
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6032d45e01149a450800000000000000
+      internalID: 6100478711072367366
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Medival Weapons Pack - Steel_32
+      rect:
+        serializedVersion: 2
+        x: 93
+        y: 33
+        width: 7
+        height: 23
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 80f73d8fb17abf760800000000000000
+      internalID: 7492766143641517832
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Medival Weapons Pack - Steel_33
+      rect:
+        serializedVersion: 2
+        x: 105
+        y: 33
+        width: 9
+        height: 23
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 75a9fef25f6601420800000000000000
+      internalID: 2598690188250028631
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Medival Weapons Pack - Steel_34
+      rect:
+        serializedVersion: 2
+        x: 119
+        y: 32
+        width: 12
+        height: 26
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a760e0284c90c0120800000000000000
+      internalID: 2381289042572347002
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Medival Weapons Pack - Steel_35
+      rect:
+        serializedVersion: 2
+        x: 135
+        y: 29
+        width: 10
+        height: 29
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 18d4457f49f8a63b0800000000000000
+      internalID: -5518440523421692543
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Medival Weapons Pack - Steel_36
+      rect:
+        serializedVersion: 2
+        x: 149
+        y: 33
+        width: 7
+        height: 19
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ea0255dd766bde270800000000000000
+      internalID: 8281475847015440558
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Medival Weapons Pack - Steel_37
+      rect:
+        serializedVersion: 2
+        x: 3
+        y: 3
+        width: 18
+        height: 24
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e8b80247dc7b79f90800000000000000
+      internalID: -6946881807151232114
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Medival Weapons Pack - Steel_38
+      rect:
+        serializedVersion: 2
+        x: 24
+        y: 3
+        width: 18
+        height: 24
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e639a87e8ddcc4850800000000000000
+      internalID: 6362686705048916846
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Medival Weapons Pack - Steel_39
+      rect:
+        serializedVersion: 2
+        x: 44
+        y: 3
+        width: 18
+        height: 24
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 46c4f7efe22b459b0800000000000000
+      internalID: -5092249363741193116
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Medival Weapons Pack - Steel_40
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 3
+        width: 18
+        height: 24
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fe813e999650a65e0800000000000000
+      internalID: -1915712740381222673
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Medival Weapons Pack - Steel_41
+      rect:
+        serializedVersion: 2
+        x: 86
+        y: 4
+        width: 17
+        height: 22
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b63a290375f8139f0800000000000000
+      internalID: -490453279766830229
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Medival Weapons Pack - Steel_42
+      rect:
+        serializedVersion: 2
+        x: 106
+        y: 5
+        width: 19
+        height: 19
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3c2e4848d9e451a60800000000000000
+      internalID: 7644102380971418307
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Medival Weapons Pack - Steel_43
+      rect:
+        serializedVersion: 2
+        x: 127
+        y: 6
+        width: 16
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fcbfc2d00ecaaae20800000000000000
+      internalID: 3362690150079200207
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Medival Weapons Pack - Steel_44
+      rect:
+        serializedVersion: 2
+        x: 145
+        y: 6
+        width: 13
+        height: 19
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a47a81f971e4595f0800000000000000
+      internalID: -750607899526912182
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Medival Weapons Pack - Steel_45
+      rect:
+        serializedVersion: 2
+        x: 146
+        y: 64
+        width: 11
+        height: 22
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 14d313535318d25e0800000000000000
+      internalID: -1932746599546405567
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Medival Weapons Pack - Steel_46
+      rect:
+        serializedVersion: 2
+        x: 114
+        y: 25
+        width: 19
+        height: 7
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 77d15f4e659f84fc0800000000000000
+      internalID: -3510281757931528841
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

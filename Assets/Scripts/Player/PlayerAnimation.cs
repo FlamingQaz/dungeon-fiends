@@ -14,6 +14,19 @@ public class PlayerAnimation : MonoBehaviour
         playerAnim = GetComponent<Animator>();
     }
 
+    private void FixedUpdate()
+    {
+        Vector3 mousePos = Input.mousePosition;
+        mousePos.z = 5.23f;
+
+        Vector3 objectPos = Camera.main.WorldToScreenPoint(transform.position);
+        mousePos.x = mousePos.x - objectPos.x;
+        mousePos.y = mousePos.y - objectPos.y;
+
+        float angle = Mathf.Atan2(mousePos.y, mousePos.x) * Mathf.Rad2Deg;
+        transform.Find("Weapons").rotation = Quaternion.Euler(new Vector3(0, 0, angle));
+    }
+
     public void movementAnim()
     {
         playerAnim.SetBool("Moving", Mathf.Abs(Input.GetAxisRaw("Horizontal")) > 0 || Mathf.Abs(Input.GetAxisRaw("Vertical")) > 0);

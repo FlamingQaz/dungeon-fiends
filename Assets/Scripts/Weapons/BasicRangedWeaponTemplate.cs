@@ -12,7 +12,7 @@ public class BasicRangedWeaponTemplate : Weapon
     [SerializeField] private float _attackSpeed;
     [SerializeField] private int _maxAmmo;
     [SerializeField] private int _ammo;
-    [SerializeField] public float _reloadTime;
+    [SerializeField] private float _reloadTime;
 
 
     [SerializeField] private BasicProjectile basicProjectileScript;

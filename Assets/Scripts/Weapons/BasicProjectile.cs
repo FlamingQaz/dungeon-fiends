@@ -32,7 +32,8 @@ public class BasicProjectile : MonoBehaviour
 	protected virtual void OnTriggerEnter2D(Collider2D collider) {
 
         if (TargetFollower.IsTargetLayer(friendlies, collider.gameObject.layer) || 
-            TargetFollower.IsTargetLayer(LayerMask.GetMask("Item"), collider.gameObject.layer)) 
+            TargetFollower.IsTargetLayer(LayerMask.GetMask("Item"), collider.gameObject.layer) ||
+            TargetFollower.IsTargetLayer(LayerMask.GetMask("Interaction Field"), collider.gameObject.layer)) 
                     return;
 
 		if (TargetFollower.IsTargetLayer(targets, collider.gameObject.layer)) {

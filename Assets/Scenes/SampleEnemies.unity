@@ -220,7 +220,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2336437375242769432, guid: 42da30174b63c1d44acb7249c9d2723e, type: 3}
       propertyPath: stats.currentShield
-      value: 50
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2336437375242769432, guid: 42da30174b63c1d44acb7249c9d2723e, type: 3}
       propertyPath: stats.resistance.Effect
@@ -232,11 +232,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2336437375242769432, guid: 42da30174b63c1d44acb7249c9d2723e, type: 3}
       propertyPath: onDeath.m_PersistentCalls.m_Calls.Array.size
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 2336437375242769432, guid: 42da30174b63c1d44acb7249c9d2723e, type: 3}
       propertyPath: onDeath.m_PersistentCalls.m_Calls.Array.data[3].m_Mode
-      value: 1
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 2336437375242769432, guid: 42da30174b63c1d44acb7249c9d2723e, type: 3}
       propertyPath: onDeath.m_PersistentCalls.m_Calls.Array.data[4].m_Mode
@@ -291,12 +291,20 @@ PrefabInstance:
       value: Entity, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 2336437375242769432, guid: 42da30174b63c1d44acb7249c9d2723e, type: 3}
+      propertyPath: onDeath.m_PersistentCalls.m_Calls.Array.data[3].m_Arguments.m_FloatArgument
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2336437375242769432, guid: 42da30174b63c1d44acb7249c9d2723e, type: 3}
       propertyPath: onResurrect.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
       value: UnityEngine.Behaviour, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 2336437375242769432, guid: 42da30174b63c1d44acb7249c9d2723e, type: 3}
       propertyPath: onResurrect.m_PersistentCalls.m_Calls.Array.data[3].m_TargetAssemblyTypeName
       value: PlayerAnimation, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 2336437375242769432, guid: 42da30174b63c1d44acb7249c9d2723e, type: 3}
+      propertyPath: onResurrect.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_BoolArgument
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2336437375242769432, guid: 42da30174b63c1d44acb7249c9d2723e, type: 3}
       propertyPath: onDeath.m_PersistentCalls.m_Calls.Array.data[3].m_Arguments.m_ObjectArgumentAssemblyTypeName

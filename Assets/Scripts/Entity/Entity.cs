@@ -262,16 +262,22 @@ public class Entity : MonoBehaviour
     public virtual void Die() {
         stats.currentHealth = 0f;
         isAlive = false;
+        targetable = false;
 
         onDeath.Invoke();
 
         if (debugMessages) Debug.LogWarning("Died: " + gameObject.name);
     }
 
-    public virtual void Resurrect() {
+    public virtual void Resurrect(float delaySecs=0.1f) {
+        Invoke(nameof(DelayedResurrect), delaySecs);
+    }
+
+    private void DelayedResurrect() {
         stats.currentHealth = 1f;
         isAlive = true;
         onKillTriggered = false;
+        targetable = true;
 
         onResurrect.Invoke();
 

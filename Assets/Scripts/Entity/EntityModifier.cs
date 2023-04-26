@@ -63,6 +63,16 @@ public class EntityModifier : MonoBehaviour
         }
     }
 
+    IEnumerator ApplyToSelfDelayed(Effect effect) {
+        yield return new WaitForSeconds(0.1f);
+        effect.ApplyTo(gameObject);
+    }
+
+    IEnumerator ApplyToEntityDelayed(Effect effect, GameObject target, GameObject other) {
+        yield return new WaitForSeconds(0.1f);
+        effect.ApplyTo(target, other);
+    }
+
     void ApplyToSelfOnly(UnityEvent e, Modifier modifier) {
         Effect effect = modifier.effect;
         EffectTrigger trigger = modifier.trigger;
@@ -73,7 +83,7 @@ public class EntityModifier : MonoBehaviour
             return;
         }
         
-        if (e != null) e.AddListener(() => effect.ApplyTo(gameObject));
+        if (e != null) e.AddListener(() => StartCoroutine(ApplyToSelfDelayed(effect)));
         else effect.ApplyTo(gameObject);
     }
 
@@ -82,8 +92,8 @@ public class EntityModifier : MonoBehaviour
         EffectTarget targetType = modifier.target;
 
         e.AddListener((Entity target) => {
-            if (targetType == EffectTarget.TargetedOpponent) effect.ApplyTo(target.gameObject, gameObject);
-            else if (targetType == EffectTarget.Self) effect.ApplyTo(gameObject, target.gameObject);
+            if (targetType == EffectTarget.TargetedOpponent) StartCoroutine(ApplyToEntityDelayed(effect, target.gameObject, gameObject));
+            else if (targetType == EffectTarget.Self) StartCoroutine(ApplyToEntityDelayed(effect, gameObject, target.gameObject));
         });
     }
 }

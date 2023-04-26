@@ -56,13 +56,15 @@ public class SlimeEnemy : MonoBehaviour
         scaled = true;
     }
 
-    public void Init(float newScale) {
+    public GameObject Init(float newScale) {
         scale = newScale;
         SetScale();
         
         float value = GetScaleModifier(scale);
         enemy.entity.SetMaxHealth(enemy.entity.GetMaxHealth() * value);
         enemy.entity.HealPercent(100f);
+
+        return gameObject;
     }
 
     public void Split() {
@@ -72,7 +74,7 @@ public class SlimeEnemy : MonoBehaviour
         splitted = true;
         float amount = Mathf.Pow(2, startScale - (scale - 1));
         for (int i = (int) amount; i > 0; i--) {
-            Instantiate(gameObject, GetRandomPosition(), transform.rotation).GetComponent<SlimeEnemy>().Init(scale - 1);
+            Instantiate(gameObject, GetRandomPosition(), transform.rotation).GetComponent<SlimeEnemy>().Init(scale - 1).name = gameObject.name.Replace(" (Split)", "").Replace(" (Merged)", "") + " (Split)";
         }
     }
 
@@ -85,6 +87,8 @@ public class SlimeEnemy : MonoBehaviour
         newSlime.Init(scale + 1);
         newSlime.enemy.entity.SetMaxHealth(enemy.entity.GetMaxHealth() / value);
         newSlime.enemy.entity.HealPercent(100f);
+
+        newSlime.gameObject.name = gameObject.name.Replace(" (Split)", "").Replace(" (Merged)", "") + " (Merged)";
         Destroy(gameObject);
     }
 

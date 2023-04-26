@@ -24,6 +24,15 @@ public class Enemy : MonoBehaviour
     protected const float STOPPING_OFFSET = -0.3f;
     protected const float SLOWING_OFFSET = 3f;
 
+    ///<summary>Use DifficultyScaling.SetLevel() instead to properly set enemy scaling.</summary>
+    public static void SetLocalScaling(DifficultyScaling.Level prevDifficulty, DifficultyScaling.Level currDifficulty) {
+        foreach (Enemy e in GameObject.FindObjectsOfType<Enemy>()) {
+            e.entity.statMultipliers.Remove(DifficultyScaling.enemyStatScaling, (float) prevDifficulty);
+            e.entity.statMultipliers.Add(DifficultyScaling.enemyStatScaling, (float) currDifficulty);
+            e.entity.UpdateHeadHealthBar();
+        }
+    }
+
     void Start() {
         pathfinding = GetComponent<TargetFollower>();
         entity = GetComponent<Entity>();
@@ -40,6 +49,9 @@ public class Enemy : MonoBehaviour
                 target.onKillTriggered = true;
             }
         });
+
+        // Handle enemy scaling:
+        entity.statMultipliers.Add(DifficultyScaling.enemyStatScaling, (float) DifficultyScaling.GetLevel());
     }
 
     void FixedUpdate() {
@@ -97,6 +109,16 @@ public class Enemy : MonoBehaviour
 
     protected void EndAttackCooldown() {
         isAttacking = false;
+    }
+
+    ///<summary>This method creates a new Enemy from the game object of this Enemy. Only use this method if this Enemy is a living entity currently in the scene.</summary>
+    public virtual GameObject Clone(Vector2? newPosition=null) {
+        GameObject obj = Instantiate(gameObject, newPosition ?? transform.position, transform.rotation);
+
+        // Prevent enemy scaling from exponentially growing for duplicated slimes:
+        obj.GetComponent<Entity>().statMultipliers.Remove(DifficultyScaling.enemyStatScaling, (float) DifficultyScaling.GetLevel());
+
+        return obj;
     }
 
 }

@@ -42,7 +42,7 @@ public class Entity : MonoBehaviour
     public class Stats {
         public float maxHealth = 10f;
         [ReadOnly] public float currentHealth = 10f;
-        public float currentShield = 0f;
+        public float currentShield = 0.001f;
         public float damage = 2f;
         public float movementSpeed = 3f;
         public float attackSpeed = 0.5f;
@@ -62,11 +62,27 @@ public class Entity : MonoBehaviour
 
             return s;
         }
+
+        public void Add(Stats other, float multiplier=1) {
+            maxHealth += other.maxHealth * multiplier;
+            currentHealth += other.currentHealth * multiplier;
+            currentShield += other.currentShield * multiplier;
+            damage += other.damage * multiplier;
+            movementSpeed += other.movementSpeed * multiplier;
+            attackSpeed += other.attackSpeed * multiplier;
+            resistance.Combat += other.resistance.Combat * multiplier;
+            resistance.Effect += other.resistance.Effect * multiplier;
+            resistance.Environment += other.resistance.Environment * multiplier;
+        }
+
+        public void Remove(Stats other, float multiplier=1) {
+            Add(other, -multiplier);
+        }
     }
 
     [Header("Options")]
     [SerializeField] Stats stats;
-    public Stats statMultipliers = Stats.WithDefaultAs(1);
+    public Stats statMultipliers = Stats.WithDefaultAs(1f);
     public bool destroyOnDeath = true;
     public bool targetable = true;
 
@@ -130,7 +146,7 @@ public class Entity : MonoBehaviour
     public virtual float GetMaxHealth() {
         return stats.maxHealth * statMultipliers.maxHealth;
     }
-
+ 
     public virtual void SetMaxHealth(float hp) {
         stats.maxHealth = hp;
 
@@ -296,7 +312,7 @@ public class Entity : MonoBehaviour
         effects.Remove(e);
     }
 
-    void UpdateHeadHealthBar() {
+    public virtual void UpdateHeadHealthBar() {
         healthBar.Set(GetHealth(), GetMaxHealth(), GetShield());
     }
 

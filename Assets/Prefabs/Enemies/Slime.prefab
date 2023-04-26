@@ -314,7 +314,7 @@ MonoBehaviour:
   stats:
     maxHealth: 10
     currentHealth: 10
-    currentShield: 0
+    currentShield: 0.001
     damage: 2
     movementSpeed: 3
     attackSpeed: 2
@@ -322,6 +322,17 @@ MonoBehaviour:
       Combat: 0
       Environment: 0
       Effect: 0
+  statMultipliers:
+    maxHealth: 1
+    currentHealth: 1
+    currentShield: 1
+    damage: 1
+    movementSpeed: 1
+    attackSpeed: 1
+    resistance:
+      Combat: 1
+      Environment: 1
+      Effect: 1
   destroyOnDeath: 1
   targetable: 1
   testTriggerResurrect: 0
@@ -370,6 +381,8 @@ MonoBehaviour:
   enemy: {fileID: 0}
   maxScale: 3
   startScale: 2
+  mergeDelay: 10
+  mergeRange: 2
 --- !u!114 &8253752972437924762
 MonoBehaviour:
   m_ObjectHideFlags: 0

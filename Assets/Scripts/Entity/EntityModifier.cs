@@ -22,10 +22,13 @@ public class EntityModifier : MonoBehaviour
     }
 
     [System.Serializable]
-    public struct Modifier {
+    public class Modifier {
         public Effect effect;
+        [Tooltip("The event that causes the effect to be applied. Choosing the infused event immediately applies the effect when the desired difficulty level is reached.")]
         public EffectTrigger trigger;
         public EffectTarget target;
+        [Tooltip("The effect can only be applied if the difficulty level is greater than or equal to this level.")]
+        public DifficultyScaling.Level enableAtDifficulty = DifficultyScaling.Level.Any;
     }
 
     public List<Modifier> modifiers;
@@ -77,21 +80,43 @@ public class EntityModifier : MonoBehaviour
         Effect effect = modifier.effect;
         EffectTrigger trigger = modifier.trigger;
         EffectTarget targetType = modifier.target;
+        DifficultyScaling.Level difficulty = modifier.enableAtDifficulty;
 
         if (targetType != EffectTarget.Self) {
             Debug.LogError($"Invalid target for {trigger.ToString()} Entity Modifier.");
             return;
         }
+
+        if (e == null && difficulty == DifficultyScaling.Level.Any || DifficultyScaling.GetLevel() >= difficulty) StartCoroutine(ApplyToSelfDelayed(effect));
+        else if (e != null) e.AddListener(() => {
+            if (difficulty == DifficultyScaling.Level.Any || DifficultyScaling.GetLevel() >= difficulty) StartCoroutine(ApplyToSelfDelayed(effect));
+        });
         
-        if (e != null) e.AddListener(() => StartCoroutine(ApplyToSelfDelayed(effect)));
-        else effect.ApplyTo(gameObject);
+        // Handle adding and removing infused effects at various difficulties:
+        bool currentlyApplied = false;
+        DifficultyScaling.onChange.AddListener(() => {
+            if (difficulty == DifficultyScaling.Level.Any || e != null) return;
+
+            if (DifficultyScaling.GetLevel() < difficulty && currentlyApplied) {
+                effect.GetExecutableEffect(entity).EndEffect();
+                currentlyApplied = false;
+            }
+            else if (DifficultyScaling.GetLevel() >= difficulty && !currentlyApplied) {
+                StartCoroutine(ApplyToSelfDelayed(effect));
+                currentlyApplied = true;
+            }
+        });
     }
 
     void ApplyToAnyEntity(EntityEvent e, Modifier modifier) {
         Effect effect = modifier.effect;
         EffectTarget targetType = modifier.target;
+        DifficultyScaling.Level difficulty = modifier.enableAtDifficulty;
 
         e.AddListener((Entity target) => {
+            bool canApply = difficulty == DifficultyScaling.Level.Any || DifficultyScaling.GetLevel() >= difficulty;
+            if (!canApply) return;
+
             if (targetType == EffectTarget.TargetedOpponent) StartCoroutine(ApplyToEntityDelayed(effect, target.gameObject, gameObject));
             else if (targetType == EffectTarget.Self) StartCoroutine(ApplyToEntityDelayed(effect, gameObject, target.gameObject));
         });

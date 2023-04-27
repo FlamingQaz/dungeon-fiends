@@ -1,10 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class DifficultyScaling : MonoBehaviour
 {
     public enum Level {
+        Any = 0, // Should be equal to lowest Level
+
         Baby = 0,
         Easy = 1,
         Facile = 2,
@@ -21,6 +24,8 @@ public class DifficultyScaling : MonoBehaviour
     Level prevLevel = Level.Baby;
     [SerializeField] Level updatableLevel = Level.Baby;
     [SerializeField] bool scaleAlreadySpawnedEnemies = false;
+
+    public static UnityEvent onChange = new UnityEvent();
 
 
     public static Entity.Stats enemyStatScaling = new Entity.Stats {
@@ -50,6 +55,7 @@ public class DifficultyScaling : MonoBehaviour
         scaling.level = l;
         scaling.updatableLevel = l;
         scaling.difficultyChanged = true;
+        if (scaling.prevLevel != scaling.level) onChange.Invoke();
     }
 
     public static Level GetLevel() {

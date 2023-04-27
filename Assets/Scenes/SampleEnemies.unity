@@ -158,6 +158,10 @@ PrefabInstance:
       propertyPath: modifiers.Array.data[2].trigger
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 628602536, guid: 42da30174b63c1d44acb7249c9d2723e, type: 3}
+      propertyPath: modifiers.Array.data[0].enableAtDifficulty
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2336437375242769428, guid: 42da30174b63c1d44acb7249c9d2723e, type: 3}
       propertyPath: m_RootOrder
       value: 4
@@ -2655,6 +2659,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   updatableLevel: 0
+  scaleAlreadySpawnedEnemies: 0
 --- !u!1 &1270829715
 GameObject:
   m_ObjectHideFlags: 0

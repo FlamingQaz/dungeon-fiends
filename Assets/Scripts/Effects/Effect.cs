@@ -13,6 +13,16 @@ public abstract class Effect : MonoBehaviour
     public float displayOffsetY = 0.2f;
     public bool stackable = false;
 
+    public ExecutableEffect GetExecutableEffect(Entity entity) {
+        foreach(ExecutableEffect effect in entity.CurrentEffects()) {
+            if (effect.name == gameObject.name) {
+                return effect;
+            }
+        }
+
+        return null;
+    }
+
     public ExecutableEffect ApplyTo(GameObject targetObj) {
         List<ExecutableEffect> effectObjs = targetObj.GetComponent<Entity>().CurrentEffects();
 

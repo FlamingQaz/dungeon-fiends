@@ -87,7 +87,7 @@ public class EntityModifier : MonoBehaviour
             return;
         }
 
-        if (e == null && difficulty == DifficultyScaling.Level.Any || DifficultyScaling.GetLevel() >= difficulty) StartCoroutine(ApplyToSelfDelayed(effect));
+        if (e == null && (difficulty == DifficultyScaling.Level.Any || DifficultyScaling.GetLevel() >= difficulty)) StartCoroutine(ApplyToSelfDelayed(effect));
         else if (e != null) e.AddListener(() => {
             if (difficulty == DifficultyScaling.Level.Any || DifficultyScaling.GetLevel() >= difficulty) StartCoroutine(ApplyToSelfDelayed(effect));
         });

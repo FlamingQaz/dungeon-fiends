@@ -3,17 +3,18 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Projectiles
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Obstacles
   - Water
   - UI
-  - 
-  - 
-  - 
+  - Player
+  - Projectile
+  - Enemy
   - 
   - 
   - 
@@ -38,6 +39,12 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Background
+    uniqueID: 1927757717
+    locked: 0
+  - name: Projectile
+    uniqueID: 1521691693
+    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0

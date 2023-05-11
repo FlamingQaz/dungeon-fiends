@@ -30,6 +30,10 @@ public class LevelGeneration : MonoBehaviour
     public int minBranches = 2;
     public int maxBranches = 4;
 
+    //Room chance List
+    //Corresponds to Rectangle, Circle, Hall, Ballroom, L
+    public List<int> roomChanceList = new List<int>() { 60, 10, 10, 10, 10 };
+
     private List<Room> rooms = new List<Room>();
 
 
@@ -52,15 +56,17 @@ public class LevelGeneration : MonoBehaviour
     {
         GenerateRooms();
 
-        
-
         PlaceBranches();
 
         PlaceHalls();
+
+        //DesignateRooms();
     }
 
     void GenerateRooms()
     {
+
+        //Makes a number of Rooms, and places them down
 
         int numRooms = UnityEngine.Random.Range(minRooms, maxRooms);
         int rand = 0;
@@ -91,22 +97,90 @@ public class LevelGeneration : MonoBehaviour
 
     Room GenerateRoom(Room roomPrior, int rand)
     {
+
+        //random shape by making random index for array of Shapes
+        Room.Shape shape = FindRandomWeightedRoom();
+
         //random size
         int sizex = 2 * (int)(UnityEngine.Random.Range(minRoomSize.x, maxRoomSize.x) / 2);
         int sizey = 2 * (int)(UnityEngine.Random.Range(minRoomSize.y, maxRoomSize.y) / 2);
+
+
+
+        if (shape == Room.Shape.Ballroom)
+            {
+
+            //Doubles room size
+            sizex = sizex * 2;
+            sizey = sizey * 2;
+            shape = Room.Shape.Rectangle;
+        }
+            else if (shape == Room.Shape.Hall)
+            {
+            //Makes a room with one side longer than the other by 2 times
+            int randy = UnityEngine.Random.Range(0, 10);
+                if (randy >= 5)
+                {
+                    sizey = 2 * sizey;
+                    sizex = 2 * (int)(sizex / 4);
+            }
+                else
+                {
+                    sizex = sizex * 2;
+                    sizey = 2 * (int)(sizey / 4);
+            }
+                shape = Room.Shape.Rectangle;
+            }
+            else if (shape == Room.Shape.L)
+            {
+                sizex = sizex * 2;
+                sizey = sizey * 2;
+
+                //This should be removed when L shaped rooms are implemented
+
+                shape = Room.Shape.Rectangle;
+
+            }
+
+        
         Vector2Int size = new Vector2Int(sizex, sizey);
+
+
         Vector2 centerPos = MakeNewRoomPosition(roomPrior, size, rand);
 
 
-        //random shape by making random index for array of Shapes
-        Room.Shape[] values = (Room.Shape[])Room.Shape.GetValues(typeof(Room.Shape));
-        int randomIndex = UnityEngine.Random.Range(0, values.Length);
-        Room.Shape shape = values[randomIndex];
 
         // create a new room with the generated size, position, and shape, and add it to the list of rooms
         Room room = new Room(size, centerPos, shape);
 
         return room;
+    }
+
+    Room.Shape FindRandomWeightedRoom()
+    {
+        Room.Shape[] values = (Room.Shape[])Room.Shape.GetValues(typeof(Room.Shape));
+
+        int randomIndex = UnityEngine.Random.Range(0, roomChanceList.Sum());
+
+        for (int i = 0; i < values.Length; i++)
+        {
+            if (randomIndex < roomChanceList[i])
+            {
+                randomIndex = i;
+                    break;
+            }
+            else
+            {
+                randomIndex -= roomChanceList[i];
+            }
+        }
+
+        Room.Shape shape = values[randomIndex];
+
+
+
+
+        return shape;
     }
 
     Room HandleOverlap(Room room2)

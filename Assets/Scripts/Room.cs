@@ -15,7 +15,10 @@ public class Room : MonoBehaviour
     public enum Shape
     {
         Rectangle,
-        Circle
+        Circle,
+        Hall,
+        Ballroom,
+        L
     }
 
     public Room(Vector2Int size, Vector2 centerPos, Shape shape)

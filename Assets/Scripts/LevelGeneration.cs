@@ -34,6 +34,8 @@ public class LevelGeneration : MonoBehaviour
     //Corresponds to Rectangle, Circle, Hall, Ballroom, L
     public List<int> roomChanceList = new List<int>() { 60, 10, 10, 10, 10 };
 
+    public float coverChance = .05f;
+
     private List<Room> rooms = new List<Room>();
 
 
@@ -107,13 +109,13 @@ public class LevelGeneration : MonoBehaviour
 
 
 
-        if (shape == Room.Shape.Ballroom)
+        if (shape == Room.Shape.Mega)
             {
 
             //Doubles room size
             sizex = sizex * 2;
             sizey = sizey * 2;
-            shape = Room.Shape.Rectangle;
+            
         }
             else if (shape == Room.Shape.Hall)
             {
@@ -129,7 +131,7 @@ public class LevelGeneration : MonoBehaviour
                     sizex = sizex * 2;
                     sizey = 2 * (int)(sizey / 4);
             }
-                shape = Room.Shape.Rectangle;
+                
             }
             else if (shape == Room.Shape.L)
             {
@@ -292,6 +294,26 @@ public class LevelGeneration : MonoBehaviour
 
     }
 
+    void PlaceRoom(Room room)
+    {
+        if (room.shape == Room.Shape.Rectangle || room.shape == Room.Shape.Mega || room.shape == Room.Shape.Hall)
+        { PlaceRectangle(room); }
+
+        else if (room.shape == Room.Shape.Circle)
+        { PlaceOval(room); }
+
+        else if (room.shape == Room.Shape.L)
+        { PlaceL(room); }
+
+        else
+        {
+            Debug.Log("Room does not exist");
+        }
+
+        PlaceRoomCover(room);
+
+    }
+    
     void PlaceRectangle(Room room)
     {
 
@@ -320,24 +342,7 @@ public class LevelGeneration : MonoBehaviour
 
         }
     }
-
-    void PlaceRoom(Room room)
-    {
-        if (room.shape == Room.Shape.Rectangle)
-        { PlaceRectangle(room); }
-
-        else if (room.shape == Room.Shape.Circle)
-        { PlaceOval(room); }
-
-        else if (room.shape == Room.Shape.L)
-        { PlaceL(room); }
-
-        else
-        {
-            Debug.Log("Room does not exist");
-        }
-    }
-
+    
     void PlaceOval(Room room)
     {
 
@@ -437,6 +442,196 @@ public class LevelGeneration : MonoBehaviour
             }
 
         }
+    }
+
+    void PlaceRoomCover(Room room)
+    {
+        if (room.shape == Room.Shape.Rectangle)
+        { PlaceRectangleCover(room); }
+
+        else if (room.shape == Room.Shape.Circle)
+        { PlaceRectangleCover(room); }
+
+        else if ( room.shape == Room.Shape.Mega)
+        { PlaceRectangleCover(room); }
+        else if (room.shape == Room.Shape.Hall)
+        { PlaceRectangleCover(room); }
+
+        else if (room.shape == Room.Shape.L)
+        { PlaceRectangleCover(room); }
+
+        else
+        {
+            Debug.Log("Room does not exist");
+        }
+    }
+
+    void PlaceCover(int rand, Vector2 pos)
+    {
+        int i = (int)pos.x;
+        int j = (int)pos.y;
+        if (rand == 0)
+        {
+            rand = UnityEngine.Random.Range(0, 4);
+            if (rand == 0)
+            {
+                tilePlacement.PlaceSide(new Vector3Int((int)i, (int)j, 0));
+            }
+            else if (rand == 1)
+            {
+                tilePlacement.PlaceSide(new Vector3Int((int)i+1, (int)j, 0));
+            }
+            else if (rand == 2)
+            {
+                tilePlacement.PlaceSide(new Vector3Int((int)i, (int)j+1, 0));
+            }
+            else
+            {
+                tilePlacement.PlaceSide(new Vector3Int((int)i+1, (int)j+1, 0));
+            }
+            
+        }
+
+        else if (rand == 1)
+        {
+            rand = UnityEngine.Random.Range(0, 4);
+            if (rand == 0)
+            {
+                tilePlacement.PlaceSide(new Vector3Int((int)i, (int)j, 0));
+                tilePlacement.PlaceSide(new Vector3Int((int)i+1, (int)j, 0));
+            }
+            else if (rand == 1)
+            {
+                tilePlacement.PlaceSide(new Vector3Int((int)i, (int)j+1, 0));
+                tilePlacement.PlaceSide(new Vector3Int((int)i + 1, (int)j+1, 0));
+            }
+            else if (rand == 2)
+            {
+                tilePlacement.PlaceSide(new Vector3Int((int)i+1, (int)j, 0));
+                tilePlacement.PlaceSide(new Vector3Int((int)i + 1, (int)j+1, 0));
+            }
+            else
+            {
+                tilePlacement.PlaceSide(new Vector3Int((int)i, (int)j, 0));
+                tilePlacement.PlaceSide(new Vector3Int((int)i, (int)j + 1, 0));
+            }
+        }
+
+        else if (rand == 2)
+        {
+            
+            rand = UnityEngine.Random.Range(0, 4);
+
+            if (rand == 0)
+            {
+                tilePlacement.PlaceSide(new Vector3Int((int)i, (int)j + 1, 0));
+                tilePlacement.PlaceSide(new Vector3Int((int)i + 1, (int)j, 0));
+                tilePlacement.PlaceSide(new Vector3Int((int)i + 1, (int)j + 1, 0));
+            }
+            else if (rand == 1)
+            {
+                tilePlacement.PlaceSide(new Vector3Int((int)i, (int)j, 0));
+                tilePlacement.PlaceSide(new Vector3Int((int)i + 1, (int)j, 0));
+                tilePlacement.PlaceSide(new Vector3Int((int)i + 1, (int)j + 1, 0));
+            }
+            else if (rand == 2)
+            {
+                tilePlacement.PlaceSide(new Vector3Int((int)i, (int)j, 0));
+                tilePlacement.PlaceSide(new Vector3Int((int)i, (int)j + 1, 0));
+                tilePlacement.PlaceSide(new Vector3Int((int)i + 1, (int)j + 1, 0));
+            }
+            else
+            {
+                tilePlacement.PlaceSide(new Vector3Int((int)i, (int)j, 0));
+                tilePlacement.PlaceSide(new Vector3Int((int)i, (int)j + 1, 0));
+                tilePlacement.PlaceSide(new Vector3Int((int)i + 1, (int)j, 0));
+            }
+        }
+
+        else if (rand == 3)
+        {
+            tilePlacement.PlaceSide(new Vector3Int((int)i, (int)j, 0));
+            tilePlacement.PlaceSide(new Vector3Int((int)i, (int)j+1, 0));
+            tilePlacement.PlaceSide(new Vector3Int((int)i+1, (int)j, 0));
+            tilePlacement.PlaceSide(new Vector3Int((int)i+1, (int)j+1, 0));
+        }
+
+    }
+
+    void PlaceRectangleCover(Room room)
+    {
+
+        int rand = UnityEngine.Random.Range(0, 100);
+        //Finds room lower left corner
+        int roomx = (int)(room.centerPos.x - room.size.x / 2);
+        int roomy = (int)(room.centerPos.y - room.size.y / 2);
+        //Sets the Floor
+        //For all X in room
+
+        if (rand < 50)
+        {
+            for (int i = roomx + 3; i < roomx + (int)room.size.x - 3; i+=2)
+            {
+                //for all Y in room
+                for (int j = roomy + 3; j < roomy + (int)room.size.y - 3; j+=2)
+                {
+
+                    //Place tiles
+                    rand = UnityEngine.Random.Range(0, 100);
+                    if (rand < 100 * coverChance)
+                    {
+                        rand = UnityEngine.Random.Range(0, 4);
+                        PlaceCover(rand, new Vector2(i, j));
+                    }
+                }
+
+            }
+        }
+
+        else if (rand < 90)
+        {
+            rand = UnityEngine.Random.Range(0, 2);
+            if (rand == 1)
+            {
+                for (int i = roomx + 1; i < roomx + (int)room.size.x - 1; i += 2)
+                {
+                    //for all Y in room
+                    for (int j = roomy + 1; j < roomy + (int)room.size.y - 1; j += 2)
+                    {
+
+                        //Place tiles
+                        rand = UnityEngine.Random.Range(0, 100);
+                        if ((rand < 100 * coverChance) && Mathf.Abs(i-j) < 4)
+                        {
+                            rand = UnityEngine.Random.Range(0, 4);
+                            PlaceCover(rand, new Vector2(i, j));
+                        }
+                    }
+
+                }
+            }
+            else
+            {
+                for (int i = roomx + 2; i < roomx + (int)room.size.x - 2; i += 2)
+                {
+                    //for all Y in room
+                    for (int j = roomy + 2; j < roomy + (int)room.size.y - 2; j += 2)
+                    {
+
+                        //Place tiles
+                        rand = UnityEngine.Random.Range(0, 100);
+                        if ((rand < 100 * coverChance) && Mathf.Abs(i - j) > 4)
+                        {
+                            rand = UnityEngine.Random.Range(0, 4);
+                            PlaceCover(rand, new Vector2(i, j));
+                        }
+                    }
+
+                }
+            }
+            
+        }
+
     }
 
     private static bool IsWithinOval(int x, int y, int cx, int cy, int rx, int ry)

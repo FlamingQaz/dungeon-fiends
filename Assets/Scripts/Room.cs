@@ -17,7 +17,7 @@ public class Room : MonoBehaviour
         Rectangle,
         Circle,
         Hall,
-        Ballroom,
+        Mega,
         L
     }
 

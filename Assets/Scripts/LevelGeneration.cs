@@ -136,10 +136,6 @@ public class LevelGeneration : MonoBehaviour
                 sizex = sizex * 2;
                 sizey = sizey * 2;
 
-                //This should be removed when L shaped rooms are implemented
-
-                shape = Room.Shape.Rectangle;
-
             }
 
         
@@ -200,6 +196,7 @@ public class LevelGeneration : MonoBehaviour
 
             if (IsOverlap(room1, room2))
             {
+
 
                 room2.centerPos = MakeNewRoomPosition(room1, room2.size, rand);
 
@@ -332,7 +329,11 @@ public class LevelGeneration : MonoBehaviour
         else if (room.shape == Room.Shape.Circle)
         { PlaceOval(room); }
 
-        else{
+        else if (room.shape == Room.Shape.L)
+        { PlaceL(room); }
+
+        else
+        {
             Debug.Log("Room does not exist");
         }
     }
@@ -378,6 +379,63 @@ public class LevelGeneration : MonoBehaviour
                 }
 
             }
+        }
+    }
+
+    void PlaceL(Room room)
+    {
+        int rand = (int)UnityEngine.Random.Range(0, 4);
+
+        //Finds room lower left corner
+        int roomx = (int)(room.centerPos.x - room.size.x / 2);
+        int roomy = (int)(room.centerPos.y - room.size.y / 2);
+        
+
+
+        //Sets the Floor
+        //For all X in room
+        for (int i = roomx; i < roomx + (int)room.size.x; i++)
+        {
+            //for all Y in room
+            for (int j = roomy; j < roomy + (int)room.size.y; j++)
+            {
+
+                //Place tiles
+
+                tilePlacement.PlaceFloor(new Vector3Int((int)i, (int)j, 0), 1);
+
+                //If side walls
+                if (i == roomx || i == roomx + (int)room.size.x - 1)
+                {
+                    tilePlacement.PlaceSide(new Vector3Int((int)i, (int)j, 0));
+                }
+                //If top walls
+                else if (j == roomy || j == roomy + (int)room.size.y - 1)
+                {
+                    tilePlacement.PlaceSide(new Vector3Int((int)i, (int)j, 0));
+                }
+
+                //L Walls
+                else if (rand == 0 && (i < roomx +(int)room.size.x/2-1 && j < roomy + (int)room.size.y/2 - 1))
+                {
+                    tilePlacement.PlaceSide(new Vector3Int((int)i, (int)j, 0));
+                }
+                else if (rand == 1 && (i > roomx +(int)room.size.x / 2 - 1 && j < roomy + (int)room.size.y / 2 - 1))
+                {
+                    tilePlacement.PlaceSide(new Vector3Int((int)i, (int)j, 0));
+                }
+                else if (rand == 2 && (i < roomx +(int)room.size.x / 2 - 1 && j > roomy + (int)room.size.y / 2 - 1))
+                {
+                    tilePlacement.PlaceSide(new Vector3Int((int)i, (int)j, 0));
+
+                }
+                else if (rand == 3 && (i > roomx + (int)room.size.x / 2 - 1 && j > roomy + (int)room.size.y / 2 - 1))
+                {
+                    tilePlacement.PlaceSide(new Vector3Int((int)i, (int)j, 0));
+                }
+
+            }
+
         }
     }
 

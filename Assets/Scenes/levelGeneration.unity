@@ -200,16 +200,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a1c6248d8624e3d48bfea4e71332922e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxRooms: 8
+  maxRooms: 16
   minRooms: 5
   maxRoomSize: {x: 40, y: 40}
   minRoomSize: {x: 20, y: 20}
   roomSquish: 0.2
-  straigntnessFactor: 80
-  minBranchLength: 1
-  maxBranchLength: 4
+  straigntnessFactor: 20
+  minBranchLength: 3
+  maxBranchLength: 5
   minBranches: 2
-  maxBranches: 4
+  maxBranches: 5
   roomChanceList: 3c0000000a0000000a0000000a0000000a000000
   path: []
   tilePlacement: {fileID: 486661158}

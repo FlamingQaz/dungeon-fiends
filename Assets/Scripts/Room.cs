@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Room : MonoBehaviour
+public class Room
 {
     //Size, center position, and shape of rooms
     public Vector2Int size;
@@ -18,7 +18,8 @@ public class Room : MonoBehaviour
         Circle,
         Hall,
         Mega,
-        L
+        L,
+    
     }
 
     public Room(Vector2Int size, Vector2 centerPos, Shape shape)

@@ -8,6 +8,9 @@ using System.Linq;
 
 public class LevelGeneration : MonoBehaviour
 {
+    private RoomTemplates roomTemplates;
+
+    public GameObject testRoom;
 
     public int maxRooms = 5;
     public int minRooms = 3;
@@ -17,7 +20,7 @@ public class LevelGeneration : MonoBehaviour
 
 
     //How close room's center positions are together
-    //- .5 is the furthest away, 0 is the closest
+    // .5 is the furthest away, 0 is the closest
     public float roomSquish = .49f;
 
     //How likely a room will be opposite to the last generated room
@@ -34,6 +37,7 @@ public class LevelGeneration : MonoBehaviour
     //Corresponds to Rectangle, Circle, Hall, Ballroom, L
     public List<int> roomChanceList = new List<int>() { 60, 10, 10, 10, 10 };
 
+    //Chance any given 2x2 has cover on it
     public float coverChance = .05f;
 
     private List<Room> rooms = new List<Room>();
@@ -68,32 +72,55 @@ public class LevelGeneration : MonoBehaviour
     void GenerateRooms()
     {
 
+        Room room;
         //Makes a number of Rooms, and places them down
 
+        int rand = 1;
+
+        //Generates room 1
+        Room roomPrior = new Room(new Vector2Int(2 * (int)(UnityEngine.Random.Range(minRoomSize.x, maxRoomSize.x) / 2) , 2 * (int)(UnityEngine.Random.Range(minRoomSize.y, maxRoomSize.y) / 2))
+            , new Vector2(0, 0), Room.Shape.Rectangle);
+        PlaceRoom(roomPrior);
+        rooms.Add(roomPrior);
+
+        //makes total number of rooms
+
         int numRooms = UnityEngine.Random.Range(minRooms, maxRooms);
-        int rand = 0;
-        Room roomPrior = new Room(new Vector2Int(0, 0), new Vector2(0, 0), Room.Shape.Rectangle);
+
 
         //Creates Rooms
         for (int i = 0; i < numRooms - 1; i++)
         {
-            //
-            if (UnityEngine.Random.Range(0, 100) > straigntnessFactor)
+            //If a random digit is higher than straigtness, go another direction
+            if (UnityEngine.Random.Range(1, 100) > straigntnessFactor)
             {
-                Debug.Log("Random");
-                rand = (int)UnityEngine.Random.Range(0, 4);
+                rand = (int)UnityEngine.Random.Range(1, 4);
+                //Debug.Log(rand);
             }
 
-            Room room = GenerateRoom(roomPrior, rand);
+            room = GenerateRoom(roomPrior, rand);
             room = HandleOverlap(room);
             PlaceRoom(room);
+            PlaceRoomCover(room);
 
 
             rooms.Add(room);
             roomPrior = room;
 
-
+            
         }
+
+        room = GenerateBossRoom(0);
+        room = HandleOverlap(room);
+        PlaceRoom(room);
+        PlaceRoomCover(room);
+
+
+        rooms.Add(room);
+        roomPrior = room;
+
+
+
         Debug.Log("Rooms Generated");
     }
 
@@ -186,40 +213,50 @@ public class LevelGeneration : MonoBehaviour
         //Go through all rooms and check for overlap
 
         int leng = rooms.Count;
-        int rand = (int)UnityEngine.Random.Range(0, 4);
-        int i = 0;
+        int rand;
+        int i = leng-1;
         int j = 0;
+        List<int> posList = new List<int>() {1,2,3,4};
         //this is here to stop infinite loops,
         //although they theoretically shouldn't happen
-        while (i < leng && j < 20)
+        while (AnyOverlap(room2) && i > 0)
         {
-            Room room1 = rooms[i];
-            i++;
-
-            if (IsOverlap(room1, room2))
+            while (AnyOverlap(room2) && j < 4)
             {
 
+                rand = (int)UnityEngine.Random.Range(0, 4 - 3);
+                room2.centerPos = MakeNewRoomPosition(rooms[i], room2.size, posList[rand]);
 
-                room2.centerPos = MakeNewRoomPosition(room1, room2.size, rand);
-
-                i = 0;
+                posList.RemoveAt(rand);
                 j++;
-                Debug.Log("Overlap Fixed");
             }
-
-
+            i--;
         }
-
 
 
 
         return room2;
     }
 
+    bool AnyOverlap(Room room1)
+    {
+        foreach (Room room2 in rooms) {
+            if (IsOverlap(room1, room2))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     Vector2 MakeNewRoomPosition(Room roomPrior, Vector2 size, int rand)
     {
         //random center position
-
+        //1 is right
+        //2 is up
+        //3 is left
+        //4 is down
 
         //Make a center position default at 0,0
         Vector2 centerPos = new Vector2((int)0, (int)0);
@@ -255,7 +292,7 @@ public class LevelGeneration : MonoBehaviour
                     size.x / 2 - roomPrior.size.x / 2,
                     roomPrior.centerPos.y + UnityEngine.Random.Range(-roomSquish * roomPrior.size.y, roomSquish * roomPrior.size.y) / 2);
         }
-        else
+        else if (rand == 4)
         {
 
 
@@ -263,6 +300,68 @@ public class LevelGeneration : MonoBehaviour
                 UnityEngine.Random.Range(-roomSquish * roomPrior.size.x, roomSquish * roomPrior.size.x) / 2,
                 roomPrior.centerPos.y
                 - size.y / 2 - roomPrior.size.y / 2);
+        }
+
+        else
+        {
+            Debug.Log(rand);
+            Debug.Log("Center does not exist");
+        }
+        return centerPos;
+    }
+
+    Vector2 MakeNewSpecialRoomPosition(Room roomPrior, Vector2 size, int rand)
+    {
+        //center position
+        //Shares 1 coordinate with previous room
+        //Has 1 coordinate shifted both room sizes away
+
+        //1 is right
+        //2 is up
+        //3 is left
+        //4 is down
+
+        //Make a center position default at 0,0
+        Vector2 centerPos = new Vector2((int)0, (int)0);
+        if (rand == 1)
+        {
+
+            //Makes the center position
+            // X: prior room's center position + size of both rooms / 2
+            // Y: a center of previous room
+            //Repeats for else statements below with different x / y
+
+            centerPos = new Vector2(roomPrior.centerPos.x + size.x / 2 + roomPrior.size.x / 2,
+                                    roomPrior.centerPos.y);
+
+
+        }
+        else if (rand == 2)
+        {
+
+
+            centerPos = new Vector2(roomPrior.centerPos.x + size.x / 2, 
+                                    roomPrior.centerPos.y + size.y / 2 + roomPrior.size.y / 2);
+
+        }
+        else if (rand == 3)
+        {
+
+
+            centerPos = new Vector2(roomPrior.centerPos.x - size.x / 2 - roomPrior.size.x / 2,
+                                    roomPrior.centerPos.y);
+        }
+        else if (rand == 4)
+        {
+
+
+            centerPos = new Vector2(roomPrior.centerPos.x + size.x / 2,
+                                    roomPrior.centerPos.y - size.y / 2 - roomPrior.size.y / 2);
+        }
+
+        else
+        {
+            Debug.Log("Special Center does not exist");
         }
         return centerPos;
     }
@@ -310,7 +409,7 @@ public class LevelGeneration : MonoBehaviour
             Debug.Log("Room does not exist");
         }
 
-        PlaceRoomCover(room);
+        
 
     }
     
@@ -761,15 +860,79 @@ public class LevelGeneration : MonoBehaviour
         }
     }
 
+    Room GenerateBossRoom(int bossnum)
+    {
+        
+        int rand = (int)UnityEngine.Random.Range(1, 4);
+        int leng = rooms.Count;
+
+        //Temp numbers, Change Later
+        Vector2Int size = new Vector2Int(30, 20);
+
+        Room roomPrior = rooms[leng - 1];
+
+        Vector2 centerPos = MakeNewSpecialRoomPosition(roomPrior, size, rand);
+
+        Room room = new Room(size, centerPos, Room.Shape.Rectangle);
+
+        int i = 1;
+        int j = 0;
+        //If no room can be spawned at end of branch, don't spawn room
+        while (AnyOverlap(room) && i < leng - 2)
+        {   
+
+            while (j < 4) 
+            { 
+
+                rand++;
+            if (rand > 4)
+            { rand = 1; }
+                
+                centerPos = MakeNewSpecialRoomPosition(roomPrior, size, rand);
+                room = new Room(size, centerPos, Room.Shape.Rectangle);
+            
+            }
+            roomPrior = rooms[leng - 1-i];
+        }
+        
+
+        Vector3Int centerPos3D = new Vector3Int((int)(centerPos.x + size.x / 2 - 5), (int)(centerPos.y + size.y), 0);
+
+        Instantiate(testRoom, centerPos3D, Quaternion.identity);
+
+
+        rooms.Add(room);
+
+        return room;
+    }
+
     void PlaceBranches()
     {
+
+        int branches = Mathf.Max((int)UnityEngine.Random.Range(minBranches, maxBranches), 3);
+
+        PlaceShopBranch();
+        branches--;
+
+        while (branches > 0)
+        {
+            PlaceBranch();
+            branches--;
+        }
+
+
+       
+
+    }
+
+    void PlaceBranch()
+    {
         int branches = UnityEngine.Random.Range(minBranches, maxBranches);
-        int rand = (int)UnityEngine.Random.Range(0, 4);
-        Room roomPrior = rooms[(int)UnityEngine.Random.Range(1, rooms.Count - 1)];
+        int rand = (int)UnityEngine.Random.Range(1, 4);
+        Room roomPrior = rooms[(int)UnityEngine.Random.Range(0, rooms.Count - 2)];
         Room room;
 
-
-        for (int i = 0; i < branches; i++)
+        for (int i = 0; i < (int)UnityEngine.Random.Range(minBranchLength, maxBranchLength); i++)
         {
             room = GenerateRoom(roomPrior, rand);
             room = HandleOverlap(room);
@@ -781,23 +944,75 @@ public class LevelGeneration : MonoBehaviour
             roomPrior = room;
         }
 
-
-        rand = (int)UnityEngine.Random.Range(0, 4);
-        for (int i = 0; i<5; i++)
-        {
-            
-            room = GenerateRoom(roomPrior, rand);
-            room = HandleOverlap(room);
-            PlaceRoom(room);
-            rooms.Add(room);
-
-        }
-
+        
     }
 
+    void MakeShop()
+    {
+        //Room should generate either to the right or left (1 or 3)
+        int rand = (int)UnityEngine.Random.Range(0, 1);
+        rand = 1 + rand * 2;
 
 
 
+        BoundsInt storeRend = testRoom.transform.GetChild(0).GetComponent<Tilemap>().cellBounds;
+
+        Debug.Log(storeRend.xMax);
+        Debug.Log(storeRend.xMin);
+
+        Vector2Int size = new Vector2Int(20, 14);
+
+        Room roomPrior = rooms[(int)UnityEngine.Random.Range(1, rooms.Count - 1)];
+
+        Vector2 centerPos = MakeNewSpecialRoomPosition(roomPrior, size, rand);
+
+        Room room = new Room(size, centerPos, Room.Shape.Rectangle);
+
+        //If no room can be spawned at end of branch, don't spawn room
+        if (AnyOverlap(room)){
+            if (rand == 3)
+            { rand = 1; }
+            else
+            { rand = 3; }
+            centerPos = MakeNewSpecialRoomPosition(roomPrior, size, rand);
+            room = new Room(size, centerPos, Room.Shape.Rectangle);
+        }
+        if (AnyOverlap(room))
+        { return;}
+
+        Vector3Int centerPos3D = new Vector3Int((int)(centerPos.x + size.x/2-5), (int)(centerPos.y + size.y), 0);
+
+        Instantiate(testRoom, centerPos3D, Quaternion.identity);
+
+        //Debug.Log(transform.bounds);
+        rooms.Add(room);
+    }
+
+    void PlaceShopBranch()
+    {
+        int branches = UnityEngine.Random.Range(minBranches, maxBranches);
+        int rand = (int)UnityEngine.Random.Range(0, 1);
+        rand = 2 * rand + 1; 
+        //shops can only go left or right
+
+        Room roomPrior = rooms[(int)UnityEngine.Random.Range(0, rooms.Count - 2)];
+        Room room;
+        for (int i = 0; i < (int)UnityEngine.Random.Range(minBranchLength, maxBranchLength-1); i++)
+        {
+            room = GenerateRoom(roomPrior, rand);
+            room = HandleOverlap(room);
+
+            PlaceRoom(room);
+            PlaceHall(room, roomPrior);
+
+            rooms.Add(room);
+            roomPrior = room;
+        }
+
+        MakeShop();
+
+
+    }
 
 
 

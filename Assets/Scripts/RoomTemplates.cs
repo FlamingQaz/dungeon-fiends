@@ -9,10 +9,6 @@ public class RoomTemplates : MonoBehaviour
 
 
 
-    void Start()
-    {
-        shopRoom.transform.GetChild(0);
-    }
 }
 
 

@@ -8,9 +8,10 @@ using System.Linq;
 
 public class LevelGeneration : MonoBehaviour
 {
-    private RoomTemplates roomTemplates;
-
     public GameObject testRoom;
+    public RoomTemplates roomTemplates;
+    public Spawner spawner;
+
 
     public int maxRooms = 5;
     public int minRooms = 3;
@@ -39,7 +40,8 @@ public class LevelGeneration : MonoBehaviour
 
     //Chance any given 2x2 has cover on it
     public float coverChance = .05f;
-
+    public float emptyRoomChance = .3f;
+    public float enemyChance = .1f;
     private List<Room> rooms = new List<Room>();
 
 
@@ -60,22 +62,22 @@ public class LevelGeneration : MonoBehaviour
 
     void GenerateLevel()
     {
-        GenerateRooms();
+        int numMainBranch = GenerateRooms();
 
-        PlaceBranches();
+        PlaceBranches(numMainBranch);
 
         PlaceHalls();
 
-        //DesignateRooms();
     }
 
-    void GenerateRooms()
+    int GenerateRooms()
     {
 
         Room room;
         //Makes a number of Rooms, and places them down
-
-        int rand = 1;
+        
+        int rand = (int)UnityEngine.Random.Range(1, 5);
+  
 
         //Generates room 1
         Room roomPrior = new Room(new Vector2Int(2 * (int)(UnityEngine.Random.Range(minRoomSize.x, maxRoomSize.x) / 2) , 2 * (int)(UnityEngine.Random.Range(minRoomSize.y, maxRoomSize.y) / 2))
@@ -94,7 +96,7 @@ public class LevelGeneration : MonoBehaviour
             //If a random digit is higher than straigtness, go another direction
             if (UnityEngine.Random.Range(1, 100) > straigntnessFactor)
             {
-                rand = (int)UnityEngine.Random.Range(1, 4);
+                rand = (int)UnityEngine.Random.Range(1, 5);
                 //Debug.Log(rand);
             }
 
@@ -110,18 +112,14 @@ public class LevelGeneration : MonoBehaviour
             
         }
 
-        room = GenerateBossRoom(0);
-        room = HandleOverlap(room);
-        PlaceRoom(room);
-        PlaceRoomCover(room);
+        int randRoom = (int)UnityEngine.Random.Range(0, roomTemplates.bossRooms.Count);
 
-
-        rooms.Add(room);
-        roomPrior = room;
-
+        //GenerateBossRoom(randRoom);
 
 
         Debug.Log("Rooms Generated");
+
+        return rooms.Count-2;
     }
 
     Room GenerateRoom(Room roomPrior, int rand)
@@ -224,8 +222,38 @@ public class LevelGeneration : MonoBehaviour
             while (AnyOverlap(room2) && j < 4)
             {
 
-                rand = (int)UnityEngine.Random.Range(0, 4 - 3);
+                rand = (int)UnityEngine.Random.Range(0, 4 - j);
                 room2.centerPos = MakeNewRoomPosition(rooms[i], room2.size, posList[rand]);
+
+                posList.RemoveAt(rand);
+                j++;
+            }
+            i--;
+        }
+
+
+
+        return room2;
+    }
+
+    Room HandleSpecialOverlap(Room room2)
+    {
+        //Go through all rooms and check for overlap
+
+        int leng = rooms.Count;
+        int rand;
+        int i = leng - 1;
+        int j = 0;
+        List<int> posList = new List<int>() { 1, 2, 3, 4 };
+        //this is here to stop infinite loops,
+        //although they theoretically shouldn't happen
+        while (AnyOverlap(room2) && i > 0)
+        {
+            while (AnyOverlap(room2) && j < 4)
+            {
+
+                rand = (int)UnityEngine.Random.Range(0, 4 - j);
+                room2.centerPos = MakeNewSpecialRoomPosition(rooms[i], room2.size, posList[rand]);
 
                 posList.RemoveAt(rand);
                 j++;
@@ -421,22 +449,45 @@ public class LevelGeneration : MonoBehaviour
         int roomy = (int)(room.centerPos.y - room.size.y / 2);
         //Sets the Floor
         //For all X in room
-        for (int i = roomx; i < roomx + (int)room.size.x; i++)
+
+        PlaceRectangleWall(room);
+        PlaceRectangleFloor(room);
+        
+    }
+
+    void PlaceRectangleWall(Room room)
+    {
+        int roomx = (int)(room.centerPos.x - room.size.x / 2);
+        int roomy = (int)(room.centerPos.y - room.size.y / 2);
+
+        for (int i = roomx; i < roomx + (int)room.size.x-1; i++)
+        {
+            tilePlacement.PlaceSide(new Vector3Int((int)i, (int)roomy , -1));
+            tilePlacement.PlaceSide(new Vector3Int((int)i, (int)(roomy + room.size.y -1), -1));
+        }
+
+        for (int i = roomy; i < roomy + (int)room.size.y; i++)
+        {
+            tilePlacement.PlaceSide(new Vector3Int((int)roomx, (int)i, -1));
+            tilePlacement.PlaceSide(new Vector3Int( (int)(roomx + room.size.x - 1), (int)i, -1));
+        }
+
+    }
+
+    void PlaceRectangleFloor(Room room)
+    {
+        int roomx = (int)(room.centerPos.x - room.size.x / 2);
+        int roomy = (int)(room.centerPos.y - room.size.y / 2);
+
+        for (int i = roomx+1; i < roomx + (int)room.size.x-1; i++)
         {
             //for all Y in room
-            for (int j = roomy; j < roomy + (int)room.size.y; j++)
+            for (int j = roomy+1; j < roomy + (int)room.size.y-1; j++)
             {
 
                 //Place tiles
                 tilePlacement.PlaceFloor(new Vector3Int((int)i, (int)j, 0), 1);
-                if (i == roomx || i == roomx + (int)room.size.x - 1)
-                {
-                    tilePlacement.PlaceSide(new Vector3Int((int)i, (int)j, 0));
-                }
-                if (j == roomy || j == roomy + (int)room.size.y - 1)
-                {
-                    tilePlacement.PlaceSide(new Vector3Int((int)i, (int)j, 0));
-                }
+      
             }
 
         }
@@ -466,7 +517,7 @@ public class LevelGeneration : MonoBehaviour
                     tilePlacement.PlaceFloor(new Vector3Int((int)i, (int)j, 0), 1);
                 else
                 {
-                    tilePlacement.PlaceSide(new Vector3Int((int)i, (int)j, 0), 0);
+                    tilePlacement.PlaceSide(new Vector3Int((int)i, (int)j, 0), -1);
                 }
 
                 if (IsOval(i, j,
@@ -488,7 +539,7 @@ public class LevelGeneration : MonoBehaviour
 
     void PlaceL(Room room)
     {
-        int rand = (int)UnityEngine.Random.Range(0, 4);
+        int rand = (int)UnityEngine.Random.Range(1, 5);
 
         //Finds room lower left corner
         int roomx = (int)(room.centerPos.x - room.size.x / 2);
@@ -511,31 +562,31 @@ public class LevelGeneration : MonoBehaviour
                 //If side walls
                 if (i == roomx || i == roomx + (int)room.size.x - 1)
                 {
-                    tilePlacement.PlaceSide(new Vector3Int((int)i, (int)j, 0));
+                    tilePlacement.PlaceSide(new Vector3Int((int)i, (int)j, -1));
                 }
                 //If top walls
                 else if (j == roomy || j == roomy + (int)room.size.y - 1)
                 {
-                    tilePlacement.PlaceSide(new Vector3Int((int)i, (int)j, 0));
+                    tilePlacement.PlaceSide(new Vector3Int((int)i, (int)j, -1));
                 }
 
                 //L Walls
                 else if (rand == 0 && (i < roomx +(int)room.size.x/2-1 && j < roomy + (int)room.size.y/2 - 1))
                 {
-                    tilePlacement.PlaceSide(new Vector3Int((int)i, (int)j, 0));
+                    tilePlacement.PlaceSide(new Vector3Int((int)i, (int)j, -1));
                 }
                 else if (rand == 1 && (i > roomx +(int)room.size.x / 2 - 1 && j < roomy + (int)room.size.y / 2 - 1))
                 {
-                    tilePlacement.PlaceSide(new Vector3Int((int)i, (int)j, 0));
+                    tilePlacement.PlaceSide(new Vector3Int((int)i, (int)j, -1));
                 }
                 else if (rand == 2 && (i < roomx +(int)room.size.x / 2 - 1 && j > roomy + (int)room.size.y / 2 - 1))
                 {
-                    tilePlacement.PlaceSide(new Vector3Int((int)i, (int)j, 0));
+                    tilePlacement.PlaceSide(new Vector3Int((int)i, (int)j, -1));
 
                 }
                 else if (rand == 3 && (i > roomx + (int)room.size.x / 2 - 1 && j > roomy + (int)room.size.y / 2 - 1))
                 {
-                    tilePlacement.PlaceSide(new Vector3Int((int)i, (int)j, 0));
+                    tilePlacement.PlaceSide(new Vector3Int((int)i, (int)j, -1));
                 }
 
             }
@@ -569,90 +620,90 @@ public class LevelGeneration : MonoBehaviour
     {
         int i = (int)pos.x;
         int j = (int)pos.y;
-        if (rand == 0)
+        if (rand == 1)
         {
             rand = UnityEngine.Random.Range(0, 4);
             if (rand == 0)
             {
-                tilePlacement.PlaceSide(new Vector3Int((int)i, (int)j, 0));
+                tilePlacement.PlaceSide(new Vector3Int((int)i, (int)j, -1));
             }
             else if (rand == 1)
             {
-                tilePlacement.PlaceSide(new Vector3Int((int)i+1, (int)j, 0));
+                tilePlacement.PlaceSide(new Vector3Int((int)i+1, (int)j, -1));
             }
             else if (rand == 2)
             {
-                tilePlacement.PlaceSide(new Vector3Int((int)i, (int)j+1, 0));
+                tilePlacement.PlaceSide(new Vector3Int((int)i, (int)j+1, -1));
             }
             else
             {
-                tilePlacement.PlaceSide(new Vector3Int((int)i+1, (int)j+1, 0));
+                tilePlacement.PlaceSide(new Vector3Int((int)i+1, (int)j+1, -1));
             }
             
-        }
-
-        else if (rand == 1)
-        {
-            rand = UnityEngine.Random.Range(0, 4);
-            if (rand == 0)
-            {
-                tilePlacement.PlaceSide(new Vector3Int((int)i, (int)j, 0));
-                tilePlacement.PlaceSide(new Vector3Int((int)i+1, (int)j, 0));
-            }
-            else if (rand == 1)
-            {
-                tilePlacement.PlaceSide(new Vector3Int((int)i, (int)j+1, 0));
-                tilePlacement.PlaceSide(new Vector3Int((int)i + 1, (int)j+1, 0));
-            }
-            else if (rand == 2)
-            {
-                tilePlacement.PlaceSide(new Vector3Int((int)i+1, (int)j, 0));
-                tilePlacement.PlaceSide(new Vector3Int((int)i + 1, (int)j+1, 0));
-            }
-            else
-            {
-                tilePlacement.PlaceSide(new Vector3Int((int)i, (int)j, 0));
-                tilePlacement.PlaceSide(new Vector3Int((int)i, (int)j + 1, 0));
-            }
         }
 
         else if (rand == 2)
         {
-            
             rand = UnityEngine.Random.Range(0, 4);
-
             if (rand == 0)
             {
-                tilePlacement.PlaceSide(new Vector3Int((int)i, (int)j + 1, 0));
-                tilePlacement.PlaceSide(new Vector3Int((int)i + 1, (int)j, 0));
-                tilePlacement.PlaceSide(new Vector3Int((int)i + 1, (int)j + 1, 0));
+                tilePlacement.PlaceSide(new Vector3Int((int)i, (int)j, -1));
+                tilePlacement.PlaceSide(new Vector3Int((int)i+1, (int)j, -1));
             }
             else if (rand == 1)
             {
-                tilePlacement.PlaceSide(new Vector3Int((int)i, (int)j, 0));
-                tilePlacement.PlaceSide(new Vector3Int((int)i + 1, (int)j, 0));
-                tilePlacement.PlaceSide(new Vector3Int((int)i + 1, (int)j + 1, 0));
+                tilePlacement.PlaceSide(new Vector3Int((int)i, (int)j+1, -1));
+                tilePlacement.PlaceSide(new Vector3Int((int)i + 1, (int)j+1, -1));
             }
             else if (rand == 2)
             {
-                tilePlacement.PlaceSide(new Vector3Int((int)i, (int)j, 0));
-                tilePlacement.PlaceSide(new Vector3Int((int)i, (int)j + 1, 0));
-                tilePlacement.PlaceSide(new Vector3Int((int)i + 1, (int)j + 1, 0));
+                tilePlacement.PlaceSide(new Vector3Int((int)i+1, (int)j, -1));
+                tilePlacement.PlaceSide(new Vector3Int((int)i + 1, (int)j+1, -1));
             }
             else
             {
-                tilePlacement.PlaceSide(new Vector3Int((int)i, (int)j, 0));
-                tilePlacement.PlaceSide(new Vector3Int((int)i, (int)j + 1, 0));
-                tilePlacement.PlaceSide(new Vector3Int((int)i + 1, (int)j, 0));
+                tilePlacement.PlaceSide(new Vector3Int((int)i, (int)j, -1));
+                tilePlacement.PlaceSide(new Vector3Int((int)i, (int)j + 1, -1));
             }
         }
 
         else if (rand == 3)
         {
-            tilePlacement.PlaceSide(new Vector3Int((int)i, (int)j, 0));
-            tilePlacement.PlaceSide(new Vector3Int((int)i, (int)j+1, 0));
-            tilePlacement.PlaceSide(new Vector3Int((int)i+1, (int)j, 0));
-            tilePlacement.PlaceSide(new Vector3Int((int)i+1, (int)j+1, 0));
+            
+            rand = UnityEngine.Random.Range(0, 4);
+
+            if (rand == 0)
+            {
+                tilePlacement.PlaceSide(new Vector3Int((int)i, (int)j + 1, -1));
+                tilePlacement.PlaceSide(new Vector3Int((int)i + 1, (int)j, -1));
+                tilePlacement.PlaceSide(new Vector3Int((int)i + 1, (int)j + 1, -1));
+            }
+            else if (rand == 1)
+            {
+                tilePlacement.PlaceSide(new Vector3Int((int)i, (int)j, -1));
+                tilePlacement.PlaceSide(new Vector3Int((int)i + 1, (int)j, -1));
+                tilePlacement.PlaceSide(new Vector3Int((int)i + 1, (int)j + 1, -1));
+            }
+            else if (rand == 2)
+            {
+                tilePlacement.PlaceSide(new Vector3Int((int)i, (int)j, -1));
+                tilePlacement.PlaceSide(new Vector3Int((int)i, (int)j + 1, -1));
+                tilePlacement.PlaceSide(new Vector3Int((int)i + 1, (int)j + 1, -1));
+            }
+            else
+            {
+                tilePlacement.PlaceSide(new Vector3Int((int)i, (int)j, -1));
+                tilePlacement.PlaceSide(new Vector3Int((int)i, (int)j + 1, -1));
+                tilePlacement.PlaceSide(new Vector3Int((int)i + 1, (int)j, -1));
+            }
+        }
+
+        else if (rand == 4)
+        {
+            tilePlacement.PlaceSide(new Vector3Int((int)i, (int)j, -1));
+            tilePlacement.PlaceSide(new Vector3Int((int)i, (int)j+1, -1));
+            tilePlacement.PlaceSide(new Vector3Int((int)i+1, (int)j, -1));
+            tilePlacement.PlaceSide(new Vector3Int((int)i+1, (int)j+1, -1));
         }
 
     }
@@ -677,10 +728,17 @@ public class LevelGeneration : MonoBehaviour
 
                     //Place tiles
                     rand = UnityEngine.Random.Range(0, 100);
+                    int rand2 = UnityEngine.Random.Range(0, 100);
                     if (rand < 100 * coverChance)
                     {
-                        rand = UnityEngine.Random.Range(0, 4);
+                        rand = UnityEngine.Random.Range(1, 5);
                         PlaceCover(rand, new Vector2(i, j));
+                    }
+                    
+                    else if (rand2 < 100 * enemyChance)
+                    {
+                        int randEnemy = UnityEngine.Random.Range(0, roomTemplates.bossRooms.Count);
+                        Instantiate(spawner.enemySpawn[randEnemy], new Vector3(i, j, 1), Quaternion.identity);
                     }
                 }
 
@@ -702,8 +760,8 @@ public class LevelGeneration : MonoBehaviour
                         rand = UnityEngine.Random.Range(0, 100);
                         if ((rand < 100 * coverChance) && Mathf.Abs(i-j) < 4)
                         {
-                            rand = UnityEngine.Random.Range(0, 4);
-                            PlaceCover(rand, new Vector2(i, j));
+                            int randEnemy = UnityEngine.Random.Range(0, roomTemplates.bossRooms.Count);
+                            Instantiate(spawner.enemySpawn[randEnemy], new Vector3(i,j,1), Quaternion.identity);
                         }
                     }
 
@@ -719,10 +777,17 @@ public class LevelGeneration : MonoBehaviour
 
                         //Place tiles
                         rand = UnityEngine.Random.Range(0, 100);
+                        int rand2 = UnityEngine.Random.Range(0, 100);
                         if ((rand < 100 * coverChance) && Mathf.Abs(i - j) > 4)
                         {
-                            rand = UnityEngine.Random.Range(0, 4);
+                            rand = UnityEngine.Random.Range(1, 5);
                             PlaceCover(rand, new Vector2(i, j));
+                        }
+           
+                        else if ((rand2 < 100 * coverChance) && Mathf.Abs(i - j) < 4)
+                        {
+                            int randEnemy = UnityEngine.Random.Range(0, roomTemplates.bossRooms.Count);
+                            Instantiate(spawner.enemySpawn[randEnemy], new Vector3(i, j, 1), Quaternion.identity);
                         }
                     }
 
@@ -860,63 +925,59 @@ public class LevelGeneration : MonoBehaviour
         }
     }
 
-    Room GenerateBossRoom(int bossnum)
+    void GenerateBossRoom(int randRoom)
     {
         
-        int rand = (int)UnityEngine.Random.Range(1, 4);
+
+        
+
+        BoundsInt roomRend = roomTemplates.bossRooms[randRoom].transform.GetChild(0).GetComponent<Tilemap>().cellBounds;
+
+        int sizex = roomRend.xMax / 2;
+        int sizey = roomRend.yMax /2;
+
+        Debug.Log(roomRend.xMax);
+        Debug.Log(roomRend.xMin);
+        Debug.Log(roomRend.max);
+        Debug.Log(roomRend.min);
+        Debug.Log(roomRend.center);
+        Debug.Log(roomRend.size);
+
+
+        Vector2Int size = new Vector2Int(sizex, sizey);
+
         int leng = rooms.Count;
-
-        //Temp numbers, Change Later
-        Vector2Int size = new Vector2Int(30, 20);
-
         Room roomPrior = rooms[leng - 1];
+
+        int rand = (int)UnityEngine.Random.Range(1, 5);
 
         Vector2 centerPos = MakeNewSpecialRoomPosition(roomPrior, size, rand);
 
         Room room = new Room(size, centerPos, Room.Shape.Rectangle);
 
-        int i = 1;
-        int j = 0;
+
         //If no room can be spawned at end of branch, don't spawn room
-        while (AnyOverlap(room) && i < leng - 2)
-        {   
+        room = HandleSpecialOverlap(room);
 
-            while (j < 4) 
-            { 
+        Vector3Int centerPos3D = new Vector3Int((int)(room.centerPos.x - size.x), (int)(room.centerPos.y - size.y), 0);
 
-                rand++;
-            if (rand > 4)
-            { rand = 1; }
-                
-                centerPos = MakeNewSpecialRoomPosition(roomPrior, size, rand);
-                room = new Room(size, centerPos, Room.Shape.Rectangle);
-            
-            }
-            roomPrior = rooms[leng - 1-i];
-        }
-        
-
-        Vector3Int centerPos3D = new Vector3Int((int)(centerPos.x + size.x / 2 - 5), (int)(centerPos.y + size.y), 0);
-
-        Instantiate(testRoom, centerPos3D, Quaternion.identity);
-
+        Instantiate(roomTemplates.bossRooms[randRoom], centerPos3D, Quaternion.identity);
 
         rooms.Add(room);
 
-        return room;
     }
 
-    void PlaceBranches()
+    void PlaceBranches(int indexy)
     {
 
         int branches = Mathf.Max((int)UnityEngine.Random.Range(minBranches, maxBranches), 3);
 
-        PlaceShopBranch();
+        PlaceShopBranch(indexy);
         branches--;
 
         while (branches > 0)
         {
-            PlaceBranch();
+            PlaceShopBranch(indexy);
             branches--;
         }
 
@@ -925,11 +986,11 @@ public class LevelGeneration : MonoBehaviour
 
     }
 
-    void PlaceBranch()
+    void PlaceBranch(int indexy)
     {
         int branches = UnityEngine.Random.Range(minBranches, maxBranches);
-        int rand = (int)UnityEngine.Random.Range(1, 4);
-        Room roomPrior = rooms[(int)UnityEngine.Random.Range(0, rooms.Count - 2)];
+        int rand = (int)UnityEngine.Random.Range(1, 5);
+        Room roomPrior = rooms[(int)UnityEngine.Random.Range(0, indexy)];
         Room room;
 
         for (int i = 0; i < (int)UnityEngine.Random.Range(minBranchLength, maxBranchLength); i++)
@@ -947,20 +1008,40 @@ public class LevelGeneration : MonoBehaviour
         
     }
 
+    void PlaceBranch(int indexy, int rand)
+    {
+        int branches = UnityEngine.Random.Range(minBranches, maxBranches);
+        Room roomPrior = rooms[(int)UnityEngine.Random.Range(0, indexy)];
+        Room room;
+
+        for (int i = 0; i < (int)UnityEngine.Random.Range(minBranchLength, maxBranchLength); i++)
+        {
+            room = GenerateRoom(roomPrior, rand);
+            room = HandleOverlap(room);
+
+            PlaceRoom(room);
+            PlaceHall(room, roomPrior);
+
+            rooms.Add(room);
+            roomPrior = room;
+        }
+
+
+    }
+
     void MakeShop()
     {
         //Room should generate either to the right or left (1 or 3)
         int rand = (int)UnityEngine.Random.Range(0, 1);
         rand = 1 + rand * 2;
 
-
-
         BoundsInt storeRend = testRoom.transform.GetChild(0).GetComponent<Tilemap>().cellBounds;
 
-        Debug.Log(storeRend.xMax);
-        Debug.Log(storeRend.xMin);
+        int sizex = storeRend.xMax - 1  ;
+        int sizey = storeRend.yMax;
 
-        Vector2Int size = new Vector2Int(20, 14);
+  
+        Vector2Int size = new Vector2Int(sizex , sizey);
 
         Room roomPrior = rooms[(int)UnityEngine.Random.Range(1, rooms.Count - 1)];
 
@@ -980,34 +1061,25 @@ public class LevelGeneration : MonoBehaviour
         if (AnyOverlap(room))
         { return;}
 
-        Vector3Int centerPos3D = new Vector3Int((int)(centerPos.x + size.x/2-5), (int)(centerPos.y + size.y), 0);
+        Vector3Int centerPos3D = new Vector3Int((int)(centerPos.x - size.x / 2-1), (int)(centerPos.y - size.y / 4 - storeRend.yMax % 2), 1);
 
-        Instantiate(testRoom, centerPos3D, Quaternion.identity);
+        Instantiate(roomTemplates.shopRoom, centerPos3D, Quaternion.identity);
+
+
 
         //Debug.Log(transform.bounds);
         rooms.Add(room);
+
     }
 
-    void PlaceShopBranch()
+    void PlaceShopBranch(int indexy)
     {
         int branches = UnityEngine.Random.Range(minBranches, maxBranches);
         int rand = (int)UnityEngine.Random.Range(0, 1);
         rand = 2 * rand + 1; 
         //shops can only go left or right
+        PlaceBranch(indexy , rand);
 
-        Room roomPrior = rooms[(int)UnityEngine.Random.Range(0, rooms.Count - 2)];
-        Room room;
-        for (int i = 0; i < (int)UnityEngine.Random.Range(minBranchLength, maxBranchLength-1); i++)
-        {
-            room = GenerateRoom(roomPrior, rand);
-            room = HandleOverlap(room);
-
-            PlaceRoom(room);
-            PlaceHall(room, roomPrior);
-
-            rooms.Add(room);
-            roomPrior = room;
-        }
 
         MakeShop();
 

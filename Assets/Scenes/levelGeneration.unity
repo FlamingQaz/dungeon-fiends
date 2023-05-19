@@ -165,6 +165,7 @@ GameObject:
   - component: {fileID: 486661156}
   - component: {fileID: 486661158}
   - component: {fileID: 486661157}
+  - component: {fileID: 486661159}
   m_Layer: 0
   m_Name: Generator
   m_TagString: Untagged
@@ -202,19 +203,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   testRoom: {fileID: 5950457169035961951, guid: d67d9ecb92ee7d04ab151294bc152e06, type: 3}
+  roomTemplates: {fileID: 486661157}
+  spawner: {fileID: 486661159}
   maxRooms: 10
-  minRooms: 9
+  minRooms: 4
   maxRoomSize: {x: 40, y: 40}
   minRoomSize: {x: 20, y: 20}
   roomSquish: 0.2
   straigntnessFactor: 0
-  minBranchLength: 3
-  maxBranchLength: 5
+  minBranchLength: 1
+  maxBranchLength: 2
   minBranches: 2
   maxBranches: 3
-  roomChanceList: 3c0000000a0000000a0000000a0000000a000000
+  roomChanceList: 3c00000000000000000000000000000000000000
   coverChance: 0.05
-  path: []
+  emptyRoomChance: 0.3
+  enemyChance: 0.1
   tilePlacement: {fileID: 486661158}
 --- !u!114 &486661157
 MonoBehaviour:
@@ -283,6 +287,21 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 1fe7f565bd19380438752168038cc898, type: 2}
   - {fileID: 11400000, guid: 3a007c172c3b86544bd157d455ba3483, type: 2}
   - {fileID: 11400000, guid: 18640de3e1ab26a4188bdbf43b8b6758, type: 2}
+--- !u!114 &486661159
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 486661154}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4686c154e02c59f4a86dddc875b7b22e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerSpawn: {fileID: 6685801740211269081, guid: 4de367a08eb38c643a88f51292352a71, type: 3}
+  enemySpawn:
+  - {fileID: 4875877201642381228, guid: 5c6bcb45389e8394cba49e47c656ab5d, type: 3}
 --- !u!1 &588809399
 GameObject:
   m_ObjectHideFlags: 0
@@ -543,6 +562,63 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
+--- !u!1001 &1453597013
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4432308111979378290, guid: 4de367a08eb38c643a88f51292352a71, type: 3}
+      propertyPath: m_RootOrder
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4432308111979378290, guid: 4de367a08eb38c643a88f51292352a71, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4432308111979378290, guid: 4de367a08eb38c643a88f51292352a71, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4432308111979378290, guid: 4de367a08eb38c643a88f51292352a71, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4432308111979378290, guid: 4de367a08eb38c643a88f51292352a71, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4432308111979378290, guid: 4de367a08eb38c643a88f51292352a71, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4432308111979378290, guid: 4de367a08eb38c643a88f51292352a71, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4432308111979378290, guid: 4de367a08eb38c643a88f51292352a71, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4432308111979378290, guid: 4de367a08eb38c643a88f51292352a71, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4432308111979378290, guid: 4de367a08eb38c643a88f51292352a71, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4432308111979378290, guid: 4de367a08eb38c643a88f51292352a71, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6685801740211269081, guid: 4de367a08eb38c643a88f51292352a71, type: 3}
+      propertyPath: m_Name
+      value: PlayerSpawnpoint
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 4de367a08eb38c643a88f51292352a71, type: 3}
 --- !u!1839735485 &1487720135 stripped
 Tilemap:
   m_CorrespondingSourceObject: {fileID: 5317653455386213064, guid: f4d20cf1bc0a98e4590455bf18b683fb, type: 3}

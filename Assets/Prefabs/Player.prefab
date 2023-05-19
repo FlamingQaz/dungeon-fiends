@@ -199,6 +199,7 @@ MonoBehaviour:
   stats:
     maxHealth: 100
     currentHealth: 10
+    currentShield: 0.001
     damage: 8
     movementSpeed: 3
     attackSpeed: 10
@@ -206,6 +207,17 @@ MonoBehaviour:
       Combat: 0
       Environment: 0
       Effect: 0
+  statMultipliers:
+    maxHealth: 1
+    currentHealth: 1
+    currentShield: 1
+    damage: 1
+    movementSpeed: 1
+    attackSpeed: 1
+    resistance:
+      Combat: 1
+      Environment: 1
+      Effect: 1
   destroyOnDeath: 0
   targetable: 1
   testTriggerResurrect: 0

@@ -126,6 +126,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70af235eaa9be6c45a7e00876e09385d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
 --- !u!114 &2336437375242769424
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -372,7 +375,7 @@ MonoBehaviour:
   friendlyLayer:
     serializedVersion: 2
     m_Bits: 64
-  baseProjectile: {fileID: 1211716114872644739, guid: af61060c100eba541a2f0e42721ab1bd, type: 3}
+  baseProjectile: {fileID: 4538708223018750052, guid: c471aabddfa6e13448e9afd6c280664f, type: 3}
 --- !u!114 &2007450369848719897
 MonoBehaviour:
   m_ObjectHideFlags: 0
